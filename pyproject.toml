@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "herdsight"
+version = "0.0.1"
+description = "Drone-based livestock counting per camp, with calibrated count intervals and missing-animal alerts."
+readme = "README.md"
+requires-python = ">=3.12"
+license-files = ["LICENSE"]
+authors = [{ name = "Luke Andrew" }]
+dependencies = [
+    "numpy",
+    "scipy",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "ruff", "pymap3d"]  # pymap3d: independent reference in tests only
+
+[tool.setuptools.packages.find]
+where = ["python"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["python", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "ANN"]
+# N802/N803/N806: allow R_wb, K and similar frame-named variables.
+# ANN401: config values are dynamically typed YAML.
+ignore = ["N802", "N803", "N806", "ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

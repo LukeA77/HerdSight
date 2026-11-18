@@ -1,0 +1,4 @@
+# Files each phase's one-time test run depends on. scripts/freeze.py hashes them before the
+# test run; the test run checks the hashes first and stops if anything changed.
+# Phases are added here as their settings are frozen.
+phases: {}

@@ -1,0 +1,14 @@
+# Pinned versions for development and CI (not for training notebooks; see docs/plans/phase0-setup.md).
+colorama==0.4.6
+coverage==7.17.3
+iniconfig==2.3.1
+numpy==2.5.5
+packaging==26.3
+pluggy==1.7.0
+Pygments==2.21.0
+pymap3d==3.2.0
+pytest==9.2.0
+pytest-cov==7.1.0
+PyYAML==6.0.3
+ruff==0.17.5
+scipy==1.18.1

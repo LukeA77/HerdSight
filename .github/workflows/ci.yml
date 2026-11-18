@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    # Synthetic data only: no datasets, no GPU.
+    # 3.12 as developed; 3.13 as on current Debian and Raspberry Pi OS.
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-lock.txt
+          python -m pip install -e . --no-deps
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Test
+        run: pytest
+
+  repository-hygiene:
+    # Private working folders and large files must never be committed.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: No private folders
+        run: |
+          if git ls-files | grep -E '^(_private|_drafts)/'; then
+            echo "Private folders are tracked; remove them from git."; exit 1
+          fi
+      - name: No files over 5 MB
+        run: |
+          big=$(git ls-files -z | xargs -0 -I{} find {} -maxdepth 0 -type f -size +5M)
+          if [ -n "$big" ]; then echo "Large files tracked:"; echo "$big"; exit 1; fi

@@ -20,7 +20,7 @@ Options considered: fork drone-ranger; retrain drone-ranger's detector; new repo
 Choice: New repository that depends on a pinned version of a core library (ground projection and geometry, navigation filter, tracker, conformal calibration, multi-drone communication, ONNX runtime wrappers, ROS frame conversions) extracted from drone-ranger. If extraction is impractical, vendor the needed modules with attribution and log why.
 Evidence / reasoning: Counting needs duplicate removal, motion handling, a herd register and alerts that drone-ranger lacks; a shared library keeps one tested copy of the geometry.
 Easy option rejected (if any) and why: Forking or retraining drone-ranger would inherit its pedestrian-trained detector and down-scaled processing, the main causes of its poor recall at height.
-Status: adopted
+Status: adopted; reuse method refined by D-20
 
 ## D-2: Specifications before code, baseline before targets  (2026-11-18)
 Options considered: set targets up front; set targets after an honest baseline.
@@ -140,4 +140,11 @@ Options considered: design for one country; per-country rule profiles.
 Choice: Mission planning reads a per-country rules profile (maximum height, line-of-sight requirements, distance limits) for the United Kingdom and South Africa. The planner refuses a mission that breaks the active profile. Exact limits are taken from the current UK Civil Aviation Authority (CAA) and South African Civil Aviation Authority (SACAA) rules, with citations, in `configs/`.
 Evidence / reasoning: The owner is in the UK; South African farms face high stock theft and have much larger camps, which affects survey height, route length and battery planning.
 Easy option rejected (if any) and why: Hard-coding one height limit.
+Status: adopted
+
+## D-20: Reuse drone-ranger by copying selected modules, not a shared library (refines D-1)  (2026-11-18)
+Options considered: separate shared library repository pinned by both projects; depending on drone-ranger directly at a pinned commit; copying (vendoring) selected modules with provenance.
+Choice: Copy the geometry (frames, camera, ranging, ground covariance, terrain, uncertainty, Kalman filter), evaluation (conformal intervals, statistics) and utility (config, seeds, environment report) modules, and the document-filling script, from drone-ranger commit b4f4e4f, with their tests. Each file names its source file and commit; changes beyond import paths are listed in `docs/plans/phase0-setup.md`.
+Evidence / reasoning: drone-ranger is finished and its published results come from frozen code, so refactoring it around a new library would change the code behind those results. A library with one active user adds release work for no gain, and under D-14 the geometry used in production moves to C++, leaving the Python copy as the reference implementation. Depending on drone-ranger directly would pull in its unrelated dependencies (tracking metrics, HDF5, ONNX Runtime). Not taken: navigation filter, frame-to-frame tracker, search and multi-drone code, ONNX detector wrappers (reasons in the Phase 0 plan).
+Easy option rejected (if any) and why: Copying the whole package and deleting what fails, which would bring untested, irrelevant code along.
 Status: adopted

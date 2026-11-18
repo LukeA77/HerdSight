@@ -1,0 +1,12 @@
+# Project-wide settings. Every value records its source; null values are unresolved
+# placeholders that code must not use (herdsight.utils.config.Config.require).
+
+animal_class:
+  value: cattle
+  placeholder: ANIMAL_CLASS
+  source: "Owner decision 2026-11-18: cattle first, sheep later (docs/questions.md Q5; brief section 5)"
+
+operating_countries:
+  value: [GB, ZA]
+  placeholder: OPERATING_COUNTRIES
+  source: "Owner decision 2026-11-18: United Kingdom and South Africa (docs/questions.md Q3; D-19)"
