@@ -118,6 +118,18 @@ The vendored modules keep their names and tests, and record their source commit,
 - **New tests:** `test_paths.py` (5: unset variable, missing drive, folder inside the repository, layout, unknown kind) and `test_freeze.py` (6).
 - **Second review (did the build take an easier route than the plan?):** No. Every planned item for 0a is present, and nothing is stubbed. The run-once guard for test splits (§9.5) is not part of Phase 0; it is built in Phase 1 with the first test split.
 
-### 0b: C++
+### 0b: C++ (2026-11-18)
 
-*(Filled in after the C++ toolchain is installed.)*
+- **Toolchain:** Ubuntu 24.04 (WSL 2): g++ 13.3, CMake 3.28, Ninja 1.11, Eigen 3.4, GoogleTest 1.14; pybind11 3.1.0 from pip.
+- **GoogleTest under address and undefined-behaviour sanitizers:** 5 of 5 passed. The tests cover identity at zero attitude, yaw 90° pointing east, positive pitch nose up, positive roll right wing down, and orthonormality plus the round trip on 1,000 random attitudes.
+- **Parity with the Python reference** on 10,000 random attitudes: the largest difference is 1.1 × 10⁻¹⁶ for `R_wb_from_ypr` (one unit in the last place) and 0 for `ypr_from_R_wb`, against a test tolerance of 10⁻¹².
+- **Full Python suite on Linux with the C++ module required** (`HERDSIGHT_REQUIRE_CORE=1`): 188 passed. On Windows, without a compiler, 183 passed and the parity test skipped, as designed.
+- **Problem found and fixed:** with Ubuntu's packaged pybind11 (2.11), the parity test crashed (segmentation fault) the first time a NumPy array was passed into C++. pybind11 2.11 predates NumPy 2, and this project uses NumPy 2.5. The fix is pybind11 from pip, pinned in `requirements-lock.txt` (`>=2.12` in `pyproject.toml`); `scripts/build_core.sh` takes pybind11 from the Python environment. The crash shows why the parity test runs with real arrays rather than only scalars.
+- **Build layout:** CMake builds outside the repository (`~/build/herdsight`). The module is written into `python/herdsight/` so `import herdsight._core` works without installing, and it is gitignored. Alternative considered: building the C++ through `pip install` (scikit-build-core). Rejected for now, because it would make a C++ compiler mandatory on every machine, including the Windows development laptop and Kaggle notebooks, which only need the Python reference. Revisit when the onboard nodes ship.
+- **CI:** a `cpp-core` job runs the sanitizer build, builds the module, and runs the full Python suite with the core required.
+- **Second review:** the build matches the plan; nothing is stubbed. One addition beyond the plan: `ypr_from_R_wb` (the inverse) was ported as well as `R_wb_from_ypr`, because a round-trip test needs both.
+
+### Exit criteria
+
+- CI green: confirmed on GitHub for 0a. 0b is confirmed when the `cpp-core` job passes on the next push.
+- Core library imported and tested: yes. The Python modules have 183 tests; the C++ core has 5 GoogleTest tests plus 5 parity tests.

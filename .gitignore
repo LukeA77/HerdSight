@@ -82,3 +82,7 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# Built C++ Python module (made by CMake inside the package folder)
+python/herdsight/_core*.so
+python/herdsight/_core*.pyd

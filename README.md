@@ -28,6 +28,27 @@ HerdSight uses a drone to count cattle in each camp (paddock), checks the count 
 
 Datasets and model weights are not stored in this repository. Instructions for fetching them will be in `docs/data.md`.
 
+## Development
+
+Python 3.12 or later.
+
+```bash
+python -m venv .venv
+.venv/bin/python -m pip install -r requirements-lock.txt   # Windows: .venv\Scripts\python
+.venv/bin/python -m pip install -e . --no-deps
+.venv/bin/pytest
+```
+
+The C++ core (`core/`) builds on Linux (Ubuntu 24.04, natively or in WSL) with CMake, Ninja, Eigen and GoogleTest:
+
+```bash
+sudo apt install build-essential cmake ninja-build libeigen3-dev libgtest-dev
+scripts/build_core.sh            # sanitizer build + tests, then the Python module
+HERDSIGHT_REQUIRE_CORE=1 pytest  # includes the C++/Python parity tests
+```
+
+Large files (datasets, weights, run outputs) live outside the repository, in the folder named by the `HERDSIGHT_STORAGE` environment variable.
+
 ## Licence
 
 Copyright (c) 2026 Luke Andrew. All rights reserved. See `LICENSE`.

@@ -30,6 +30,33 @@ jobs:
       - name: Test
         run: pytest
 
+  cpp-core:
+    # C++ core: GoogleTest under address and undefined-behaviour sanitizers, then the pybind11
+    # module and the Python/C++ parity test. HERDSIGHT_REQUIRE_CORE=1 stops the parity test
+    # from skipping if the module failed to build.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build libeigen3-dev libgtest-dev
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-lock.txt
+          python -m pip install -e . --no-deps
+      - name: Build and test with sanitizers
+        run: bash scripts/build_core.sh sanitize
+      - name: Build Python module
+        run: bash scripts/build_core.sh python
+      - name: Parity and full Python tests
+        env:
+          HERDSIGHT_REQUIRE_CORE: "1"
+        run: pytest
+
   repository-hygiene:
     # Private working folders and large files must never be committed.
     runs-on: ubuntu-24.04
