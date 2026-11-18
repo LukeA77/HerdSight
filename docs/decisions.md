@@ -127,3 +127,17 @@ Options considered: technical dashboard; farmer-first dashboard built on a versi
 Choice: Results schema first (versioned JSON per survey: farm, camp, time, count, interval, expected count, status, alerts, evidence images); the dashboard reads only this. A glossary file gives every technical term one plain-language version, ready for translation. Screens: farm map with camps coloured green / amber / red; camp page; alerts with plain sentences, photos and actions; herd records. Phone-first, works on weak signal, shows last results offline. Suggested stack: FastAPI + PostgreSQL/PostGIS backend and a Progressive Web App (PWA) frontend with MapLibre (may be revised, with reasons logged). A mock-data generator lets the dashboard be built before the pipeline is finished. Usability tested against S6.
 Evidence / reasoning: The user is a farmer; technical wording must never reach them.
 Status: adopted
+
+## D-18: Training compute  (2026-11-18)
+Options considered: local GPU (none available); paid cloud GPUs; free cloud notebooks (Kaggle, Google Colab).
+Choice: Kaggle notebooks first, Google Colab as fallback. Training code runs as a script driven by a config file, so the same command runs on Kaggle, Colab or a local machine; notebooks only call the script. Weights and run outputs are downloaded back to external storage after each run.
+Evidence / reasoning: No local NVIDIA GPU and no budget for paid compute (§6). Free tiers have session and weekly time limits, so training must checkpoint and resume.
+Easy option rejected (if any) and why: Shrinking images or models to fit the free time budget. Full-resolution tiles stay; if the free budget is not enough, this is raised as a question rather than cutting accuracy.
+Status: adopted
+
+## D-19: Operating countries and flight rules  (2026-11-18)
+Options considered: design for one country; per-country rule profiles.
+Choice: Mission planning reads a per-country rules profile (maximum height, line-of-sight requirements, distance limits) for the United Kingdom and South Africa. The planner refuses a mission that breaks the active profile. Exact limits are taken from the current UK Civil Aviation Authority (CAA) and South African Civil Aviation Authority (SACAA) rules, with citations, in `configs/`.
+Evidence / reasoning: The owner is in the UK; South African farms face high stock theft and have much larger camps, which affects survey height, route length and battery planning.
+Easy option rejected (if any) and why: Hard-coding one height limit.
+Status: adopted

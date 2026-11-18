@@ -27,3 +27,7 @@ HerdSight uses a drone to count cattle in each camp (paddock), checks the count 
 | `tests/` | Automated tests |
 
 Datasets and model weights are not stored in this repository. Instructions for fetching them will be in `docs/data.md`.
+
+## Licence
+
+Copyright (c) 2026 Luke Andrew. All rights reserved. See `LICENSE`.
