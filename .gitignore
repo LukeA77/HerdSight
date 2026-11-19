@@ -3,17 +3,15 @@
 # ---------------------------------------------------------------
 _private/
 _drafts/
-.claude/
-CLAUDE.md
-CLAUDE.local.md
 
 # ---------------------------------------------------------------
 # Large files: these live on the external storage drive
+# (root-level folders only: a leading slash keeps python/herdsight/data/ and results/data/)
 # ---------------------------------------------------------------
-data/
-datasets/
-weights/
-runs/
+/data/
+/datasets/
+/weights/
+/runs/
 *.pt
 *.pth
 *.ckpt

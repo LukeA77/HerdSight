@@ -1,0 +1,38 @@
+{
+ "name": "herdsight_tiles_v1",
+ "tile_px": 640,
+ "overlap_px": 192,
+ "empty_tile_ratio": 1.0,
+ "min_visible_fraction": 0.5,
+ "splits_sha256": "c99fb03b8f02b222300f128084b4f68f28ecd6beb6e49c7baed1eca66dcc89ed",
+ "folds": [
+  "fold0",
+  "fold1",
+  "fold2"
+ ],
+ "counts": {
+  "fold0": {
+   "train_tiles": 2790,
+   "train_boxes": 4098,
+   "train_empty_tiles": 1395,
+   "monitor_tiles": 400
+  },
+  "fold1": {
+   "train_tiles": 3158,
+   "train_boxes": 5195,
+   "train_empty_tiles": 1579,
+   "monitor_tiles": 400
+  },
+  "fold2": {
+   "train_tiles": 3420,
+   "train_boxes": 5173,
+   "train_empty_tiles": 1710,
+   "monitor_tiles": 400
+  }
+ },
+ "licence": "Tiles of ICAERUS v2 images, CC BY 4.0, Institut de l'Elevage (Zenodo 11048412)",
+ "zip_bytes": 1663570068,
+ "zip_sha256": "75a9943afb1583ab032709f175affa0168dd0f8db2d42143c284e722d5115c88",
+ "zip_members": 6992,
+ "zip_integrity_check": "zipfile.testzip passed (every member CRC-checked) after a USB drive dropout at 17:47:52"
+}

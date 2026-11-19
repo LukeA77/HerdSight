@@ -14,15 +14,21 @@ dependencies = [
     "numpy",
     "scipy",
     "pyyaml",
+    "pycocotools",  # standard COCO AP for comparison with published results
+    "pillow",
+    "defusedxml",  # safe parsing of label files from downloaded datasets
 ]
 
 [project.optional-dependencies]
+infer = ["onnxruntime"]  # running exported detectors locally
+labels = ["opencv-python-headless"]  # oriented boxes from masks
 dev = [
     "pytest",
     "pytest-cov",
     "ruff",
     "pymap3d",  # independent reference in tests only
     "pybind11>=2.12",  # C++ bindings; 2.12+ is needed for NumPy 2
+    "opencv-python-headless",  # label tools under test
 ]
 
 [tool.setuptools.packages.find]
@@ -41,6 +47,7 @@ ignore = ["N802", "N803", "N806", "ANN401"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["ANN"]
+"gpu/**" = ["ANN", "E402", "I001"]  # single-cell notebook scripts
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

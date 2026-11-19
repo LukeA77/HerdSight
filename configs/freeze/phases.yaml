@@ -1,4 +1,8 @@
 # Files each phase's one-time test run depends on. scripts/freeze.py hashes them before the
 # test run; the test run checks the hashes first and stops if anything changed.
 # Phases are added here as their settings are frozen.
-phases: {}
+phases:
+  # Splits fixed before any model was run (Phase 1 plan); every result records this hash.
+  phase1_splits:
+    - results/splits.json
+    - results/data/icaerus_inventory.json

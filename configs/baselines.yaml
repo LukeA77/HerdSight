@@ -1,0 +1,67 @@
+# Phase 1 baseline settings. Defaults only: nothing here is tuned on any split.
+# Every value records its source; null values are unresolved and code refuses to use them.
+
+zeroshot_model:
+  value: google/owlv2-base-patch16-ensemble
+  placeholder: ZEROSHOT_MODEL
+  source: "Minderer, Gritsenko and Houlsby, Scaling Open-Vocabulary Object Detection (OWLv2), NeurIPS 2023; Apache-2.0 weights on Hugging Face"
+
+zeroshot_revision:
+  value: cfd3195ba4ea9592eec887ded089f4c08eff231d
+  placeholder: ZEROSHOT_REVISION
+  source: "Hugging Face commit of the model, downloaded 2026-11-18"
+
+zeroshot_queries:
+  value: ["a photo of a cow"]
+  placeholder: ZEROSHOT_QUERIES
+  source: "The 'a photo of a {}' prompt template used by CLIP and OWL-ViT (Radford et al. 2021; Minderer et al. 2022); not tuned"
+
+zeroshot_min_score:
+  value: 0.01
+  placeholder: ZEROSHOT_MIN_SCORE
+  source: "Low floor so precision-recall curves are complete; the operating point is chosen on calibration, not here"
+
+zeroshot_tile_px:
+  value: 960
+  placeholder: ZEROSHOT_TILE
+  source: "OWLv2 native input size (model config image_size = 960), so tiles are not resized"
+
+tile_overlap_px:
+  value: 192
+  placeholder: TILE_OVERLAP
+  source: "Exceeds the largest labelled animal in the whole dataset (box long side: 99.9th percentile 163 px, maximum 181 px; results/data/icaerus_inventory.json), so every animal lies wholly inside at least one tile"
+
+sample_seed:
+  value: 0
+  placeholder: SAMPLE_SEED
+  source: "Fixed before any run (Phase 1 plan): seed for the random image sample used by the CPU zero-shot baseline"
+
+zeroshot_sample_share:
+  value: 0.1
+  placeholder: ZEROSHOT_SAMPLE
+  source: "CPU cost: about 4 minutes per image at 7 s per tile (measured 2026-11-18, laptop CPU); a tenth of the 1,323 non-test images (D-26 folds) fits about 9 hours (D-24)"
+
+dfine_tile_px:
+  value: 640
+  placeholder: DFINE_TILE
+  source: "D-FINE training and export size (authors' configs, eval_spatial_size 640); tiles are cut at native resolution, so no resizing"
+
+empty_tile_ratio:
+  value: 1.0
+  placeholder: EMPTY_TILE_RATIO
+  source: "Design choice, not tuned: one empty tile per animal tile, so background is learnt without swamping training (Phase 1 plan)"
+
+min_visible_fraction:
+  value: 0.5
+  placeholder: MIN_VISIBLE
+  source: "Design choice, not tuned: an animal cut by a tile edge is labelled in that tile only if at least half of its box is inside; the overlap guarantees it is whole in a neighbouring tile"
+
+onboard_long_side_px:
+  value: 1280
+  placeholder: ONBOARD_LONG_SIDE
+  source: "Design estimate for S7, not measured: drone-ranger's estimate of 285 ms per 640 px D-FINE N tile on a Raspberry Pi 5 (not measured on hardware) gives about 2 s for the 6 tiles of a 1280 x 960 image, within a survey's capture interval. To be measured on a Pi before targets are final (D-29)"
+
+onboard_tile_overlap_px:
+  value: 64
+  placeholder: ONBOARD_OVERLAP
+  source: "Exceeds the largest animal at onboard scale: 181 px x (1280 / 5280) = 44 px (results/data/icaerus_inventory.json)"

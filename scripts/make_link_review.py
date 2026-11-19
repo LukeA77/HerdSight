@@ -1,0 +1,159 @@
+"""Make the owner's review task that turns candidate animal links into S3 ground truth (brief 8.3).
+
+Usage: python scripts/make_link_review.py
+
+Flights reviewed (rule fixed before any result): in each cross-validation fold, the flight with
+the most labelled animals among flights with at least 5 registered image pairs.
+
+Two kinds of question, written to $HERDSIGHT_STORAGE/exports/link_review/ (index.html + pictures):
+
+* **Same animal?** For each candidate animal seen in two or more images, a row of pictures of
+  it, one per image. The reviewer unticks any picture that shows a different animal from the
+  first.
+* **Missed link?** For each animal seen in only one image, but inside the area of another,
+  registered image: its picture beside the matching place in the other image (crosshair), with
+  that image's labelled boxes drawn. The reviewer answers: it is one of the boxes there / it is
+  there but has no box / it is not there (moved, hidden or out of view).
+
+scripts/build_s3_truth.py applies the answers.
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+
+import numpy as np
+from PIL import Image, ImageDraw
+
+from herdsight.data.icaerus import default_root
+from herdsight.geo.register import apply_homography
+from herdsight.utils.config import REPO_ROOT
+from herdsight.utils.io import load_rgb
+from herdsight.utils.paths import storage_path
+
+THUMB = 220
+MIN_REGISTERED_PAIRS = 5
+
+
+def crop_around(
+    img: Image.Image, cx: float, cy: float, side: float
+) -> tuple[Image.Image, float, float]:
+    x0, y0 = cx - side / 2, cy - side / 2
+    c = img.crop((round(x0), round(y0), round(x0 + side), round(y0 + side))).resize((THUMB, THUMB))
+    return c, round(x0), round(y0)
+
+
+def draw_boxes(
+    c: Image.Image, boxes: np.ndarray, x0: float, y0: float, side: float, colour: str
+) -> None:
+    s = THUMB / side
+    d = ImageDraw.Draw(c)
+    for b in boxes:
+        d.rectangle(
+            [(b[0] - x0) * s, (b[1] - y0) * s, (b[2] - x0) * s, (b[3] - y0) * s],
+            outline=colour,
+            width=2,
+        )
+
+
+def main() -> int:
+    summary = json.loads((REPO_ROOT / "results" / "data" / "s3_candidate_links.json").read_text())
+    splits = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"][
+        "flights"
+    ]
+    chosen = {}
+    for key, v in summary.items():
+        fold = splits[key]
+        if v["registered_pairs"] >= MIN_REGISTERED_PAIRS:
+            if fold not in chosen or v["naive_sum"] > summary[chosen[fold]]["naive_sum"]:
+                chosen[fold] = key
+    links_dir = storage_path("processed", "s3_links")
+    out = storage_path("exports", "link_review", create=True)
+    (out / "pics").mkdir(exist_ok=True)
+    root = default_root()
+    tasks = []
+    for _fold, key in sorted(chosen.items()):
+        farm, flight = key.split("/")
+        det = json.loads((links_dir / f"{farm}__{flight}.json").read_text())
+        paths = [root / farm / "JPGImages" / flight / n for n in det["images"]]
+        boxes = [np.asarray(b, float).reshape(-1, 4) for b in det["boxes"]]
+        cache: dict[int, Image.Image] = {}
+
+        def img(i: int, cache: dict = cache, paths: list = paths) -> Image.Image:
+            if i not in cache:
+                cache[i] = load_rgb(paths[i])
+            return cache[i]
+
+        for ci, comp in enumerate(c for c in det["components"] if len(c) >= 2):
+            pics = []
+            for n, (i, k) in enumerate(comp):
+                b = boxes[i][k]
+                side = max(3 * max(b[2] - b[0], b[3] - b[1]), 120)
+                c, x0, y0 = crop_around(img(i), (b[0] + b[2]) / 2, (b[1] + b[3]) / 2, side)
+                draw_boxes(c, b[None], x0, y0, side, "#e4572e")
+                name = f"pics/{farm}__{flight}__c{ci}_{n}.jpg"
+                c.save(out / name, quality=88)
+                pics.append({"file": name, "member": [i, k]})
+            tasks.append({"id": f"{key}#c{ci}", "kind": "same", "flight": key, "pics": pics})
+        H = {(p["i"], p["j"]): np.asarray(p["H_ab"]) for p in det["pairs"] if p.get("H_ab")}
+        for si, comp in enumerate(c for c in det["components"] if len(c) == 1):
+            i, k = comp[0]
+            b = boxes[i][k]
+            cxy = np.array([[(b[0] + b[2]) / 2, (b[1] + b[3]) / 2]])
+            for (a, bb), Hab in H.items():
+                if i not in (a, bb):
+                    continue
+                j = bb if i == a else a
+                # H maps image b's pixels to image a's: invert when i is b's side.
+                M = np.linalg.inv(Hab) if i == a else Hab
+                p = apply_homography(M, cxy)[0]
+                w, h = img(j).size
+                if not (0 <= p[0] < w and 0 <= p[1] < h):
+                    continue
+                side = max(4 * max(b[2] - b[0], b[3] - b[1]), 160)
+                left, x0, y0 = crop_around(img(i), *cxy[0], side)
+                draw_boxes(left, b[None], x0, y0, side, "#e4572e")
+                right, x1, y1 = crop_around(img(j), p[0], p[1], side)
+                draw_boxes(right, boxes[j], x1, y1, side, "#2e86e4")
+                d = ImageDraw.Draw(right)
+                m = THUMB / 2
+                d.line([m - 12, m, m + 12, m], fill="#ffd400", width=2)
+                d.line([m, m - 12, m, m + 12], fill="#ffd400", width=2)
+                ln, rn = (
+                    f"pics/{farm}__{flight}__s{si}_L.jpg",
+                    f"pics/{farm}__{flight}__s{si}_R.jpg",
+                )
+                left.save(out / ln, quality=88)
+                right.save(out / rn, quality=88)
+                # nearest labelled box in j to the predicted place, in case the answer is "boxed"
+                cj = np.column_stack(
+                    [(boxes[j][:, 0] + boxes[j][:, 2]) / 2, (boxes[j][:, 1] + boxes[j][:, 3]) / 2]
+                )
+                nearest = int(np.argmin(np.linalg.norm(cj - p, axis=1))) if len(cj) else None
+                tasks.append(
+                    {
+                        "id": f"{key}#s{si}",
+                        "kind": "missed",
+                        "flight": key,
+                        "left": ln,
+                        "right": rn,
+                        "member": [i, k],
+                        "other": [j, nearest],
+                    }
+                )
+                break  # one check per lone animal is enough
+        cache.clear()
+    html = (REPO_ROOT / "scripts" / "assets" / "link_review.html").read_text(encoding="utf-8")
+    (out / "index.html").write_text(html.replace("__TASKS__", json.dumps(tasks)), encoding="utf-8")
+    (out / "tasks.json").write_text(json.dumps({"flights": chosen, "tasks": tasks}, indent=1))
+    n_same = sum(t["kind"] == "same" for t in tasks)
+    print(
+        f"flights: {chosen}; {n_same} same-animal checks, {len(tasks) - n_same} missed-link checks"
+    )
+    print("open", out / "index.html")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

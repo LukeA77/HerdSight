@@ -1,0 +1,38 @@
+{
+ "images": 304,
+ "animals_with_a_neighbour_in_image": 3367,
+ "nearest_neighbour_m": {
+  "5": 0.7847357709988305,
+  "25": 1.7630345798458142,
+  "50": 3.3010591480741143,
+  "75": 5.21034886393989,
+  "95": 11.543030529567885
+ },
+ "group_size_by_link_distance_m": {
+  "5.0": {
+   "groups": 1515,
+   "median_size": 1.0,
+   "share_of_animals_in_groups_of_3_or_more": 0.5598466981132075,
+   "largest": 27
+  },
+  "10.0": {
+   "groups": 693,
+   "median_size": 2.0,
+   "share_of_animals_in_groups_of_3_or_more": 0.8705778301886793,
+   "largest": 52
+  },
+  "20.0": {
+   "groups": 417,
+   "median_size": 5.0,
+   "share_of_animals_in_groups_of_3_or_more": 0.9454599056603774,
+   "largest": 53
+  },
+  "30.0": {
+   "groups": 352,
+   "median_size": 8.0,
+   "share_of_animals_in_groups_of_3_or_more": 0.9643278301886793,
+   "largest": 53
+  }
+ },
+ "caveat": "groups stop at the edge of one image, so large herds are cut at image edges"
+}

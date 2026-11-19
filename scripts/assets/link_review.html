@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Animal link review</title>
+<style>
+  :root { --bg: #f6f5f1; --ink: #1d1d1b; --muted: #6b6a64; --accent: #1f6f50; --card: #fff; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 20px; margin: 8px 0 4px; }
+  p { margin: 4px 0 12px; color: var(--muted); }
+  .card { background: var(--card); border-radius: 8px; padding: 12px; margin: 12px 0; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  figure { margin: 0; text-align: center; }
+  figure img { width: 180px; height: 180px; display: block; border-radius: 4px; }
+  label { cursor: pointer; }
+  .bar { display: flex; gap: 8px; align-items: center; margin: 12px 0; flex-wrap: wrap; }
+  button { font: inherit; padding: 8px 14px; border: 1px solid #bbb; background: #fff; border-radius: 6px; cursor: pointer; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  #progress { margin-left: auto; color: var(--muted); }
+  .opts label { display: block; margin: 4px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Is it the same animal?</h1>
+  <p id="help"></p>
+  <div id="task" class="card"></div>
+  <div class="bar">
+    <button id="back">Back</button>
+    <button id="next" class="primary">Save and next</button>
+    <span id="progress"></span>
+  </div>
+  <div class="bar"><button id="save">Download answers (link_answers.json)</button></div>
+</main>
+<script>
+const TASKS = __TASKS__;
+const KEY = "link-answers-v1";
+let answers = {};
+try { answers = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { answers = {}; }
+let i = TASKS.findIndex(t => !(t.id in answers)); if (i < 0) i = 0;
+const box = document.getElementById("task"), help = document.getElementById("help");
+
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch (e) {} }
+function render() {
+  const t = TASKS[i], a = answers[t.id];
+  if (t.kind === "same") {
+    help.textContent = "Each picture should show the same animal (red box). Untick any picture that shows a different animal from the first one.";
+    box.innerHTML = '<div class="row">' + t.pics.map((p, n) =>
+      `<figure><img src="${p.file}" alt="animal picture ${n + 1}"><label><input type="checkbox" data-n="${n}" ${n === 0 ? "checked disabled" : (a && a.different && a.different.includes(n) ? "" : "checked")}> same as first</label></figure>`).join("") + "</div>";
+  } else {
+    help.textContent = "Left: an animal (red box) seen in only one photo. Right: the same place in an overlapping photo (yellow cross), with that photo's boxes in blue. Is the left animal there?";
+    const v = a ? a.answer : "";
+    box.innerHTML = `<div class="row"><figure><img src="${t.left}" alt="lone animal"></figure><figure><img src="${t.right}" alt="same place in the other photo"></figure></div>
+      <div class="opts">
+        <label><input type="radio" name="m" value="boxed" ${v === "boxed" ? "checked" : ""}> Yes, and it has a blue box</label>
+        <label><input type="radio" name="m" value="unboxed" ${v === "unboxed" ? "checked" : ""}> Yes, but it has no box</label>
+        <label><input type="radio" name="m" value="absent" ${v === "absent" ? "checked" : ""}> No (moved, hidden or out of view)</label>
+        <label><input type="radio" name="m" value="unsure" ${v === "unsure" ? "checked" : ""}> Can't tell</label>
+      </div>`;
+  }
+  document.getElementById("progress").textContent = `${i + 1} of ${TASKS.length} · ${Object.keys(answers).length} answered`;
+}
+function save() {
+  const t = TASKS[i];
+  if (t.kind === "same") {
+    const different = [...box.querySelectorAll("input[type=checkbox]")].filter(c => !c.checked).map(c => +c.dataset.n);
+    answers[t.id] = { different };
+  } else {
+    const r = box.querySelector("input[name=m]:checked");
+    if (!r) return false;
+    answers[t.id] = { answer: r.value };
+  }
+  persist(); return true;
+}
+document.getElementById("next").onclick = () => { if (save() && i < TASKS.length - 1) { i++; render(); } else render(); };
+document.getElementById("back").onclick = () => { if (i > 0) { i--; render(); } };
+document.getElementById("save").onclick = () => {
+  const blob = new Blob([JSON.stringify(answers, null, 1)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "link_answers.json"; a.click();
+};
+render();
+</script>
+</body>
+</html>

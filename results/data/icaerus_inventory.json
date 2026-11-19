@@ -1,0 +1,820 @@
+{
+ "dataset": "ICAERUS grazing cows v2 (Zenodo 10.5281/zenodo.11048412, CC BY 4.0)",
+ "root": "D:\\HerdSight-storage\\datasets\\raw\\icaerus_grazing_cows_v2\\unpacked\\Cattle_drone_images",
+ "n_images": 1385,
+ "n_boxes": 4747,
+ "n_flights": 25,
+ "farms": {
+  "Derval": {
+   "flights": 2,
+   "images": 124,
+   "boxes": 212
+  },
+  "Jalogny": {
+   "flights": 8,
+   "images": 476,
+   "boxes": 1407
+  },
+  "Mauron": {
+   "flights": 10,
+   "images": 723,
+   "boxes": 1773
+  },
+  "Other_farms": {
+   "flights": 5,
+   "images": 62,
+   "boxes": 1355
+  }
+ },
+ "problems": {},
+ "label_files_without_image": {
+  "Other_farms": [
+   "DJI_20240322152543_0022_V",
+   "DJI_20240322152704_0027_V"
+  ]
+ },
+ "box_long_px": {
+  "1": 29.52032000000031,
+  "50": 79.93098000000009,
+  "99": 148.42745847999998,
+  "99.9": 163.3123115760009,
+  "100": 180.79775999999993
+ },
+ "box_short_px": {
+  "0": 8.062559999999849,
+  "1": 17.183259999999922,
+  "5": 22.194400000000325,
+  "50": 45.3990560000002
+ },
+ "flights": [
+  {
+   "farm": "Derval",
+   "flight": "DJI_202308091442_012",
+   "n_images": 80,
+   "n_labelled": 80,
+   "n_boxes": 115,
+   "n_empty_images": 55,
+   "max_boxes_in_image": 13,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 59.9995,
+   "rel_alt_m_range": [
+    59.517,
+    60.243
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8724826516975581,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 73.83899999999994,
+   "box_long_px_p99": 125.25242,
+   "box_long_px_max": 139.348,
+   "box_short_px_p01": 15.11605999999998,
+   "box_short_px_p50": 51.63999999999987,
+   "time_first": "2023:08:09 14:56:02"
+  },
+  {
+   "farm": "Derval",
+   "flight": "DJI_202308091507_014",
+   "n_images": 44,
+   "n_labelled": 44,
+   "n_boxes": 97,
+   "n_empty_images": 28,
+   "max_boxes_in_image": 14,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 100.0065,
+   "rel_alt_m_range": [
+    99.697,
+    100.178
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8190315646454726,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 51.45899999999983,
+   "box_long_px_p99": 78.08796000000045,
+   "box_long_px_max": 80.67900000000054,
+   "box_short_px_p01": 11.919000000000006,
+   "box_short_px_p50": 27.38000000000011,
+   "time_first": "2023:08:09 15:11:15"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202306231103_031",
+   "n_images": 48,
+   "n_labelled": 48,
+   "n_boxes": 77,
+   "n_empty_images": 35,
+   "max_boxes_in_image": 9,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.9805,
+   "rel_alt_m_range": [
+    99.63,
+    100.337
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.32304840936134693,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 73.03962799999954,
+   "box_long_px_p99": 108.39807264000001,
+   "box_long_px_max": 123.62895599999956,
+   "box_short_px_p01": 24.779788800000247,
+   "box_short_px_p50": 45.438616000000366,
+   "time_first": "2023:06:23 11:07:15"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202306271323_032",
+   "n_images": 121,
+   "n_labelled": 121,
+   "n_boxes": 94,
+   "n_empty_images": 102,
+   "max_boxes_in_image": 11,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 60.0,
+   "rel_alt_m_range": [
+    59.637,
+    60.28
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.32710145914034144,
+   "consecutive_overlap_share_above_0.2": 0.9583333333333334,
+   "box_long_px_p50": 135.49008000000003,
+   "box_long_px_p99": 167.9668847999998,
+   "box_long_px_max": 180.79775999999993,
+   "box_short_px_p01": 28.51238103999984,
+   "box_short_px_p50": 80.72821200000044,
+   "time_first": "2023:06:27 13:27:32"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202307260838_039",
+   "n_images": 49,
+   "n_labelled": 49,
+   "n_boxes": 195,
+   "n_empty_images": 31,
+   "max_boxes_in_image": 20,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 100.006,
+   "rel_alt_m_range": [
+    99.742,
+    100.133
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.32755933968949014,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 89.02080000000024,
+   "box_long_px_p99": 116.31633680000004,
+   "box_long_px_max": 126.76751999999942,
+   "box_short_px_p01": 15.543792480000096,
+   "box_short_px_p50": 46.941895999999815,
+   "time_first": "2023:07:26 08:43:33"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202308031317_042",
+   "n_images": 43,
+   "n_labelled": 43,
+   "n_boxes": 195,
+   "n_empty_images": 22,
+   "max_boxes_in_image": 19,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 100.017,
+   "rel_alt_m_range": [
+    99.731,
+    100.312
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.3538077419941356,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 82.60127999999986,
+   "box_long_px_p99": 106.89685671999969,
+   "box_long_px_max": 117.37968000000001,
+   "box_short_px_p01": 23.110982400000044,
+   "box_short_px_p50": 53.35967999999957,
+   "time_first": "2023:08:03 13:20:35"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202309151045_055",
+   "n_images": 54,
+   "n_labelled": 54,
+   "n_boxes": 208,
+   "n_empty_images": 38,
+   "max_boxes_in_image": 36,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 100.015,
+   "rel_alt_m_range": [
+    99.753,
+    100.34
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.3703845004757683,
+   "consecutive_overlap_share_above_0.2": 0.9245283018867925,
+   "box_long_px_p50": 66.2085599999998,
+   "box_long_px_p99": 105.77042475999994,
+   "box_long_px_max": 124.61855999999943,
+   "box_short_px_p01": 20.610813600000128,
+   "box_short_px_p50": 42.55864799999998,
+   "time_first": "2023:09:26 11:41:11"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202309151045_056",
+   "n_images": 54,
+   "n_labelled": 54,
+   "n_boxes": 214,
+   "n_empty_images": 39,
+   "max_boxes_in_image": 36,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.9855,
+   "rel_alt_m_range": [
+    99.725,
+    100.215
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.3797337503238428,
+   "consecutive_overlap_share_above_0.2": 0.9245283018867925,
+   "box_long_px_p50": 62.72376000000031,
+   "box_long_px_p99": 103.45480136000022,
+   "box_long_px_max": 112.40973999999983,
+   "box_short_px_p01": 14.827246239999768,
+   "box_short_px_p50": 37.58831999999995,
+   "time_first": "2023:09:26 11:50:01"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202309261339_058",
+   "n_images": 53,
+   "n_labelled": 53,
+   "n_boxes": 209,
+   "n_empty_images": 39,
+   "max_boxes_in_image": 34,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 100.008,
+   "rel_alt_m_range": [
+    99.664,
+    100.239
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.36711857515391433,
+   "consecutive_overlap_share_above_0.2": 0.9230769230769231,
+   "box_long_px_p50": 70.51968000000011,
+   "box_long_px_p99": 105.68440752000028,
+   "box_long_px_max": 113.41851999999994,
+   "box_short_px_p01": 20.48175360000072,
+   "box_short_px_p50": 38.871360000000095,
+   "time_first": "2023:09:26 13:46:02"
+  },
+  {
+   "farm": "Jalogny",
+   "flight": "DJI_202309261339_059",
+   "n_images": 54,
+   "n_labelled": 54,
+   "n_boxes": 215,
+   "n_empty_images": 43,
+   "max_boxes_in_image": 36,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.988,
+   "rel_alt_m_range": [
+    99.742,
+    100.227
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.37804800200594113,
+   "consecutive_overlap_share_above_0.2": 0.9245283018867925,
+   "box_long_px_p50": 66.86035600000037,
+   "box_long_px_p99": 101.42464007999996,
+   "box_long_px_max": 106.42035600000054,
+   "box_short_px_p01": 16.096975520000044,
+   "box_short_px_p50": 37.51870400000007,
+   "time_first": "2023:09:26 13:53:54"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202306051814_022",
+   "n_images": 12,
+   "n_labelled": 12,
+   "n_boxes": 91,
+   "n_empty_images": 9,
+   "max_boxes_in_image": 52,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 102.1125,
+   "rel_alt_m_range": [
+    94.827,
+    104.377
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.42109482603910664,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 46.668000000000006,
+   "box_long_px_p99": 55.539000000000236,
+   "box_long_px_max": 56.070000000000164,
+   "box_short_px_p01": 14.982000000000152,
+   "box_short_px_p50": 26.661000000000058,
+   "time_first": "2023:06:05 18:27:21"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202306051839_025",
+   "n_images": 35,
+   "n_labelled": 35,
+   "n_boxes": 408,
+   "n_empty_images": 20,
+   "max_boxes_in_image": 53,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 99.895,
+   "rel_alt_m_range": [
+    99.458,
+    100.472
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8423762263120876,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 52.45049999999992,
+   "box_long_px_p99": 68.64837000000033,
+   "box_long_px_max": 69.91999999999996,
+   "box_short_px_p01": 13.633299999999867,
+   "box_short_px_p50": 27.9345000000003,
+   "time_first": "2023:06:05 18:45:29"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202306071624_028",
+   "n_images": 416,
+   "n_labelled": 416,
+   "n_boxes": 357,
+   "n_empty_images": 379,
+   "max_boxes_in_image": 19,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 99.9965,
+   "rel_alt_m_range": [
+    99.51,
+    100.382
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8078580937880127,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 57.960000000000036,
+   "box_long_px_p99": 74.11907999999997,
+   "box_long_px_max": 77.559,
+   "box_short_px_p01": 19.16272000000048,
+   "box_short_px_p50": 32.25200000000018,
+   "time_first": "2023:06:07 16:27:15"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202306071703_029",
+   "n_images": 2,
+   "n_labelled": 2,
+   "n_boxes": 23,
+   "n_empty_images": 1,
+   "max_boxes_in_image": 23,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 99.931,
+   "rel_alt_m_range": [
+    99.904,
+    99.958
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.15925815094178464,
+   "consecutive_overlap_share_above_0.2": 0.0,
+   "box_long_px_p50": 39.30899999999997,
+   "box_long_px_p99": 53.16822000000001,
+   "box_long_px_max": 53.74000000000001,
+   "box_short_px_p01": 20.215040000000034,
+   "box_short_px_p50": 24.420000000000073,
+   "time_first": "2023:06:07 17:15:36"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202306071745_034",
+   "n_images": 2,
+   "n_labelled": 2,
+   "n_boxes": 46,
+   "n_empty_images": 1,
+   "max_boxes_in_image": 46,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 99.941,
+   "rel_alt_m_range": [
+    99.902,
+    99.98
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.1647034390755725,
+   "consecutive_overlap_share_above_0.2": 0.0,
+   "box_long_px_p50": 46.0619999999999,
+   "box_long_px_p99": 55.87039999999956,
+   "box_long_px_max": 55.92799999999943,
+   "box_short_px_p01": 16.402050000000052,
+   "box_short_px_p50": 29.6790000000002,
+   "time_first": "2023:06:07 18:03:04"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202306071745_035",
+   "n_images": 12,
+   "n_labelled": 12,
+   "n_boxes": 122,
+   "n_empty_images": 9,
+   "max_boxes_in_image": 47,
+   "cameras": [
+    "M3T"
+   ],
+   "image_sizes": [
+    "4000x3000"
+   ],
+   "rel_alt_m_median": 97.07249999999999,
+   "rel_alt_m_range": [
+    92.992,
+    100.802
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.3605781713733004,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 47.460999999999665,
+   "box_long_px_p99": 60.70879999999978,
+   "box_long_px_max": 62.879999999999654,
+   "box_short_px_p01": 16.37271,
+   "box_short_px_p50": 29.195499999999925,
+   "time_first": "2023:06:07 18:06:01"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202311071416_061",
+   "n_images": 46,
+   "n_labelled": 46,
+   "n_boxes": 142,
+   "n_empty_images": 34,
+   "max_boxes_in_image": 12,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.92150000000001,
+   "rel_alt_m_range": [
+    99.453,
+    100.257
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8485702932611081,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 83.6905439999999,
+   "box_long_px_p99": 101.48202240000003,
+   "box_long_px_max": 103.85759999999993,
+   "box_short_px_p01": 26.31143511999987,
+   "box_short_px_p50": 49.81475400000011,
+   "time_first": "2023:11:07 14:47:22"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202311071416_062",
+   "n_images": 43,
+   "n_labelled": 43,
+   "n_boxes": 124,
+   "n_empty_images": 31,
+   "max_boxes_in_image": 12,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.975,
+   "rel_alt_m_range": [
+    99.491,
+    100.275
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.851863059050318,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 82.96882799999977,
+   "box_long_px_p99": 95.69709600000026,
+   "box_long_px_max": 96.18048000000044,
+   "box_short_px_p01": 30.982766239999695,
+   "box_short_px_p50": 52.971813999999995,
+   "time_first": "2023:11:07 14:55:03"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202311071541_064",
+   "n_images": 42,
+   "n_labelled": 42,
+   "n_boxes": 170,
+   "n_empty_images": 27,
+   "max_boxes_in_image": 12,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.9785,
+   "rel_alt_m_range": [
+    99.417,
+    100.321
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8531431052955416,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 83.01479999999992,
+   "box_long_px_p99": 99.72779299999999,
+   "box_long_px_max": 102.610728,
+   "box_short_px_p01": 31.762259160000056,
+   "box_short_px_p50": 52.10370999999969,
+   "time_first": "2023:11:07 15:44:04"
+  },
+  {
+   "farm": "Mauron",
+   "flight": "DJI_202311071541_065",
+   "n_images": 113,
+   "n_labelled": 113,
+   "n_boxes": 290,
+   "n_empty_images": 76,
+   "max_boxes_in_image": 12,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 59.961,
+   "rel_alt_m_range": [
+    59.361,
+    60.337
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8490021979106719,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 130.83312000000006,
+   "box_long_px_p99": 161.30127156000006,
+   "box_long_px_max": 164.83104000000003,
+   "box_short_px_p01": 41.90347976000038,
+   "box_short_px_p50": 84.31104000000005,
+   "time_first": "2023:11:07 15:48:17"
+  },
+  {
+   "farm": "Other_farms",
+   "flight": "DJI_202310231750_060",
+   "n_images": 28,
+   "n_labelled": 28,
+   "n_boxes": 214,
+   "n_empty_images": 0,
+   "max_boxes_in_image": 9,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.9135,
+   "rel_alt_m_range": [
+    98.875,
+    100.016
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.9994744097105622,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 79.98438599999997,
+   "box_long_px_p99": 100.68482851999993,
+   "box_long_px_max": 101.95007600000008,
+   "box_short_px_p01": 23.278606199999967,
+   "box_short_px_p50": 44.758184000000256,
+   "time_first": "2023:10:23 18:07:22"
+  },
+  {
+   "farm": "Other_farms",
+   "flight": "DJI_202310231833_061",
+   "n_images": 17,
+   "n_labelled": 17,
+   "n_boxes": 106,
+   "n_empty_images": 0,
+   "max_boxes_in_image": 14,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.322,
+   "rel_alt_m_range": [
+    93.762,
+    99.901
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.9354766138715827,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 89.01010400000018,
+   "box_long_px_p99": 114.73719340000041,
+   "box_long_px_max": 116.82068000000027,
+   "box_short_px_p01": 25.38353299999998,
+   "box_short_px_p50": 52.50007600000026,
+   "time_first": "2023:10:23 18:38:31"
+  },
+  {
+   "farm": "Other_farms",
+   "flight": "DJI_202310241131_062",
+   "n_images": 5,
+   "n_labelled": 5,
+   "n_boxes": 70,
+   "n_empty_images": 0,
+   "max_boxes_in_image": 14,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 100.101,
+   "rel_alt_m_range": [
+    100.077,
+    100.226
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.9969974013855813,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 88.28011800000036,
+   "box_long_px_p99": 109.62784536000014,
+   "box_long_px_max": 114.01103999999987,
+   "box_short_px_p01": 26.980434280000136,
+   "box_short_px_p50": 49.44062400000007,
+   "time_first": "2023:10:24 11:49:37"
+  },
+  {
+   "farm": "Other_farms",
+   "flight": "DJI_202403221522_070",
+   "n_images": 5,
+   "n_labelled": 5,
+   "n_boxes": 344,
+   "n_empty_images": 0,
+   "max_boxes_in_image": 87,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.681,
+   "rel_alt_m_range": [
+    99.482,
+    102.116
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.7980402277672988,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 89.25487399999997,
+   "box_long_px_p99": 109.46410240000012,
+   "box_long_px_max": 110.53152000000046,
+   "box_short_px_p01": 30.06356187999976,
+   "box_short_px_p50": 55.8914400000001,
+   "time_first": "2024:03:22 15:25:06"
+  },
+  {
+   "farm": "Other_farms",
+   "flight": "DJI_202403221522_071",
+   "n_images": 7,
+   "n_labelled": 7,
+   "n_boxes": 621,
+   "n_empty_images": 0,
+   "max_boxes_in_image": 90,
+   "cameras": [
+    "M3E"
+   ],
+   "image_sizes": [
+    "5280x3956"
+   ],
+   "rel_alt_m_median": 99.446,
+   "rel_alt_m_range": [
+    96.718,
+    102.355
+   ],
+   "gps_share": 1.0,
+   "nadir_share": 1.0,
+   "consecutive_overlap_median": 0.8610099847863906,
+   "consecutive_overlap_share_above_0.2": 1.0,
+   "box_long_px_p50": 100.65791999999965,
+   "box_long_px_p99": 124.14818479999937,
+   "box_long_px_max": 130.50052800000003,
+   "box_short_px_p01": 31.926627200000258,
+   "box_short_px_p50": 60.30130799999961,
+   "time_first": "2024:03:22 15:27:51"
+  }
+ ],
+ "environment": {
+  "generated_utc": "2026-11-18T17:05:59+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

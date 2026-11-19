@@ -1,0 +1,46 @@
+# Evaluation settings (brief section 9). null values are unresolved; code refuses to use them.
+
+centre_kappa:
+  value: null
+  placeholder: CENTRE_KAPPA
+  source: null  # set from blind re-annotation of 100 random training cattle by the owner (Phase 1 plan, step 5)
+
+centre_kappa_sensitivity:
+  value: [0.1, 0.2, 0.3, 0.5]
+  placeholder: KAPPA_SWEEP
+  source: "Reported only as a sensitivity check while centre_kappa is unresolved; never used to choose anything"
+
+operating_threshold_grid:
+  value: [0.05, 0.95, 0.01]
+  placeholder: THRESHOLD_GRID
+  source: "Score thresholds searched on calibration only (start, stop, step); the count-MAE minimiser is fixed before validation is scored (docs/hypotheses.md)"
+
+n_boot:
+  value: 1000
+  placeholder: N_BOOT
+  source: "Bootstrap resamples of whole flights for 95% intervals (as drone-ranger, D-403)"
+
+n_boot_ap:
+  value: 200
+  placeholder: N_BOOT_AP
+  source: "Fewer resamples for AP, which reruns the COCO evaluation per resample; stability checked by comparing with 2x resamples"
+
+iou_match_threshold:
+  value: 0.5
+  placeholder: IOU_MATCH
+  source: "Standard AP50 matching threshold (COCO), used for recall at the operating point of upright-box baselines"
+
+bootstrap_seed:
+  value: 0
+  placeholder: BOOT_SEED
+  source: "Fixed before any run"
+
+herd_link_m:
+  value: 10.0
+  placeholder: HERD_LINK_M
+  source: "D-28 (proposed): 95th percentile of cattle nearest-neighbour distance is 11.5 m; at 10 m, 87% of animals are in groups of 3 or more (results/data/herd_stats.json)"
+
+herd_min_animals:
+  value: 3
+  placeholder: HERD_MIN_ANIMALS
+  source: "D-28 (proposed): herd mode is for groups, so a lone animal or a pair does not trigger it"

@@ -1,0 +1,77 @@
+{
+ "dataset": "ICAERUS grazing cows v2 (Zenodo 10.5281/zenodo.11048412, CC BY 4.0)",
+ "icaerus_v2": {
+  "rule": "test = whole farm with box share closest to test_share; other flights grouped by farm and survey date; groups in hash order to the fold furthest below an equal share of boxes (empty groups by images)",
+  "test_farm": "Other_farms",
+  "test_share": 0.2,
+  "n_folds": 3,
+  "groups": {
+   "Derval/20230809": "fold1",
+   "Jalogny/20230623": "fold0",
+   "Jalogny/20230627": "fold1",
+   "Jalogny/20230726": "fold0",
+   "Jalogny/20230803": "fold1",
+   "Jalogny/20230915": "fold2",
+   "Jalogny/20230926": "fold1",
+   "Mauron/20230605": "fold0",
+   "Mauron/20230607": "fold2",
+   "Mauron/20231107": "fold0"
+  },
+  "flights": {
+   "Derval/DJI_202308091442_012": "fold1",
+   "Derval/DJI_202308091507_014": "fold1",
+   "Jalogny/DJI_202306231103_031": "fold0",
+   "Jalogny/DJI_202306271323_032": "fold1",
+   "Jalogny/DJI_202307260838_039": "fold0",
+   "Jalogny/DJI_202308031317_042": "fold1",
+   "Jalogny/DJI_202309151045_055": "fold2",
+   "Jalogny/DJI_202309151045_056": "fold2",
+   "Jalogny/DJI_202309261339_058": "fold1",
+   "Jalogny/DJI_202309261339_059": "fold1",
+   "Mauron/DJI_202306051814_022": "fold0",
+   "Mauron/DJI_202306051839_025": "fold0",
+   "Mauron/DJI_202306071624_028": "fold2",
+   "Mauron/DJI_202306071703_029": "fold2",
+   "Mauron/DJI_202306071745_034": "fold2",
+   "Mauron/DJI_202306071745_035": "fold2",
+   "Mauron/DJI_202311071416_061": "fold0",
+   "Mauron/DJI_202311071416_062": "fold0",
+   "Mauron/DJI_202311071541_064": "fold0",
+   "Mauron/DJI_202311071541_065": "fold0",
+   "Other_farms/DJI_202310231750_060": "test",
+   "Other_farms/DJI_202310231833_061": "test",
+   "Other_farms/DJI_202310241131_062": "test",
+   "Other_farms/DJI_202403221522_070": "test",
+   "Other_farms/DJI_202403221522_071": "test"
+  },
+  "summary": {
+   "fold0": {
+    "groups": 4,
+    "flights": 8,
+    "images": 388,
+    "boxes": 1497
+   },
+   "fold1": {
+    "groups": 4,
+    "flights": 6,
+    "images": 395,
+    "boxes": 925
+   },
+   "fold2": {
+    "groups": 2,
+    "flights": 6,
+    "images": 540,
+    "boxes": 970
+   },
+   "test": {
+    "groups": 0,
+    "flights": 5,
+    "images": 62,
+    "boxes": 1355
+   }
+  }
+ },
+ "not_split_here": {
+  "shao_2020": "second unseen-source test, evaluation only (D-21); not opened before Phase 7"
+ }
+}

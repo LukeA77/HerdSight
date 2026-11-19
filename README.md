@@ -22,7 +22,8 @@ HerdSight uses a drone to count cattle in each camp (paddock), checks the count 
 | `ros2/` | ROS 2 packages that fly the mission |
 | `sim/` | Gazebo worlds, cattle models and the herd movement model |
 | `dashboard/` | Farmer dashboard: `backend/`, `frontend/`, plain-language glossary |
-| `scripts/` | Freezing settings, one-shot test runs, filling docs from results |
+| `scripts/` | Data inventory and splits, baselines, freezing settings, one-shot test runs, filling docs from results |
+| `gpu/` | Training scripts that run on free cloud GPUs (Kaggle, Colab) |
 | `results/` | Machine-written results (never edited by hand) |
 | `tests/` | Automated tests |
 

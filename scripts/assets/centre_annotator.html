@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Centre annotation</title>
+<style>
+  :root { --bg: #f6f5f1; --ink: #1d1d1b; --muted: #6b6a64; --accent: #1f6f50; --box: #e4572e; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 20px; margin: 8px 0 4px; }
+  p { margin: 4px 0 12px; color: var(--muted); }
+  #stage { position: relative; width: 100%; aspect-ratio: 1; background: #ddd; touch-action: none; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+  .bar { display: flex; gap: 8px; align-items: center; margin: 12px 0; flex-wrap: wrap; }
+  button { font: inherit; padding: 8px 14px; border: 1px solid #bbb; background: #fff; border-radius: 6px; cursor: pointer; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button:disabled { opacity: .45; cursor: default; }
+  #progress { margin-left: auto; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Draw a box around the animal nearest the middle</h1>
+  <p>Drag from one corner of the animal to the opposite corner, as tightly as you can. Redraw to correct it. If there is no clear animal near the middle, press <b>Skip</b>.</p>
+  <div id="stage"><canvas id="c" width="800" height="800"></canvas></div>
+  <div class="bar">
+    <button id="back">Back</button>
+    <button id="skip">Skip</button>
+    <button id="next" class="primary" disabled>Next</button>
+    <span id="progress"></span>
+  </div>
+  <div class="bar"><button id="save">Download answers (centre_answers.json)</button></div>
+</main>
+<script>
+// TASKS is filled in by scripts/make_kappa_task.py: [{id, file, size}], images relative to this page.
+const TASKS = __TASKS__;
+const KEY = "centre-answers-v1";
+let answers = {};
+try { answers = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { answers = {}; }
+let i = TASKS.findIndex(t => !(t.id in answers)); if (i < 0) i = 0;
+const c = document.getElementById("c"), g = c.getContext("2d");
+const img = new Image();
+let drag = null, box = null;
+
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch (e) {} }
+function toImg(ev) {
+  const r = c.getBoundingClientRect(), t = TASKS[i];
+  return [(ev.clientX - r.left) / r.width * t.size, (ev.clientY - r.top) / r.height * t.size];
+}
+function draw() {
+  g.clearRect(0, 0, c.width, c.height);
+  if (img.complete) g.drawImage(img, 0, 0, c.width, c.height);
+  if (box) {
+    const s = c.width / TASKS[i].size;
+    g.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--box");
+    g.lineWidth = 2;
+    g.strokeRect(box[0] * s, box[1] * s, (box[2] - box[0]) * s, (box[3] - box[1]) * s);
+  }
+}
+function show() {
+  const t = TASKS[i], a = answers[t.id];
+  box = a && a.box ? a.box.slice() : null;
+  img.onload = draw; img.src = t.file;
+  document.getElementById("next").disabled = !box;
+  const done = Object.keys(answers).length;
+  document.getElementById("progress").textContent = `${i + 1} of ${TASKS.length} · ${done} answered`;
+}
+c.addEventListener("pointerdown", ev => { c.setPointerCapture(ev.pointerId); drag = toImg(ev); });
+c.addEventListener("pointermove", ev => {
+  if (!drag) return; const p = toImg(ev);
+  box = [Math.min(drag[0], p[0]), Math.min(drag[1], p[1]), Math.max(drag[0], p[0]), Math.max(drag[1], p[1])];
+  draw();
+});
+c.addEventListener("pointerup", () => {
+  drag = null;
+  if (box && box[2] - box[0] > 2 && box[3] - box[1] > 2) {
+    answers[TASKS[i].id] = { box: box.map(v => Math.round(v * 10) / 10) }; persist();
+    document.getElementById("next").disabled = false;
+  }
+});
+document.getElementById("next").onclick = () => { if (i < TASKS.length - 1) { i++; show(); } };
+document.getElementById("back").onclick = () => { if (i > 0) { i--; show(); } };
+document.getElementById("skip").onclick = () => {
+  answers[TASKS[i].id] = { skipped: true }; persist(); if (i < TASKS.length - 1) { i++; show(); } else show();
+};
+document.getElementById("save").onclick = () => {
+  const blob = new Blob([JSON.stringify(answers, null, 1)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "centre_answers.json"; a.click();
+};
+show();
+</script>
+</body>
+</html>

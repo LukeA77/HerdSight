@@ -1,11 +1,18 @@
 # Pinned versions for development and CI (not for training notebooks; see docs/plans/phase0-setup.md).
 colorama==0.4.6
 coverage==7.17.3
+defusedxml==0.7.1
+flatbuffers==25.12.19
 iniconfig==2.3.1
 numpy==2.5.5
+onnxruntime==1.32.0
+opencv-python-headless==5.1.0.95
 packaging==26.3
+pillow==13.0.0
 pluggy==1.7.0
+protobuf==7.36.2
 pybind11==3.1.0
+pycocotools==2.0.11
 Pygments==2.21.0
 pymap3d==3.2.0
 pytest==9.2.0

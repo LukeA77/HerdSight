@@ -1,0 +1,37 @@
+{
+ "name": "herdsight_onboard_tiles_v1",
+ "tile_px": 640,
+ "overlap_px": 64,
+ "image_long_side_px": 1280,
+ "empty_tile_ratio": 1.0,
+ "min_visible_fraction": 0.5,
+ "splits_sha256": "c99fb03b8f02b222300f128084b4f68f28ecd6beb6e49c7baed1eca66dcc89ed",
+ "folds": [
+  "fold0",
+  "fold1",
+  "fold2"
+ ],
+ "counts": {
+  "fold0": {
+   "train_tiles": 998,
+   "train_boxes": 3838,
+   "train_empty_tiles": 499,
+   "monitor_tiles": 320
+  },
+  "fold1": {
+   "train_tiles": 1068,
+   "train_boxes": 4706,
+   "train_empty_tiles": 534,
+   "monitor_tiles": 285
+  },
+  "fold2": {
+   "train_tiles": 1210,
+   "train_boxes": 4640,
+   "train_empty_tiles": 605,
+   "monitor_tiles": 214
+  }
+ },
+ "licence": "Tiles of ICAERUS v2 images, CC BY 4.0, Institut de l'Elevage (Zenodo 11048412)",
+ "zip_bytes": 617623814,
+ "zip_sha256": "733523e9be06822c16e2829ff71da63c61e81d5d7d7c50f9a12ce9893598da82"
+}

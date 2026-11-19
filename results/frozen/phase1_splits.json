@@ -1,0 +1,12 @@
+{
+ "frozen_utc": "2026-11-18T17:08:25+00:00",
+ "phase": "phase1_splits",
+ "git_commit": "0be39f5",
+ "uncommitted_changes_to_frozen_files": [
+  "?? results/splits.json"
+ ],
+ "files": {
+  "results/splits.json": "c99fb03b8f02b222300f128084b4f68f28ecd6beb6e49c7baed1eca66dcc89ed",
+  "results/data/icaerus_inventory.json": "b5fd9645d3a1dc1f5b77ce22d824b404e340bf7f8ee0a2bcbb294eb3ccd4be0e"
+ }
+}
