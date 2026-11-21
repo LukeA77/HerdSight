@@ -1,0 +1,396 @@
+{
+ "detector": "dfine",
+ "note": "Diagnostic only. Public-data results, not field results.",
+ "n_animals": 3392,
+ "by_farm_camera_altitude": {
+  "Derval/M3T/100m": {
+   "n": 97,
+   "miss_rate": 0.5876
+  },
+  "Derval/M3T/60m": {
+   "n": 115,
+   "miss_rate": 0.7304
+  },
+  "Jalogny/M3E/100m": {
+   "n": 1313,
+   "miss_rate": 0.0632
+  },
+  "Jalogny/M3E/60m": {
+   "n": 94,
+   "miss_rate": 0.0319
+  },
+  "Mauron/M3E/100m": {
+   "n": 436,
+   "miss_rate": 0.0894
+  },
+  "Mauron/M3E/60m": {
+   "n": 290,
+   "miss_rate": 0.131
+  },
+  "Mauron/M3T/100m": {
+   "n": 1002,
+   "miss_rate": 0.1707
+  },
+  "Mauron/M3T/90m": {
+   "n": 45,
+   "miss_rate": 0.1778
+  }
+ },
+ "derval_by_flight": {
+  "DJI_202308091442_012": {
+   "n": 115,
+   "miss_rate": 0.7304
+  },
+  "DJI_202308091507_014": {
+   "n": 97,
+   "miss_rate": 0.5876
+  }
+ },
+ "features": {
+  "derval": {
+   "gsd_cm": {
+    "median": 2.168,
+    "p10": 2.16,
+    "p90": 3.609
+   },
+   "long_px": {
+    "median": 57.955,
+    "p10": 33.801,
+    "p90": 101.642
+   },
+   "long_m": {
+    "median": 1.756,
+    "p10": 0.899,
+    "p90": 2.412
+   },
+   "brightness": {
+    "median": 83.762,
+    "p10": 49.065,
+    "p90": 150.247
+   },
+   "surround": {
+    "median": 101.962,
+    "p10": 47.297,
+    "p90": 129.757
+   },
+   "dark_share": {
+    "median": 0.51,
+    "p10": 0.138,
+    "p90": 0.766
+   },
+   "light_share": {
+    "median": 0.077,
+    "p10": 0.0,
+    "p90": 0.331
+   }
+  },
+  "mauron_m3t": {
+   "gsd_cm": {
+    "median": 3.604,
+    "p10": 3.552,
+    "p90": 3.615
+   },
+   "long_px": {
+    "median": 52.212,
+    "p10": 40.378,
+    "p90": 63.441
+   },
+   "long_m": {
+    "median": 1.872,
+    "p10": 1.44,
+    "p90": 2.286
+   },
+   "brightness": {
+    "median": 108.049,
+    "p10": 80.891,
+    "p90": 165.523
+   },
+   "surround": {
+    "median": 123.225,
+    "p10": 103.535,
+    "p90": 138.072
+   },
+   "dark_share": {
+    "median": 0.179,
+    "p10": 0.002,
+    "p90": 0.43
+   },
+   "light_share": {
+    "median": 0.05,
+    "p10": 0.0,
+    "p90": 0.394
+   }
+  },
+  "other_farms": {
+   "gsd_cm": {
+    "median": 2.734,
+    "p10": 1.645,
+    "p90": 3.607
+   },
+   "long_px": {
+    "median": 68.41,
+    "p10": 40.11,
+    "p90": 116.703
+   },
+   "long_m": {
+    "median": 2.054,
+    "p10": 1.192,
+    "p90": 2.521
+   },
+   "brightness": {
+    "median": 142.052,
+    "p10": 76.371,
+    "p90": 192.366
+   },
+   "surround": {
+    "median": 120.204,
+    "p10": 78.808,
+    "p90": 146.259
+   },
+   "dark_share": {
+    "median": 0.11,
+    "p10": 0.003,
+    "p90": 0.431
+   },
+   "light_share": {
+    "median": 0.278,
+    "p10": 0.007,
+    "p90": 0.573
+   }
+  }
+ },
+ "touching_share": {
+  "derval": 0.6415,
+  "other": 0.1887
+ },
+ "miss_rate_by_long_px": {
+  "0-40": {
+   "derval": {
+    "n": 38,
+    "miss_rate": 1.0
+   },
+   "other": {
+    "n": 315,
+    "miss_rate": 0.3302
+   }
+  },
+  "40-60": {
+   "derval": {
+    "n": 74,
+    "miss_rate": 0.6622
+   },
+   "other": {
+    "n": 968,
+    "miss_rate": 0.1415
+   }
+  },
+  "60-80": {
+   "derval": {
+    "n": 50,
+    "miss_rate": 0.5
+   },
+   "other": {
+    "n": 688,
+    "miss_rate": 0.0422
+   }
+  },
+  "80-100": {
+   "derval": {
+    "n": 26,
+    "miss_rate": 0.5769
+   },
+   "other": {
+    "n": 777,
+    "miss_rate": 0.0489
+   }
+  },
+  "100-130": {
+   "derval": {
+    "n": 23,
+    "miss_rate": 0.5652
+   },
+   "other": {
+    "n": 220,
+    "miss_rate": 0.0455
+   }
+  },
+  "130+": {
+   "derval": {
+    "n": 1,
+    "miss_rate": 1.0
+   },
+   "other": {
+    "n": 212,
+    "miss_rate": 0.1132
+   }
+  }
+ },
+ "miss_rate_by_surround_brightness": {
+  "0-60": {
+   "derval": {
+    "n": 47,
+    "miss_rate": 0.766
+   },
+   "other": {
+    "n": 175,
+    "miss_rate": 0.2343
+   }
+  },
+  "60-90": {
+   "derval": {
+    "n": 46,
+    "miss_rate": 0.8913
+   },
+   "other": {
+    "n": 204,
+    "miss_rate": 0.0931
+   }
+  },
+  "90-120": {
+   "derval": {
+    "n": 77,
+    "miss_rate": 0.5195
+   },
+   "other": {
+    "n": 1200,
+    "miss_rate": 0.1133
+   }
+  },
+  "120-255": {
+   "derval": {
+    "n": 42,
+    "miss_rate": 0.5714
+   },
+   "other": {
+    "n": 1601,
+    "miss_rate": 0.0912
+   }
+  }
+ },
+ "miss_rate_by_pied_pattern": {
+  "derval": {
+   "pied": {
+    "n": 53,
+    "miss_rate": 0.4528
+   },
+   "not_pied": {
+    "n": 159,
+    "miss_rate": 0.7358
+   }
+  },
+  "other": {
+   "pied": {
+    "n": 347,
+    "miss_rate": 0.0836
+   },
+   "not_pied": {
+    "n": 2833,
+    "miss_rate": 0.1105
+   }
+  }
+ },
+ "matched_on_size_and_surround": {
+  "derval_animals_matched": 198,
+  "derval_miss_rate_of_matched": 0.6414,
+  "expected_miss_rate_from_similar_other_animals": 0.1446
+ },
+ "miss_rate_split": {
+  "touching": {
+   "derval": {
+    "yes": {
+     "n": 136,
+     "miss_rate": 0.7721
+    },
+    "no": {
+     "n": 76,
+     "miss_rate": 0.4737
+    }
+   },
+   "other": {
+    "yes": {
+     "n": 600,
+     "miss_rate": 0.17
+    },
+    "no": {
+     "n": 2580,
+     "miss_rate": 0.093
+    }
+   }
+  },
+  "dark_animal (over 40% very dark pixels)": {
+   "derval": {
+    "yes": {
+     "n": 129,
+     "miss_rate": 0.7287
+    },
+    "no": {
+     "n": 83,
+     "miss_rate": 0.5663
+    }
+   },
+   "other": {
+    "yes": {
+     "n": 372,
+     "miss_rate": 0.2769
+    },
+    "no": {
+     "n": 2808,
+     "miss_rate": 0.0851
+    }
+   }
+  },
+  "short_under_1.2m (partly visible or small)": {
+   "derval": {
+    "yes": {
+     "n": 51,
+     "miss_rate": 0.9608
+    },
+    "no": {
+     "n": 161,
+     "miss_rate": 0.5714
+    }
+   },
+   "other": {
+    "yes": {
+     "n": 326,
+     "miss_rate": 0.2393
+    },
+    "no": {
+     "n": 2854,
+     "miss_rate": 0.0925
+    }
+   }
+  }
+ },
+ "derval_apart_and_not_dark": {
+  "n": 55,
+  "miss_rate": 0.4182
+ },
+ "best_score_histogram": {
+  "edges": [
+   0,
+   0.1,
+   0.3,
+   0.5,
+   0.7,
+   0.9,
+   1.01
+  ],
+  "derval": [
+   61,
+   41,
+   17,
+   11,
+   58,
+   24
+  ],
+  "mauron_m3t": [
+   24,
+   34,
+   44,
+   43,
+   365,
+   537
+  ]
+ }
+}

@@ -24,6 +24,8 @@ Every dataset is checked before use: is it available, what licence does it carry
 | WAID: Mou et al., *Applied Sciences* 13(18), 2023 | Repository available | **None stated** in the authors' repository (a third-party mirror claims CC BY 4.0) | — | Boxes; 6 species including cattle and sheep | Not usable until the licence is confirmed; image provenance unclear |
 | arXiv 2110.01329 (resolution study) | Combined dataset not released | — | — | — | Its method (downsampling to set ground sample distances) is reused in the Phase 2 resolution study; its data is not available |
 | Porto et al. (feedlots) | Not located | — | — | 90 images reported | Not pursued: feedlot scenes differ from pasture surveys |
+| Cattle behaviours on pasture (ILVO, Belgium): Zenodo [10.5281/zenodo.15688349](https://doi.org/10.5281/zenodo.15688349), June 2025 (checked 2026-11-21) | Available, 0.95 GB | **Conflicting:** the record's rights field says CC BY 4.0, its copyright line says CC BY-NC 4.0. Treated as non-commercial until the authors confirm | 0.95 GB | YOLO boxes per behaviour (grazing, lying, standing) | Images from "overhead cameras"; platform, height and country not stated. Not used for training (D-21); possible extra evaluation source only if it proves to be drone imagery |
+| UAV LiDAR and RGB cattle growth data (Wang et al., 2024): Zenodo [10.5281/zenodo.13364663](https://doi.org/10.5281/zenodo.13364663) (checked 2026-11-21) | Available, 26.5 GB | CC BY 4.0 | 26.5 GB | No boxes: images grouped per animal | Low-altitude dorsal views of 96 Simmental cattle, for identification. Not survey frames; reserved for the identification track
 
 ### Thermal
 
@@ -42,7 +44,7 @@ Every dataset is checked before use: is it available, what licence does it carry
 
 ### Searches for newer data (2024–2026)
 
-Searches of Zenodo, survey papers ([Public Computer Vision Datasets for Precision Livestock Farming](https://arxiv.org/abs/2406.10628), 2024) and the general web found no newer public aerial cattle dataset at survey height with a clear licence. **No public aerial cattle dataset with oriented boxes was found**, which confirms the plan to generate oriented labels (brief §8.4).
+Searches of Zenodo (repeated 2026-11-21), survey papers ([Public Computer Vision Datasets for Precision Livestock Farming](https://arxiv.org/abs/2406.10628), 2024) and the general web found no newer public aerial cattle dataset at survey height with a clear licence. **No public aerial cattle dataset with oriented boxes was found**, which confirms the plan to generate oriented labels (brief §8.4).
 
 ## What this means
 

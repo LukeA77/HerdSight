@@ -61,6 +61,20 @@ MAX_HOURS = 11.0
 SMOKE = int(os.environ.get("SMOKE", "0"))
 WORK = Path("/kaggle/working") if Path("/kaggle/working").exists() else Path.cwd()
 ROOTS = [Path(os.environ["PACKAGES"])] if SMOKE else [Path("/kaggle/input"), WORK]
+# Overrides for running outside Kaggle (gpu/runpod/); unset, they change nothing.
+#   HS_WORK      working folder;  HS_PACKAGES  folder holding the unpacked packages
+#   HS_RUNS      comma-separated runs to do (e.g. dfine_s_baseline_fold0), ignoring DONE
+#   HS_EPOCHS    epochs (a speed benchmark, not a model to keep); augmentation stops 1 epoch early
+if os.environ.get("HS_WORK"):
+    WORK = Path(os.environ["HS_WORK"])
+    WORK.mkdir(parents=True, exist_ok=True)
+if os.environ.get("HS_PACKAGES"):
+    ROOTS = [Path(os.environ["HS_PACKAGES"]), WORK]
+if os.environ.get("HS_RUNS"):
+    RUNS = [tuple(r.rsplit("_", 1)) for r in os.environ["HS_RUNS"].split(",")]
+if os.environ.get("HS_EPOCHS"):
+    EPOCHS = int(os.environ["HS_EPOCHS"])
+    AUG_OFF = max(1, EPOCHS - 1)
 if SMOKE:  # SMOKE_JOBS=dfine_s_baseline limits the smoke test to some jobs
     RUNS = [(j, "fold0") for j in os.environ.get("SMOKE_JOBS", ",".join(JOBS)).split(",")]
     EPOCHS, AUG_OFF = 2, 1

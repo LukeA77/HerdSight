@@ -232,3 +232,31 @@ Choice: Score against the published labels unchanged. Images found to contain un
 Evidence / reasoning: The failure review (`results/baselines/dfine_failures.json`) found at least two images in Jalogny flight DJI_202309261339_058 whose label files are empty although they show a herd. Both were found because the fine-tuned detector fired on them. Correcting only the images a model flags would remove that model's false detections and not the errors other models make, so it would favour the model that found them. Leaving them in can only make the reported precision and false-detection rates slightly worse than the truth.
 Easy option rejected (if any) and why: Fixing the two obvious images, which is quick but biased for the reason above.
 Status: adopted 2026-11-21 (owner)
+
+## D-33: Measure new-farm performance by leaving one farm out  (2026-11-21)
+Options considered: rely on the frozen grouped cross-validation only; also score by leave-one-farm-out over the three cross-validation farms (Mauron, Derval, Jalogny).
+Choice: Leave-one-farm-out is run for the reference recipe and the final Phase 2 model, and reported beside the official cross-validation with worst-group recall and count error. A candidate that loses on it is not chosen. The frozen cross-validation stays the measure for the targets.
+Evidence / reasoning: In Phase 1 the only farm scored by a model that had never seen it (Derval) lost 67% of its cattle (`results/baselines/dfine_failures.json`). Most cross-validation groups share a farm with training data, so the official measure mostly tests familiar farms on a new day. UK and South African farms will be new farms.
+Easy option rejected (if any) and why: Reporting only the pooled cross-validation, where Derval is 6% of the animals and its failure barely moves the totals.
+Status: adopted 2026-11-21 (owner)
+
+## D-34: Mine hard negatives by nested training  (2026-11-21)
+Options considered: mine a fold model's false detections on its own training images; mine the Phase 1 out-of-fold false detections; nested mining (for fold k with training folds a and b, train on a and mine on b, then train on b and mine on a).
+Choice: Nested mining. The mining models train at half the schedule, because they only find confusing objects and are never scored. Crops are confirmed by the owner as containing no animal, and added at one hard negative per two positive tiles, fixed before the run.
+Evidence / reasoning: A model's false detections on its own training images are few and biased towards unlabelled cattle (D-32). Out-of-fold false detections come from models that trained on fold k, so fold k's labels would influence the negatives used when scoring fold k. Nested mining keeps every fold's labels out of its own negatives.
+Easy option rejected (if any) and why: Reusing the Phase 1 out-of-fold false detections, which costs no GPU time but leaks fold labels into training.
+Status: adopted 2026-11-21 (owner)
+
+## D-35: Rent a GPU for Phase 2 training (refines D-18)  (2026-11-21)
+Options considered: free Kaggle only (about 30 GPU hours a week); Colab Pro; renting an RTX 4090 by the hour (RunPod or Vast.ai); buying a GPU and a desktop.
+Choice: RunPod Community Cloud, RTX 4090, on-demand, from prepaid credit of $30 with automatic top-up off. Each session is self-contained: it downloads the public data and the code, trains and scores, uploads the outputs to a private Kaggle dataset, and deletes itself only after the upload is confirmed. Kaggle stays available for small jobs. Every Phase 2 model is trained on the same GPU type, so comparisons are fair.
+Evidence / reasoning: Phase 2 needs about 130–185 T4 GPU hours (plan run ledger), which is 5–7 weeks of free Kaggle quota. At $0.34 per hour (RunPod pricing page, 2026-11-12) and an estimated 3–5 times the T4's speed, a 4090 does this for about $9–20, with no session caps. The speed ratio is measured on the first session before further spending. Community Cloud pods cannot use RunPod's network volumes, so no data is kept between sessions; the data is public and re-downloads in minutes. A training desktop would cost about £1,000–1,500, and the brief defers hardware purchases to the go/no-go gates (§6).
+Easy option rejected (if any) and why: Fitting Phase 2 into the free quota by shortening training or skipping comparisons, which costs accuracy (D-18 says to raise the question instead).
+Status: adopted 2026-11-21 (owner)
+
+## D-36: Pretrained starting weights (extends D-21)  (2026-11-21)
+Options considered: allow starting weights pretrained on public research datasets (ImageNet, COCO, DOTA); allow only some of them; allow none.
+Choice: Models may start from weights pretrained on public research datasets during Stage A. Every set of starting weights used is recorded with its source and licence in `docs/licences.md`. Before any product (Stage B) the starting weights get a legal check, and a model is retrained if needed. Training data itself stays under D-21.
+Evidence / reasoning: Almost every detector, including the Phase 1 D-FINE models, starts from weights pretrained on research datasets with non-commercial terms; training from scratch on about 3,400 cattle would cost far more accuracy than any other choice in this project. Treating ImageNet, COCO and DOTA the same keeps the rule consistent.
+Easy option rejected (if any) and why: Ignoring the question, which would leave an unrecorded licence risk in every model.
+Status: adopted 2026-11-21 (owner)
