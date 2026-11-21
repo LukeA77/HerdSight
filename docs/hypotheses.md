@@ -18,3 +18,16 @@ All Phase 1 baselines are scored by grouped three-fold cross-validation over far
 | H6 | Adding up per-image counts overcounts a flight, because overlapping images see the same animals. | The naive sum is more than 20% above the true number of animals on every flight tested. | Per-flight count against hand-linked identities (only if overlapping, geotagged flights exist; otherwise reported as not tested) | **Not held, narrowly.** Smallest overcount 17% over 10 verified flights; missed animals partly offset the double counts (with perfect detection every flight is above 20%) |
 
 The operating point (score threshold) for each fold is the one that minimises count MAE on the other folds' out-of-fold predictions, fixed before that fold is scored.
+
+## Phase 2: detector (written 2026-11-21, before any Phase 2 model was trained)
+
+Scored on the same frozen three-fold cross-validation as Phase 1. "Reference" means the Phase 1 fine-tuned D-FINE S models (`results/baselines/dfine_scores.json`). The thresholds below are also recorded in `configs/phase2.yaml`, which is frozen before the first Phase 2 training run; each prediction is judged by a rule fixed in code before its run.
+
+| ID | Hypothesis | Prediction | How it is judged | Outcome |
+|---|---|---|---|---|
+| H7 | Training for appearance (dark animals, shade, colour) and crowding helps most on the farm the model has not seen. | Derval recall at the operating point at least 0.15 higher than the reference, while pooled centre-matched recall falls by no more than 0.02. | Recall on Derval images and pooled centre-matched recall, out-of-fold, reference against the combined recipe (plan step G2) | pending |
+| H8 | Hard negatives mined without fold leakage cut false detections on empty pasture. | False detections per empty image at most half the reference's. | False positives per empty out-of-fold image at the operating point | pending |
+| H9 | The Phase 1 schedule (72 epochs) stopped short of what the model can learn. | The full 220-epoch schedule raises centre-matched recall by at least 0.03 on a training-side hold-out. | Plan step G0: one fold, 72 against 220 epochs, the same recipe and seed | pending |
+| H10 | Oriented boxes help most where animals touch. | Recall on touching animals at least 0.05 higher than the best upright model's, at the operating point. | Recall on animals whose labelled box overlaps another, out-of-fold | pending |
+| H11 | Count intervals fitted per density band fix the undercoverage on crowded images without becoming useless. | 90% coverage on images with 20 or more animals at least 0.85, with mean width no more than 1.5 times the width the pooled method gives on those images. | Coverage and width on the 20+ band, out-of-fold | pending |
+| H12 | A larger model (D-FINE M) is more accurate than S with the same recipe. | Centre AP higher by more than the measured run-to-run spread, or by at least 0.03 where no repeat runs were made. | Paired difference over farm-date groups | pending |

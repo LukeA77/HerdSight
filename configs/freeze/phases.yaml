@@ -14,3 +14,9 @@ phases:
     - configs/evaluation.yaml
     - configs/baselines.yaml
     - results/data/s3_truth.json
+  # Phase 2 pre-registration (plan step C3): candidates, selection rule, interval settings and
+  # hypothesis thresholds, frozen before the first Phase 2 training run.
+  phase2_prereg:
+    - configs/phase2.yaml
+    - configs/specs.yaml
+    - configs/evaluation.yaml

@@ -1,0 +1,93 @@
+# Phase 2 pre-registration (plan step C3). Written before any Phase 2 model was trained and
+# frozen with scripts/freeze.py --phase phase2_prereg before the first Phase 2 training run.
+# Each value says where it came from. Changing anything here after the freeze means a new,
+# dated decision in docs/decisions.md and a re-freeze; the old manifest is kept.
+
+candidate_order:
+  value:
+    - G0 convergence check (72 vs 220 epochs, one fold, training-side hold-out)
+    - G2 combined recipe (appearance, crowding, nested hard negatives, unlabelled-cattle images excluded)
+    - G4 D-FINE M with the best recipe so far
+    - G6 leave-one-farm-out for the reference and the final model
+    - G7 oriented-box family (RTMDet-R) against the best upright model
+    - G8 density head
+    - G10 onboard model refresh
+    - G11 resolution study (inference only)
+  placeholder: PHASE2_ORDER
+  source: "docs/plans/phase2-detector.md run ledger, agreed with the owner 2026-11-21"
+
+selection_rule:
+  value: >-
+    A candidate replaces the current best only if (1) its paired bootstrap difference over
+    farm-date groups is better on centre AP and on count MAE with both 95% intervals excluding
+    zero, (2) it does not lose on worst-group recall, and (3) where leave-one-farm-out was run,
+    it does not lose there. If a difference on centre AP or count MAE is under close_call_delta
+    or its interval crosses zero, repeat runs (seeds 1 and 2) are made before deciding.
+  placeholder: SELECTION_RULE
+  source: "Phase 2 plan, steps C3 and G1 (independent review, 2026-11-21)"
+
+close_call_delta:
+  value: 0.03
+  placeholder: CLOSE_CALL
+  source: "Phase 2 plan G1, owner agreement on repeats only for close decisions (2026-11-21)"
+
+count_bands:
+  value: [0, 1, 5, 20]
+  placeholder: COUNT_BANDS
+  source: "Same band edges as Phase 1 scoring (0, 1-4, 5-19, 20+), fixed before any Phase 2 run"
+
+conformity_score:
+  value: "abs(true - predicted) / sqrt(predicted + 1)"
+  placeholder: CONFORMITY
+  source: "Phase 2 plan C3: scales the residual with the count so crowded images get wider intervals"
+
+interval_width_cap_factor:
+  value: 1.5
+  placeholder: WIDTH_CAP
+  source: "H11: band-wise 90% intervals on 20+ images may be at most 1.5 times the pooled method's width there"
+
+hard_negative_ratio:
+  value: 0.5
+  placeholder: HARD_NEG_RATIO
+  source: "D-34: one hard-negative tile per two positive tiles, fixed before mining"
+
+mining_epochs:
+  value: 36
+  placeholder: MINING_EPOCHS
+  source: "D-34: mining models train at half the 72-epoch schedule; they are never scored"
+
+screening_epochs:
+  value: 72
+  placeholder: SCREEN_EPOCHS
+  source: "D-22 schedule, used for every candidate until G0 decides whether finalists train for 220"
+
+sam_centre_recall_min:
+  value: 0.98
+  placeholder: SAM_CENTRE
+  source: "Phase 2 plan C6: below this, oriented labels keep the upright box centre and SAM gives only angle and size"
+
+sam_eye_check_accept_min:
+  value: 0.90
+  placeholder: SAM_ACCEPT
+  source: "Phase 2 plan C6: share of 100 checked SAM labels that must be acceptable before oriented training"
+
+hypotheses:
+  value:
+    H7: {derval_recall_gain_min: 0.15, pooled_centre_recall_loss_max: 0.02}
+    H8: {empty_fp_ratio_max: 0.5}
+    H9: {centre_recall_gain_min: 0.03}
+    H10: {touching_recall_gain_min: 0.05}
+    H11: {coverage_20plus_min: 0.85, width_ratio_max: 1.5}
+    H12: {centre_ap_gain_min_without_repeats: 0.03}
+  placeholder: PHASE2_HYPOTHESES
+  source: "docs/hypotheses.md, Phase 2 section, written 2026-11-21 before any Phase 2 model was trained"
+
+g0_holdout_group:
+  value: Jalogny/20230915
+  placeholder: G0_HOLDOUT
+  source: "Plan step G0: a farm-date group from fold 0's training folds (fold 2), held out from fold 0's training to compare 72 and 220 epochs. Of fold 0's six training groups it has many animals (422) in dense herds, where precise placement matters most; Derval is a special case (C1), Jalogny/20230926 holds the unlabelled herds (D-32), and Mauron/20230607 is mostly empty pasture (432 images, 548 animals). Chosen 2026-11-21 before any Phase 2 run."
+
+training_exclusions_file:
+  value: results/data/training_exclusions.json
+  placeholder: TRAIN_EXCLUSIONS
+  source: "Plan step C4 and D-32: source images with unlabelled cattle, left out of Phase 2 training only. Starts with the two images found in Phase 1; extended from the owner's review of 71 images before step G2. Scoring is unaffected."
