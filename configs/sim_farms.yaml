@@ -55,14 +55,14 @@ months_per_farm:
   source: "Length of each simulated farm history; long enough for several losses per farm at the rates above."
 
 farms_validation:
-  value: 400
+  value: 4000
   placeholder: N_FARMS_VAL
-  source: "Simulated farms for choosing the alert rule and the dial (seed below)."
+  source: "Simulated farms for choosing the alert rule and the dial (seed below). Raised from 400 on 2026-11-21 (D-37): 400 farms gave only 22 losses of 5 or more animals, too few to judge the S4 target. Farms are drawn in order from the seed, so the first 400 are the farms of the baseline run (results/phase4/s4_validation.json)."
 
 farms_test:
-  value: 400
+  value: 4000
   placeholder: N_FARMS_TEST
-  source: "Simulated farms held out for the Phase 7 test run, with a different seed; never used for tuning."
+  source: "Simulated farms held out for the Phase 7 test run, with a different seed; never used for tuning. Raised from 400 with the validation set (D-37), before any test-set run."
 
 seed_validation:
   value: 20261121

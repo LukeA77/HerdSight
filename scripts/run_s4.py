@@ -1,6 +1,6 @@
 """S4 baseline: alert rules on simulated farms (Phase 4 plan; D-13; H13-H15).
 
-Usage: python scripts/run_s4.py [--farms N] [--set validation|test]
+Usage: python scripts/run_s4.py [--farms N] [--set validation|test] [--tag NAME]
 
 Simulates farms from configs/sim_farms.yaml (validation seed unless --set test, which is for the
 Phase 7 run only), surveys each farm under several count error models, applies each alert rule at
@@ -89,6 +89,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", default="validation", choices=("validation", "test"))
     ap.add_argument("--farms", type=int, default=None)
+    ap.add_argument("--tag", default=None, help="save as s4_<set>_<tag>.json")
     args = ap.parse_args(argv)
     cfg = load_config("sim_farms")
     ranges = {k: p.value for k, p in cfg.params.items()}
@@ -175,8 +176,9 @@ def main(argv: list[str] | None = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     blob = json.dumps(results, indent=1) + "\n"
     results_hash = hashlib.sha256(blob.encode()).hexdigest()[:12]
-    (out_dir / f"s4_{args.set}.json").write_text(blob, encoding="utf-8")
-    print("written", out_dir / f"s4_{args.set}.json", results_hash)
+    dest = out_dir / (f"s4_{args.set}_{args.tag}.json" if args.tag else f"s4_{args.set}.json")
+    dest.write_text(blob, encoding="utf-8")
+    print("written", dest, results_hash)
     return 0
 
 

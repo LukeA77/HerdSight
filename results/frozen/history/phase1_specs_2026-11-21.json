@@ -1,0 +1,18 @@
+{
+ "frozen_utc": "2026-11-21T11:34:39+00:00",
+ "phase": "phase1_specs",
+ "git_commit": "f4bf46d",
+ "uncommitted_changes_to_frozen_files": [
+  "M configs/evaluation.yaml",
+  "?? configs/specs.yaml",
+  "?? results/baselines/spec_baselines.json",
+  "?? results/data/s3_truth.json"
+ ],
+ "files": {
+  "configs/specs.yaml": "b7dcfe971c2ee04f1a99852f8258293db83d81a976ea056d52b89305ccde5efc",
+  "results/baselines/spec_baselines.json": "627da2ddc5b6e0151fe3560eac02aefbe17729d1d61b438e757514df7593ddd3",
+  "configs/evaluation.yaml": "64edfdc161e57e89c4944357feb4bc43ff12218305b9fca8615625a48adf15a6",
+  "configs/baselines.yaml": "f4f754cccc94d0f0f5cd59ef7e26ea9fc8cdf36452f753795880748eb4e42a6e",
+  "results/data/s3_truth.json": "ed1d2374929445b5e8b56130b1f3d13f905818c3260fd4ddb2c72646cf2a7711"
+ }
+}

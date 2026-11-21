@@ -48,9 +48,13 @@ s3_flight_error_max:
   source: "Owner, 2026-11-21 (D-31). Mean absolute relative error of the flight total on the owner-verified flights. Perfect detection with the Phase 1 linking method gives about this error on the same flights, so Phase 2 detection plus Phase 3 linking should reach it. Ten verified flights checked by one person: indicative, no interval."
 
 s4_alert_targets:
-  value: null
+  value:
+    rule: recount
+    interval_level: 0.90
+    false_alarms_per_100_surveys_max: 1.5
+    losses_of_5_plus_caught_within_3_surveys_min: 0.65
   placeholder: S4_TARGETS
-  source: null
+  source: "Set 2026-11-21 (D-37) after the Phase 4 baseline. Measured on the simulated validation farms (configs/sim_farms.yaml) with the count error model refitted to the latest measured flight errors, surveys of a camp independent; the correlated-survey case is reported beside it. Baseline with the Phase 1 count error, 4000 farms: 1.45 false alarms per 100 surveys and 58% of losses of 5 or more caught (51%-64%); with the S3 target's count error: 1.17 and 67% (60%-73%) (results/phase4/s4_validation_4000farms.json). So the target is met only if counting reaches about the S3 target. Simulation results, not field results."
 
 s5_mission:
   value: "pass, automated in CI"

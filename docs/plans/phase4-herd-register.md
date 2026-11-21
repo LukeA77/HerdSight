@@ -105,5 +105,13 @@ Answers to the brief's questions:
   - farm-level rule at 90%: 1.44 false alarms per 100 surveys (1.28–1.61), 45% of losses of 5 or more caught (25%–69%), 17% of all losses.
   With the S3 target's count error (15%), the recount rule at 90%: 1.22 false alarms per 100 surveys (1.10–1.35), 64% of losses of 5 or more caught (43%–83%), 18% of all losses.
   Only 22 losses of 5 or more animals occurred across the validation farms, so the share caught for them has wide intervals. Single deaths are rarely caught at any setting: a one-animal change is far inside the count error of a whole camp.
+- **Larger run** (D-37; `scripts/run_s4.py --tag 4000farms`, `results/phase4/s4_validation_4000farms.json`; 4000 simulated validation farms, of which the first 400 are the baseline farms; 212 losses of 5 or more animals). With the count error measured in Phase 1:
+  - naive rule: 18.92 false alarms per 100 surveys (18.65-19.19), 92% of losses of 5 or more caught (87%-96%);
+  - interval rule at 90%: 3.62 (3.55-3.69), 66% (60%-72%);
+  - recount rule at 90%: 1.45 (1.40-1.49), 58% (51%-64%);
+  - recount rule at 95%: 0.61 (0.59-0.64), 41% (34%-47%);
+  - farm-level rule at 90%: 1.38 (1.34-1.43), 58% (51%-64%).
+  With the S3 target's count error, the recount rule at 90%: 1.17 (1.14-1.20), 67% (60%-73%). With correlated surveys of a camp (correlation 0.5) and the Phase 1 count error: 1.95 (1.89-2.00), 54% (47%-61%). The 400-farm figures for losses of 5 or more were low by chance; H13-H15 come out the same on 4000 farms.
+- **S4 target set** (D-37, `configs/specs.yaml`): recount rule at 90%, at most 1.5 false alarms per 100 surveys and at least 65% of losses of 5 or more caught within 3 surveys.
 - **Hypotheses** (`scripts/judge_s4.py`, `results/phase4/hypotheses.json`): H13 not held, H14 held, H15 not held.
 - **Tests:** `tests/test_herd.py` (register arithmetic and moves, fast expected-count table against the register, interval coverage at its nominal level, rule and scoring cases with known answers). A first version of the simulator's intervals scaled with the square root of the count and covered 83% at a nominal 68%, because flight-total errors grow with the herd; intervals now scale with the count and cover at their level.
