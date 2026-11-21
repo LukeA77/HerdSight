@@ -39,6 +39,11 @@ park() {  # never return to the container
     sleep infinity
 }
 
+# PyTorch data-loading workers pass shared tensors as open files; the container's default limit
+# of 1024 open files ran out when scoring started with 12 workers (session g0-5)
+ulimit -n 65536 2>/dev/null || ulimit -n "$(ulimit -Hn)" || true
+echo "open-file limit: $(ulimit -n)"
+
 python -m pip install -q -U kaggle >/dev/null 2>&1 || echo "WARNING: kaggle install failed"
 
 JOB="$REPO/gpu/runpod/job_${HS_JOB}.sh"

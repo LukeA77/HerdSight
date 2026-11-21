@@ -44,12 +44,21 @@ usable_cpus() {
     python - <<'PY'
 import os
 n = len(os.sched_getaffinity(0))
-try:
-    quota, period = open("/sys/fs/cgroup/cpu.max").read().split()
-    if quota != "max":
-        n = min(n, max(1, int(int(quota) / int(period))))
-except (OSError, ValueError):
-    pass
+def limit():  # CPU quota from cgroup v2, else cgroup v1 (some hosts still use v1)
+    try:
+        quota, period = open("/sys/fs/cgroup/cpu.max").read().split()
+        return None if quota == "max" else int(quota) / int(period)
+    except (OSError, ValueError):
+        pass
+    try:
+        quota = int(open("/sys/fs/cgroup/cpu/cpu.cfs_quota_us").read())
+        period = int(open("/sys/fs/cgroup/cpu/cpu.cfs_period_us").read())
+        return None if quota <= 0 else quota / period
+    except (OSError, ValueError):
+        return None
+q = limit()
+if q is not None:
+    n = min(n, max(1, int(q)))
 print(n)
 PY
 }
