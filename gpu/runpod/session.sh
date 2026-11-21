@@ -50,8 +50,13 @@ else
     JOB_RC=2
 fi
 echo "job exit code: $JOB_RC"
-
 T1=$(date +%s)
+if [ "$JOB_RC" -ne 0 ]; then
+    # keep the machine for 10 minutes so the error can be read on it, then carry on as normal
+    echo "job failed: holding the pod for 10 minutes before uploading and shutting down"
+    sleep 600
+fi
+
 python - "$T0" "$T1" "$JOB_RC" <<'PY'
 import json, os, subprocess, sys
 t0, t1, rc = int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])

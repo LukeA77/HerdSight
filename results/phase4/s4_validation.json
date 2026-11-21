@@ -1,0 +1,1664 @@
+{
+ "set": "validation",
+ "farms": 400,
+ "seed": 20261121,
+ "sim_farms_hash": "85f05c1b7b0f",
+ "within_surveys": 3,
+ "note": "Simulation results on simulated farms; not field results.",
+ "error_models": [
+  {
+   "bias": 0.19191180061768298,
+   "sd": 0.30639213267644083,
+   "correlation": 0.0,
+   "dense_sd_factor": 1.5,
+   "dense_at": 20,
+   "partial_prob": 0.05,
+   "partial_coverage": [
+    0.6,
+    0.95
+   ],
+   "name": "measured_rho0.0"
+  },
+  {
+   "bias": 0.0,
+   "sd": 0.187997120597325,
+   "correlation": 0.0,
+   "dense_sd_factor": 1.5,
+   "dense_at": 20,
+   "partial_prob": 0.05,
+   "partial_coverage": [
+    0.6,
+    0.95
+   ],
+   "name": "target_rho0.0"
+  },
+  {
+   "bias": 0.19191180061768298,
+   "sd": 0.30639213267644083,
+   "correlation": 0.5,
+   "dense_sd_factor": 1.5,
+   "dense_at": 20,
+   "partial_prob": 0.05,
+   "partial_coverage": [
+    0.6,
+    0.95
+   ],
+   "name": "measured_rho0.5"
+  },
+  {
+   "bias": 0.0,
+   "sd": 0.187997120597325,
+   "correlation": 0.5,
+   "dense_sd_factor": 1.5,
+   "dense_at": 20,
+   "partial_prob": 0.05,
+   "partial_coverage": [
+    0.6,
+    0.95
+   ],
+   "name": "target_rho0.5"
+  }
+ ],
+ "runs": [
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "naive",
+   "false_alarms_per_100_surveys": 19.675503758729594,
+   "false_alarms_per_100_surveys_ci95": [
+    18.897304770446517,
+    20.452754996286867
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.7243295482000484,
+   "k1_caught_share_ci95": [
+    0.7052369028276336,
+    0.7414339145352746
+   ],
+   "k1_mean_surveys_until_caught": 1.683789192795197,
+   "k5_losses": 22,
+   "k5_caught_share": 0.8636363636363636,
+   "k5_caught_share_ci95": [
+    0.6955685618729097,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.1578947368421053,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 19.153259385097098
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "interval@0.68",
+   "false_alarms_per_100_surveys": 7.1004403718695785,
+   "false_alarms_per_100_surveys_ci95": [
+    6.751559566311624,
+    7.442217096917828
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.3991302246919546,
+   "k1_caught_share_ci95": [
+    0.3812455378129891,
+    0.41964665099800685
+   ],
+   "k1_mean_surveys_until_caught": 1.8577481840193704,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.4,
+    0.8667391304347826
+   ],
+   "k5_mean_surveys_until_caught": 1.4285714285714286,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 7.008427434129443
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "interval@0.8",
+   "false_alarms_per_100_surveys": 5.916106934744896,
+   "false_alarms_per_100_surveys_ci95": [
+    5.634868236436344,
+    6.195269052097013
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.3464604977047596,
+   "k1_caught_share_ci95": [
+    0.3275712624308737,
+    0.36423976751703513
+   ],
+   "k1_mean_surveys_until_caught": 1.8654114365411436,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5454545454545454,
+   "k5_caught_share_ci95": [
+    0.3333333333333333,
+    0.7894736842105263
+   ],
+   "k5_mean_surveys_until_caught": 1.5833333333333333,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 5.837580360414377
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "interval@0.9",
+   "false_alarms_per_100_surveys": 3.7520572928250524,
+   "false_alarms_per_100_surveys_ci95": [
+    3.5230284083593437,
+    4.0069638552807785
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.2589997583957478,
+   "k1_caught_share_ci95": [
+    0.24227386700702827,
+    0.27569104696673186
+   ],
+   "k1_mean_surveys_until_caught": 1.8945895522388059,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5,
+   "k5_caught_share_ci95": [
+    0.27772988505747126,
+    0.7333333333333333
+   ],
+   "k5_mean_surveys_until_caught": 1.5454545454545454,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.665767296225975
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "interval@0.95",
+   "false_alarms_per_100_surveys": 1.3133312575063387,
+   "false_alarms_per_100_surveys_ci95": [
+    1.1889951209661793,
+    1.445798261755679
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.1314327132157526,
+   "k1_caught_share_ci95": [
+    0.11760356226416155,
+    0.1447415351383726
+   ],
+   "k1_mean_surveys_until_caught": 1.9577205882352942,
+   "k5_losses": 22,
+   "k5_caught_share": 0.3181818181818182,
+   "k5_caught_share_ci95": [
+    0.11764705882352941,
+    0.5239495798319327
+   ],
+   "k5_mean_surveys_until_caught": 1.4285714285714286,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.2391326071749775
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "interval@0.99",
+   "false_alarms_per_100_surveys": 0.17236777723410882,
+   "false_alarms_per_100_surveys_ci95": [
+    0.13788765110264378,
+    0.20828381930792153
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.02561005073689297,
+   "k1_caught_share_ci95": [
+    0.01935773061367695,
+    0.03232455347886314
+   ],
+   "k1_mean_surveys_until_caught": 2.0943396226415096,
+   "k5_losses": 22,
+   "k5_caught_share": 0.045454545454545456,
+   "k5_caught_share_ci95": [
+    0.0,
+    0.1600322580645161
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.149895073448586
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "recount@0.68",
+   "false_alarms_per_100_surveys": 2.6266625150126774,
+   "false_alarms_per_100_surveys_ci95": [
+    2.3884065086777264,
+    2.878193986095042
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.27422082628654265,
+   "k1_caught_share_ci95": [
+    0.2552664538013955,
+    0.2929218114274097
+   ],
+   "k1_mean_surveys_until_caught": 1.866079295154185,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.2222222222222222,
+    0.692391304347826
+   ],
+   "k5_mean_surveys_until_caught": 1.7,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 2.51990273475234
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "recount@0.8",
+   "false_alarms_per_100_surveys": 2.1840665450825143,
+   "false_alarms_per_100_surveys_ci95": [
+    1.9855560714348335,
+    2.4082084200077047
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.2370137714423774,
+   "k1_caught_share_ci95": [
+    0.21841975308641975,
+    0.2546724076118223
+   ],
+   "k1_mean_surveys_until_caught": 1.8746177370030581,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.2306818181818182,
+    0.6818181818181818
+   ],
+   "k5_mean_surveys_until_caught": 1.7,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 2.086872522567536
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "recount@0.9",
+   "false_alarms_per_100_surveys": 1.506827988078822,
+   "false_alarms_per_100_surveys_ci95": [
+    1.3439891265257913,
+    1.676816638722203
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.17226383184344043,
+   "k1_caught_share_ci95": [
+    0.15615006546570248,
+    0.18801866298004005
+   ],
+   "k1_mean_surveys_until_caught": 1.9228611500701263,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.2306818181818182,
+    0.7
+   ],
+   "k5_mean_surveys_until_caught": 1.6,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.4140101928649944
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "recount@0.95",
+   "false_alarms_per_100_surveys": 0.6727903563008762,
+   "false_alarms_per_100_surveys_ci95": [
+    0.5902574918482344,
+    0.7520549735228808
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.09446726262382218,
+   "k1_caught_share_ci95": [
+    0.08320861820172165,
+    0.10648987468749775
+   ],
+   "k1_mean_surveys_until_caught": 2.0,
+   "k5_losses": 22,
+   "k5_caught_share": 0.3181818181818182,
+   "k5_caught_share_ci95": [
+    0.125,
+    0.55
+   ],
+   "k5_mean_surveys_until_caught": 1.4285714285714286,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.6445488158289198
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "recount@0.99",
+   "false_alarms_per_100_surveys": 0.12566166985454383,
+   "false_alarms_per_100_surveys_ci95": [
+    0.09902176193650397,
+    0.15419304754389385
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.0227107997100749,
+   "k1_caught_share_ci95": [
+    0.017025579649116003,
+    0.02863842395799217
+   ],
+   "k1_mean_surveys_until_caught": 2.074468085106383,
+   "k5_losses": 22,
+   "k5_caught_share": 0.045454545454545456,
+   "k5_caught_share_ci95": [
+    0.0,
+    0.15384615384615385
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1065920522301056
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "farm@0.68",
+   "false_alarms_per_100_surveys": 1.9649926604688404,
+   "false_alarms_per_100_surveys_ci95": [
+    1.7711963332484475,
+    2.1741805800240943
+   ],
+   "moved_notices_per_100_surveys": 1.0119656598905742,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.27422082628654265,
+   "k1_caught_share_ci95": [
+    0.2542926463699001,
+    0.293363716395629
+   ],
+   "k1_mean_surveys_until_caught": 1.866079295154185,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.2497844827586207,
+    0.7
+   ],
+   "k5_mean_surveys_until_caught": 1.7,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.8503714066819892
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "farm@0.8",
+   "false_alarms_per_100_surveys": 1.8860370979938614,
+   "false_alarms_per_100_surveys_ci95": [
+    1.6934700203078499,
+    2.0862095987645857
+   ],
+   "moved_notices_per_100_surveys": 0.4392598194030515,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.2370137714423774,
+   "k1_caught_share_ci95": [
+    0.21946921529278174,
+    0.2528202792933189
+   ],
+   "k1_mean_surveys_until_caught": 1.8746177370030581,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.25806451612903225,
+    0.7083333333333334
+   ],
+   "k5_mean_surveys_until_caught": 1.7,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.7687618666933147
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "farm@0.9",
+   "false_alarms_per_100_surveys": 1.4434411280636983,
+   "false_alarms_per_100_surveys_ci95": [
+    1.2773035829408097,
+    1.61328516788963
+   ],
+   "moved_notices_per_100_surveys": 0.08340376317779458,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.17226383184344043,
+   "k1_caught_share_ci95": [
+    0.1577188608944663,
+    0.18559713093183514
+   ],
+   "k1_mean_surveys_until_caught": 1.9228611500701263,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.25,
+    0.6924999999999998
+   ],
+   "k5_mean_surveys_until_caught": 1.6,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.3340661536924152
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "farm@0.95",
+   "false_alarms_per_100_surveys": 0.6627819047195409,
+   "false_alarms_per_100_surveys_ci95": [
+    0.5826668885018421,
+    0.7451172758314776
+   ],
+   "moved_notices_per_100_surveys": 0.011120501757039278,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.09446726262382218,
+   "k1_caught_share_ci95": [
+    0.08302264418701506,
+    0.10693231140842185
+   ],
+   "k1_mean_surveys_until_caught": 2.0,
+   "k5_losses": 22,
+   "k5_caught_share": 0.3181818181818182,
+   "k5_caught_share_ci95": [
+    0.13043478260869565,
+    0.5454545454545454
+   ],
+   "k5_mean_surveys_until_caught": 1.4285714285714286,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.632890310116252
+  },
+  {
+   "error_model": "measured_rho0.0",
+   "rule": "farm@0.99",
+   "false_alarms_per_100_surveys": 0.12566166985454383,
+   "false_alarms_per_100_surveys_ci95": [
+    0.09791644617014819,
+    0.15521675205833876
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.0227107997100749,
+   "k1_caught_share_ci95": [
+    0.017118118930383598,
+    0.028781797695039888
+   ],
+   "k1_mean_surveys_until_caught": 2.074468085106383,
+   "k5_losses": 22,
+   "k5_caught_share": 0.045454545454545456,
+   "k5_caught_share_ci95": [
+    0.0,
+    0.15384615384615385
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1065920522301056
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "naive",
+   "false_alarms_per_100_surveys": 31.691205907210534,
+   "false_alarms_per_100_surveys_ci95": [
+    30.518570545402017,
+    32.86170548074629
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.8859627929451558,
+   "k1_caught_share_ci95": [
+    0.8725872304870081,
+    0.8990680547120702
+   ],
+   "k1_mean_surveys_until_caught": 1.506953913280611,
+   "k5_losses": 22,
+   "k5_caught_share": 1.0,
+   "k5_caught_share_ci95": [
+    1.0,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.2727272727272727,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 30.76346557409813
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "interval@0.68",
+   "false_alarms_per_100_surveys": 12.560606734575863,
+   "false_alarms_per_100_surveys_ci95": [
+    12.06500519019024,
+    13.076368822527243
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.5866151244261899,
+   "k1_caught_share_ci95": [
+    0.5649976857810982,
+    0.6068312230181465
+   ],
+   "k1_mean_surveys_until_caught": 1.792833607907743,
+   "k5_losses": 22,
+   "k5_caught_share": 0.9545454545454546,
+   "k5_caught_share_ci95": [
+    0.84,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.4761904761904763,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 12.0565604077146
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "interval@0.8",
+   "false_alarms_per_100_surveys": 8.596147858191362,
+   "false_alarms_per_100_surveys_ci95": [
+    8.177083047291983,
+    9.002633316673556
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.4730611258758154,
+   "k1_caught_share_ci95": [
+    0.45318392141538727,
+    0.4907923084628752
+   ],
+   "k1_mean_surveys_until_caught": 1.8375893769152196,
+   "k5_losses": 22,
+   "k5_caught_share": 0.8181818181818182,
+   "k5_caught_share_ci95": [
+    0.6666666666666666,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.5,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 8.267546051097565
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "interval@0.9",
+   "false_alarms_per_100_surveys": 3.75428139317646,
+   "false_alarms_per_100_surveys_ci95": [
+    3.5407284163192916,
+    4.029307315747877
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.29499879197873885,
+   "k1_caught_share_ci95": [
+    0.27572960444882627,
+    0.3132017146722669
+   ],
+   "k1_mean_surveys_until_caught": 1.9164619164619165,
+   "k5_losses": 22,
+   "k5_caught_share": 0.7272727272727273,
+   "k5_caught_share_ci95": [
+    0.5384615384615384,
+    0.8890350877192981
+   ],
+   "k5_mean_surveys_until_caught": 1.625,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.710735818260551
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "interval@0.95",
+   "false_alarms_per_100_surveys": 1.5813353498509852,
+   "false_alarms_per_100_surveys_ci95": [
+    1.4592070972280233,
+    1.7096702985972194
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.16018361923169847,
+   "k1_caught_share_ci95": [
+    0.14639086634953374,
+    0.1746726168598556
+   ],
+   "k1_mean_surveys_until_caught": 1.9592760180995474,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.4444444444444444,
+    0.8181818181818182
+   ],
+   "k5_mean_surveys_until_caught": 1.7142857142857142,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.5922187801872023
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "interval@0.99",
+   "false_alarms_per_100_surveys": 0.2757884435745741,
+   "false_alarms_per_100_surveys_ci95": [
+    0.23606072843486073,
+    0.31475577206379274
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.03672384633969558,
+   "k1_caught_share_ci95": [
+    0.028355397637127064,
+    0.04568031036460696
+   ],
+   "k1_mean_surveys_until_caught": 2.0,
+   "k5_losses": 22,
+   "k5_caught_share": 0.3181818181818182,
+   "k5_caught_share_ci95": [
+    0.12487500000000001,
+    0.5385416666666666
+   ],
+   "k5_mean_surveys_until_caught": 1.2857142857142858,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.2848006395523134
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "recount@0.68",
+   "false_alarms_per_100_surveys": 4.187980961700992,
+   "false_alarms_per_100_surveys_ci95": [
+    3.8784322818389674,
+    4.507072849768719
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.40396230973665137,
+   "k1_caught_share_ci95": [
+    0.38222103818519415,
+    0.4267673294597025
+   ],
+   "k1_mean_surveys_until_caught": 1.8708133971291867,
+   "k5_losses": 22,
+   "k5_caught_share": 0.8636363636363636,
+   "k5_caught_share_ci95": [
+    0.7142857142857143,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.736842105263158,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 4.050497984744013
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "recount@0.8",
+   "false_alarms_per_100_surveys": 2.7323072817045504,
+   "false_alarms_per_100_surveys_ci95": [
+    2.5242207333301523,
+    2.9747673578357716
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.3015221067890795,
+   "k1_caught_share_ci95": [
+    0.28166281404722104,
+    0.32291336701289336
+   ],
+   "k1_mean_surveys_until_caught": 1.8998397435897436,
+   "k5_losses": 22,
+   "k5_caught_share": 0.7272727272727273,
+   "k5_caught_share_ci95": [
+    0.5623263888888889,
+    0.9047619047619048
+   ],
+   "k5_mean_surveys_until_caught": 1.5625,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 2.6831218147296894
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "recount@0.9",
+   "false_alarms_per_100_surveys": 1.2188069925715048,
+   "false_alarms_per_100_surveys_ci95": [
+    1.0973700262734363,
+    1.3453521072340127
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.17757912539260692,
+   "k1_caught_share_ci95": [
+    0.1591228858310395,
+    0.19487300723830603
+   ],
+   "k1_mean_surveys_until_caught": 1.907482993197279,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.43478260869565216,
+    0.8335526315789472
+   ],
+   "k5_mean_surveys_until_caught": 1.5714285714285714,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.2474601112554544
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "recount@0.95",
+   "false_alarms_per_100_surveys": 0.6049552955829367,
+   "false_alarms_per_100_surveys_ci95": [
+    0.5434441001582665,
+    0.6673015574340565
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.09301763711041314,
+   "k1_caught_share_ci95": [
+    0.08122145013595768,
+    0.10586679263133987
+   ],
+   "k1_mean_surveys_until_caught": 1.9090909090909092,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.25,
+    0.6470588235294118
+   ],
+   "k5_mean_surveys_until_caught": 1.7,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.6428833150128244
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "recount@0.99",
+   "false_alarms_per_100_surveys": 0.15457497442284596,
+   "false_alarms_per_100_surveys_ci95": [
+    0.12827866161963683,
+    0.18409525665221932
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.02101956994443102,
+   "k1_caught_share_ci95": [
+    0.014206651880637026,
+    0.0292732382945069
+   ],
+   "k1_mean_surveys_until_caught": 1.9540229885057472,
+   "k5_losses": 22,
+   "k5_caught_share": 0.3181818181818182,
+   "k5_caught_share_ci95": [
+    0.11764705882352941,
+    0.5294117647058824
+   ],
+   "k5_mean_surveys_until_caught": 1.2857142857142858,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.174877585690017
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "farm@0.68",
+   "false_alarms_per_100_surveys": 3.1971442551487925,
+   "false_alarms_per_100_surveys_ci95": [
+    2.9031922455748798,
+    3.487320726728502
+   ],
+   "moved_notices_per_100_surveys": 1.3767181175214627,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.40396230973665137,
+   "k1_caught_share_ci95": [
+    0.38286221043499497,
+    0.42644040162576624
+   ],
+   "k1_mean_surveys_until_caught": 1.8708133971291867,
+   "k5_losses": 22,
+   "k5_caught_share": 0.8636363636363636,
+   "k5_caught_share_ci95": [
+    0.7306818181818181,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.736842105263158,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.069518004063822
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "farm@0.8",
+   "false_alarms_per_100_surveys": 2.3731150749521817,
+   "false_alarms_per_100_surveys_ci95": [
+    2.148031100388385,
+    2.6003303773223014
+   ],
+   "moved_notices_per_100_surveys": 0.5259997331079578,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.3015221067890795,
+   "k1_caught_share_ci95": [
+    0.27984022512166923,
+    0.32262484268734
+   ],
+   "k1_mean_surveys_until_caught": 1.8998397435897436,
+   "k5_losses": 22,
+   "k5_caught_share": 0.7272727272727273,
+   "k5_caught_share_ci95": [
+    0.55,
+    0.9047619047619048
+   ],
+   "k5_mean_surveys_until_caught": 1.5625,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 2.2967256253955566
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "farm@0.9",
+   "false_alarms_per_100_surveys": 1.1498598816778614,
+   "false_alarms_per_100_surveys_ci95": [
+    1.0290883971979365,
+    1.2824923529054293
+   ],
+   "moved_notices_per_100_surveys": 0.10453271651616922,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.17757912539260692,
+   "k1_caught_share_ci95": [
+    0.1581068876397747,
+    0.19612085451986264
+   ],
+   "k1_mean_surveys_until_caught": 1.907482993197279,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.4583333333333333,
+    0.8181818181818182
+   ],
+   "k5_mean_surveys_until_caught": 1.5714285714285714,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.1641850704506844
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "farm@0.95",
+   "false_alarms_per_100_surveys": 0.5793781415417464,
+   "false_alarms_per_100_surveys_ci95": [
+    0.5173203034840428,
+    0.6432739058303739
+   ],
+   "moved_notices_per_100_surveys": 0.03002535474400605,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.09301763711041314,
+   "k1_caught_share_ci95": [
+    0.080759580818185,
+    0.10590207143973017
+   ],
+   "k1_mean_surveys_until_caught": 1.9090909090909092,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.25,
+    0.6818181818181818
+   ],
+   "k5_mean_surveys_until_caught": 1.7,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.616235301955298
+  },
+  {
+   "error_model": "target_rho0.0",
+   "rule": "farm@0.99",
+   "false_alarms_per_100_surveys": 0.14567857301721454,
+   "false_alarms_per_100_surveys_ci95": [
+    0.12034424242917316,
+    0.17268610484711308
+   ],
+   "moved_notices_per_100_surveys": 0.01000845158133535,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.02101956994443102,
+   "k1_caught_share_ci95": [
+    0.014172639134393915,
+    0.0294588794874545
+   ],
+   "k1_mean_surveys_until_caught": 1.9540229885057472,
+   "k5_losses": 22,
+   "k5_caught_share": 0.3181818181818182,
+   "k5_caught_share_ci95": [
+    0.13333333333333333,
+    0.5294117647058824
+   ],
+   "k5_mean_surveys_until_caught": 1.2857142857142858,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1648845807934446
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "naive",
+   "false_alarms_per_100_surveys": 20.31159645923224,
+   "false_alarms_per_100_surveys_ci95": [
+    19.449032865596493,
+    21.229641195129226
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.6286542643150519,
+   "k1_caught_share_ci95": [
+    0.6101073173491809,
+    0.6482557013358934
+   ],
+   "k1_mean_surveys_until_caught": 1.5764796310530362,
+   "k5_losses": 22,
+   "k5_caught_share": 0.8636363636363636,
+   "k5_caught_share_ci95": [
+    0.7391304347826086,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.1578947368421053,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 19.6962126511442
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "interval@0.68",
+   "false_alarms_per_100_surveys": 7.526355589164183,
+   "false_alarms_per_100_surveys_ci95": [
+    7.1049565407278665,
+    7.944888707848767
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.34501087219135057,
+   "k1_caught_share_ci95": [
+    0.32703074635468254,
+    0.3642049755227799
+   ],
+   "k1_mean_surveys_until_caught": 1.7549019607843137,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6818181818181818,
+   "k5_caught_share_ci95": [
+    0.464217032967033,
+    0.8888888888888888
+   ],
+   "k5_mean_surveys_until_caught": 1.4666666666666666,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 7.293228073681756
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "interval@0.8",
+   "false_alarms_per_100_surveys": 6.3064365464169745,
+   "false_alarms_per_100_surveys_ci95": [
+    5.962042165204394,
+    6.67121748994995
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.30297173230248853,
+   "k1_caught_share_ci95": [
+    0.2842206009020098,
+    0.32155813850299303
+   ],
+   "k1_mean_surveys_until_caught": 1.7503987240829346,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6818181818181818,
+   "k5_caught_share_ci95": [
+    0.47619047619047616,
+    0.8888888888888888
+   ],
+   "k5_mean_surveys_until_caught": 1.4,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 6.079077978748209
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "interval@0.9",
+   "false_alarms_per_100_surveys": 4.079000044482007,
+   "false_alarms_per_100_surveys_ci95": [
+    3.7813252320650297,
+    4.41297812012897
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.2321816863976806,
+   "k1_caught_share_ci95": [
+    0.21416605168934683,
+    0.25086167767272594
+   ],
+   "k1_mean_surveys_until_caught": 1.8022892819979188,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5454545454545454,
+   "k5_caught_share_ci95": [
+    0.33295454545454545,
+    0.7619047619047619
+   ],
+   "k5_mean_surveys_until_caught": 1.3333333333333333,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.9455714333300023
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "interval@0.95",
+   "false_alarms_per_100_surveys": 1.4990436368488946,
+   "false_alarms_per_100_surveys_ci95": [
+    1.3392790512045099,
+    1.660549361996189
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.11621164532495772,
+   "k1_caught_share_ci95": [
+    0.10237548567324604,
+    0.1304766499205825
+   ],
+   "k1_mean_surveys_until_caught": 1.8503118503118503,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5,
+   "k5_caught_share_ci95": [
+    0.2940563725490196,
+    0.7144285714285713
+   ],
+   "k5_mean_surveys_until_caught": 1.5454545454545454,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.4123446920488991
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "interval@0.99",
+   "false_alarms_per_100_surveys": 0.18682442951825987,
+   "false_alarms_per_100_surveys_ci95": [
+    0.15102244052987013,
+    0.22159903433491596
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.024643633727953612,
+   "k1_caught_share_ci95": [
+    0.018189538995678798,
+    0.031924648943835975
+   ],
+   "k1_mean_surveys_until_caught": 1.8823529411764706,
+   "k5_losses": 22,
+   "k5_caught_share": 0.045454545454545456,
+   "k5_caught_share_ci95": [
+    0.0,
+    0.1600322580645161
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1698810832417308
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "recount@0.68",
+   "false_alarms_per_100_surveys": 3.8454695075841823,
+   "false_alarms_per_100_surveys_ci95": [
+    3.531606528495221,
+    4.166665568622408
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.27132157525972456,
+   "k1_caught_share_ci95": [
+    0.25134760287647656,
+    0.2909316882385111
+   ],
+   "k1_mean_surveys_until_caught": 1.7871772039180767,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.4375,
+    0.8421052631578947
+   ],
+   "k5_mean_surveys_until_caught": 1.5714285714285714,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.699077312547883
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "recount@0.8",
+   "false_alarms_per_100_surveys": 3.154886348472043,
+   "false_alarms_per_100_surveys_ci95": [
+    2.895236516842232,
+    3.449242574359501
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.2341145204155593,
+   "k1_caught_share_ci95": [
+    0.2139922049676197,
+    0.25392392888180965
+   ],
+   "k1_mean_surveys_until_caught": 1.7791537667698658,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.42105263157894735,
+    0.8461538461538461
+   ],
+   "k5_mean_surveys_until_caught": 1.4285714285714286,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 2.9812464608107656
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "recount@0.9",
+   "false_alarms_per_100_surveys": 2.080645878742049,
+   "false_alarms_per_100_surveys_ci95": [
+    1.8750531032840074,
+    2.2942636652254236
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.17951195941048562,
+   "k1_caught_share_ci95": [
+    0.160720454742907,
+    0.19816975516624263
+   ],
+   "k1_mean_surveys_until_caught": 1.8142664872139973,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5454545454545454,
+   "k5_caught_share_ci95": [
+    0.3333333333333333,
+    0.7647058823529411
+   ],
+   "k5_mean_surveys_until_caught": 1.3333333333333333,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.978614969521335
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "recount@0.95",
+   "false_alarms_per_100_surveys": 0.8585027356434323,
+   "false_alarms_per_100_surveys_ci95": [
+    0.7514068293036105,
+    0.9645641412359268
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.09011838608359507,
+   "k1_caught_share_ci95": [
+    0.0780935260178448,
+    0.10284426844994857
+   ],
+   "k1_mean_surveys_until_caught": 1.8525469168900803,
+   "k5_losses": 22,
+   "k5_caught_share": 0.4090909090909091,
+   "k5_caught_share_ci95": [
+    0.20829741379310346,
+    0.6154761904761904
+   ],
+   "k5_mean_surveys_until_caught": 1.2222222222222223,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.816095399886746
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "recount@0.99",
+   "false_alarms_per_100_surveys": 0.14567857301721454,
+   "false_alarms_per_100_surveys_ci95": [
+    0.11379827003876926,
+    0.178082262641032
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.023435612466779415,
+   "k1_caught_share_ci95": [
+    0.01660048568258901,
+    0.030470316782881063
+   ],
+   "k1_mean_surveys_until_caught": 1.8762886597938144,
+   "k5_losses": 22,
+   "k5_caught_share": 0.045454545454545456,
+   "k5_caught_share_ci95": [
+    0.0,
+    0.15384615384615385
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1365710669198228
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "farm@0.68",
+   "false_alarms_per_100_surveys": 2.7278590810017347,
+   "false_alarms_per_100_surveys_ci95": [
+    2.495095818567777,
+    2.988064478477759
+   ],
+   "moved_notices_per_100_surveys": 1.5346292424714203,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.27132157525972456,
+   "k1_caught_share_ci95": [
+    0.2508674567690961,
+    0.2913183805792779
+   ],
+   "k1_mean_surveys_until_caught": 1.7871772039180767,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.4332142857142857,
+    0.8636363636363636
+   ],
+   "k5_mean_surveys_until_caught": 1.5714285714285714,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 2.5931847706605375
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "farm@0.8",
+   "false_alarms_per_100_surveys": 2.6767047729193543,
+   "false_alarms_per_100_surveys_ci95": [
+    2.437419218087691,
+    2.9207121121848845
+   ],
+   "moved_notices_per_100_surveys": 0.6750144566522841,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.2341145204155593,
+   "k1_caught_share_ci95": [
+    0.21504697897369013,
+    0.2545119716121232
+   ],
+   "k1_mean_surveys_until_caught": 1.7791537667698658,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.4444444444444444,
+    0.8571428571428571
+   ],
+   "k5_mean_surveys_until_caught": 1.4285714285714286,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 2.4732687119016687
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "farm@0.9",
+   "false_alarms_per_100_surveys": 2.0005782660913662,
+   "false_alarms_per_100_surveys_ci95": [
+    1.7904316653515704,
+    2.229574005334775
+   ],
+   "moved_notices_per_100_surveys": 0.12454961967883992,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.17951195941048562,
+   "k1_caught_share_ci95": [
+    0.16265659621125728,
+    0.19805006060069952
+   ],
+   "k1_mean_surveys_until_caught": 1.8142664872139973,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5454545454545454,
+   "k5_caught_share_ci95": [
+    0.3333333333333333,
+    0.7693181818181818
+   ],
+   "k5_mean_surveys_until_caught": 1.3333333333333333,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.8803504213717064
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "farm@0.95",
+   "false_alarms_per_100_surveys": 0.8451581335349851,
+   "false_alarms_per_100_surveys_ci95": [
+    0.7345818104540358,
+    0.9497729285537451
+   ],
+   "moved_notices_per_100_surveys": 0.016680752635558918,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.09011838608359507,
+   "k1_caught_share_ci95": [
+    0.0775615888189897,
+    0.1016285662910573
+   ],
+   "k1_mean_surveys_until_caught": 1.8525469168900803,
+   "k5_losses": 22,
+   "k5_caught_share": 0.4090909090909091,
+   "k5_caught_share_ci95": [
+    0.1875,
+    0.625
+   ],
+   "k5_mean_surveys_until_caught": 1.2222222222222223,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.8027713933579828
+  },
+  {
+   "error_model": "measured_rho0.5",
+   "rule": "farm@0.99",
+   "false_alarms_per_100_surveys": 0.14567857301721454,
+   "false_alarms_per_100_surveys_ci95": [
+    0.11584577439094423,
+    0.1790605865989061
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.023435612466779415,
+   "k1_caught_share_ci95": [
+    0.01683943081226828,
+    0.030297619182766793
+   ],
+   "k1_mean_surveys_until_caught": 1.8762886597938144,
+   "k5_losses": 22,
+   "k5_caught_share": 0.045454545454545456,
+   "k5_caught_share_ci95": [
+    0.0,
+    0.15384615384615385
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1365710669198228
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "naive",
+   "false_alarms_per_100_surveys": 31.96810640096081,
+   "false_alarms_per_100_surveys_ci95": [
+    30.73908209463378,
+    33.19625400190949
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.8069582024643633,
+   "k1_caught_share_ci95": [
+    0.7912559401134,
+    0.8214238983252461
+   ],
+   "k1_mean_surveys_until_caught": 1.4023952095808383,
+   "k5_losses": 22,
+   "k5_caught_share": 1.0,
+   "k5_caught_share_ci95": [
+    1.0,
+    1.0
+   ],
+   "k5_mean_surveys_until_caught": 1.1818181818181819,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 31.123213750374738
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "interval@0.68",
+   "false_alarms_per_100_surveys": 12.571727236332903,
+   "false_alarms_per_100_surveys_ci95": [
+    12.066149103960894,
+    13.10560955686569
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.5216235805750181,
+   "k1_caught_share_ci95": [
+    0.501990987779744,
+    0.5417120156924762
+   ],
+   "k1_mean_surveys_until_caught": 1.6591014358499305,
+   "k5_losses": 22,
+   "k5_caught_share": 0.6363636363636364,
+   "k5_caught_share_ci95": [
+    0.43474637681159417,
+    0.85
+   ],
+   "k5_mean_surveys_until_caught": 1.5,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 12.196462476266614
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "interval@0.8",
+   "false_alarms_per_100_surveys": 8.653974467327966,
+   "false_alarms_per_100_surveys_ci95": [
+    8.224143249670705,
+    9.073218738903133
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.4252234839333172,
+   "k1_caught_share_ci95": [
+    0.40757468482663445,
+    0.44359399340917627
+   ],
+   "k1_mean_surveys_until_caught": 1.6829545454545454,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5909090909090909,
+   "k5_caught_share_ci95": [
+    0.38095238095238093,
+    0.8125
+   ],
+   "k5_mean_surveys_until_caught": 1.3076923076923077,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 8.327504080476999
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "interval@0.9",
+   "false_alarms_per_100_surveys": 3.862150260219741,
+   "false_alarms_per_100_surveys_ci95": [
+    3.619536304100357,
+    4.129912745815659
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.2597245711524523,
+   "k1_caught_share_ci95": [
+    0.2413127755672653,
+    0.2779564483327666
+   ],
+   "k1_mean_surveys_until_caught": 1.7702325581395348,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.22727272727272727,
+    0.7142857142857143
+   ],
+   "k5_mean_surveys_until_caught": 1.4,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.787348855800939
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "interval@0.95",
+   "false_alarms_per_100_surveys": 1.6513945109203327,
+   "false_alarms_per_100_surveys_ci95": [
+    1.5177715807155376,
+    1.793535656890595
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.13433196424257066,
+   "k1_caught_share_ci95": [
+    0.12110861943413406,
+    0.1478607738642202
+   ],
+   "k1_mean_surveys_until_caught": 1.8633093525179856,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.2222222222222222,
+    0.6818181818181818
+   ],
+   "k5_mean_surveys_until_caught": 1.4,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.6355218014056827
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "interval@0.99",
+   "false_alarms_per_100_surveys": 0.3013655976157644,
+   "false_alarms_per_100_surveys_ci95": [
+    0.2524639807089412,
+    0.35125989535776514
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.030442135781589757,
+   "k1_caught_share_ci95": [
+    0.02405314520225443,
+    0.03735878558452474
+   ],
+   "k1_mean_surveys_until_caught": 1.8333333333333333,
+   "k5_losses": 22,
+   "k5_caught_share": 0.22727272727272727,
+   "k5_caught_share_ci95": [
+    0.0625,
+    0.42857142857142855
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.299790146897172
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "recount@0.68",
+   "false_alarms_per_100_surveys": 6.030648102842401,
+   "false_alarms_per_100_surveys_ci95": [
+    5.666350294052911,
+    6.416490464054503
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.4022710799710075,
+   "k1_caught_share_ci95": [
+    0.38073763290699514,
+    0.42470487471351576
+   ],
+   "k1_mean_surveys_until_caught": 1.7051051051051052,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5909090909090909,
+   "k5_caught_share_ci95": [
+    0.35714285714285715,
+    0.8126420454545453
+   ],
+   "k5_mean_surveys_until_caught": 1.5384615384615385,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 5.860897371839712
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "recount@0.8",
+   "false_alarms_per_100_surveys": 3.9677950269116145,
+   "false_alarms_per_100_surveys_ci95": [
+    3.6874610473644336,
+    4.263828225104729
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.3114278811307079,
+   "k1_caught_share_ci95": [
+    0.2909111661767521,
+    0.3317619352185924
+   ],
+   "k1_mean_surveys_until_caught": 1.7486423584173778,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5454545454545454,
+   "k5_caught_share_ci95": [
+    0.318122009569378,
+    0.782608695652174
+   ],
+   "k5_mean_surveys_until_caught": 1.25,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.802338363145798
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "recount@0.9",
+   "false_alarms_per_100_surveys": 1.739246474800943,
+   "false_alarms_per_100_surveys_ci95": [
+    1.5704594836504826,
+    1.9057802029174402
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.181928001932834,
+   "k1_caught_share_ci95": [
+    0.16447324853892753,
+    0.19824593154989892
+   ],
+   "k1_mean_surveys_until_caught": 1.8074369189907038,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.24,
+    0.6956521739130435
+   ],
+   "k5_mean_surveys_until_caught": 1.5,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.6838213250724492
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "recount@0.95",
+   "false_alarms_per_100_surveys": 0.7873315243983808,
+   "false_alarms_per_100_surveys_ci95": [
+    0.7084007284839727,
+    0.873362541948174
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.08770234356124668,
+   "k1_caught_share_ci95": [
+    0.07570404782102515,
+    0.09990895946045689
+   ],
+   "k1_mean_surveys_until_caught": 1.8732782369146006,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.2352450980392157,
+    0.6875538793103447
+   ],
+   "k5_mean_surveys_until_caught": 1.4,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.7711268778521702
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "recount@0.99",
+   "false_alarms_per_100_surveys": 0.18348827899114808,
+   "false_alarms_per_100_surveys_ci95": [
+    0.15286347604474534,
+    0.22165698199933564
+   ],
+   "moved_notices_per_100_surveys": 0.0,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.019328340178787148,
+   "k1_caught_share_ci95": [
+    0.013804764032356318,
+    0.025419996578896747
+   ],
+   "k1_mean_surveys_until_caught": 1.875,
+   "k5_losses": 22,
+   "k5_caught_share": 0.22727272727272727,
+   "k5_caught_share_ci95": [
+    0.0625,
+    0.4348505434782608
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1882015922187802
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "farm@0.68",
+   "false_alarms_per_100_surveys": 4.5149237133579465,
+   "false_alarms_per_100_surveys_ci95": [
+    4.171223483686568,
+    4.889070747303511
+   ],
+   "moved_notices_per_100_surveys": 1.9894577643343268,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.4022710799710075,
+   "k1_caught_share_ci95": [
+    0.38157769071079556,
+    0.42384545254550826
+   ],
+   "k1_mean_surveys_until_caught": 1.7051051051051052,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5909090909090909,
+   "k5_caught_share_ci95": [
+    0.35714285714285715,
+    0.8400526315789473
+   ],
+   "k5_mean_surveys_until_caught": 1.5384615384615385,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 4.311981612870991
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "farm@0.8",
+   "false_alarms_per_100_surveys": 3.412881989235354,
+   "false_alarms_per_100_surveys_ci95": [
+    3.109681787878432,
+    3.7118665711663548
+   ],
+   "moved_notices_per_100_surveys": 0.7784351229927494,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.3114278811307079,
+   "k1_caught_share_ci95": [
+    0.29163590516417975,
+    0.33254880826869493
+   ],
+   "k1_mean_surveys_until_caught": 1.7486423584173778,
+   "k5_losses": 22,
+   "k5_caught_share": 0.5454545454545454,
+   "k5_caught_share_ci95": [
+    0.3333333333333333,
+    0.758655172413793
+   ],
+   "k5_mean_surveys_until_caught": 1.25,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 3.197761566903168
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "farm@0.9",
+   "false_alarms_per_100_surveys": 1.6447222098661092,
+   "false_alarms_per_100_surveys_ci95": [
+    1.4820537312180473,
+    1.8149230152337923
+   ],
+   "moved_notices_per_100_surveys": 0.12343756950313599,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.181928001932834,
+   "k1_caught_share_ci95": [
+    0.16428941980591863,
+    0.19874137409494122
+   ],
+   "k1_mean_surveys_until_caught": 1.8074369189907038,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.23995238095238094,
+    0.6666666666666666
+   ],
+   "k5_mean_surveys_until_caught": 1.5,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 1.5738982712101528
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "farm@0.95",
+   "false_alarms_per_100_surveys": 0.7650905208843023,
+   "false_alarms_per_100_surveys_ci95": [
+    0.6855653460418164,
+    0.8418660117229871
+   ],
+   "moved_notices_per_100_surveys": 0.027801254392598194,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.08770234356124668,
+   "k1_caught_share_ci95": [
+    0.07499707488299531,
+    0.09905450476011352
+   ],
+   "k1_mean_surveys_until_caught": 1.8732782369146006,
+   "k5_losses": 22,
+   "k5_caught_share": 0.45454545454545453,
+   "k5_caught_share_ci95": [
+    0.23809523809523808,
+    0.6923076923076923
+   ],
+   "k5_mean_surveys_until_caught": 1.4,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.7478098664268346
+  },
+  {
+   "error_model": "target_rho0.5",
+   "rule": "farm@0.99",
+   "false_alarms_per_100_surveys": 0.17459187758551667,
+   "false_alarms_per_100_surveys_ci95": [
+    0.14230294445805577,
+    0.20882784236846003
+   ],
+   "moved_notices_per_100_surveys": 0.008896401405631423,
+   "k1_losses": 4139,
+   "k1_caught_share": 0.019328340178787148,
+   "k1_caught_share_ci95": [
+    0.013914429047204245,
+    0.025131696242817164
+   ],
+   "k1_mean_surveys_until_caught": 1.875,
+   "k5_losses": 22,
+   "k5_caught_share": 0.22727272727272727,
+   "k5_caught_share_ci95": [
+    0.07136699507389163,
+    0.40632102272727266
+   ],
+   "k5_mean_surveys_until_caught": 1.0,
+   "false_alarms_per_100_surveys_farms_unrecorded_moves": 0.1782085873222078
+  }
+ ]
+}

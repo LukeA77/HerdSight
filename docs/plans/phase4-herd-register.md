@@ -96,3 +96,14 @@ Answers to the brief's questions:
 
 ## Verification
 *(Filled in as each step completes.)*
+
+- **S4 baseline** (`scripts/run_s4.py`, `results/phase4/s4_validation.json`; 400 simulated validation farms; simulation results, not field results). With the count error measured in Phase 1:
+  - naive rule: 19.68 false alarms per 100 surveys (18.90–20.45), 86% of losses of 5 or more caught (70%–100%), 72% of all losses;
+  - interval rule at 90%: 3.75 false alarms per 100 surveys (3.52–4.01), 50% of losses of 5 or more caught (28%–73%), 26% of all losses;
+  - recount rule at 90%: 1.51 false alarms per 100 surveys (1.34–1.68), 45% of losses of 5 or more caught (23%–70%), 17% of all losses;
+  - recount rule at 95%: 0.67 false alarms per 100 surveys (0.59–0.75), 32% of losses of 5 or more caught (12%–55%), 9% of all losses;
+  - farm-level rule at 90%: 1.44 false alarms per 100 surveys (1.28–1.61), 45% of losses of 5 or more caught (25%–69%), 17% of all losses.
+  With the S3 target's count error (15%), the recount rule at 90%: 1.22 false alarms per 100 surveys (1.10–1.35), 64% of losses of 5 or more caught (43%–83%), 18% of all losses.
+  Only 22 losses of 5 or more animals occurred across the validation farms, so the share caught for them has wide intervals. Single deaths are rarely caught at any setting: a one-animal change is far inside the count error of a whole camp.
+- **Hypotheses** (`scripts/judge_s4.py`, `results/phase4/hypotheses.json`): H13 not held, H14 held, H15 not held.
+- **Tests:** `tests/test_herd.py` (register arithmetic and moves, fast expected-count table against the register, interval coverage at its nominal level, rule and scoring cases with known answers). A first version of the simulator's intervals scaled with the square root of the count and covered 83% at a nominal 68%, because flight-total errors grow with the herd; intervals now scale with the count and cover at their level.

@@ -16,6 +16,9 @@ Phase 2 trains on rented GPUs (decision D-35). Each session is self-contained: n
 
 The start command ends with `runpodctl pod stop` and `sleep infinity` so that a failure anywhere never lets the container exit and restart, which would run the job again. `timeout` caps the job's length, so a stuck job cannot keep billing.
 
+## Choosing a machine
+D-FINE's image preparation runs on the CPU, so a fast GPU needs enough CPU cores: with 7 usable cores an A40 trained more slowly than Kaggle's T4 (`results/phase2/run_ledger.csv`, g0-3). Pods are created with at least 16 vCPUs per GPU (`minVcpuCountPerGpu`). A job that fails keeps its pod for 10 minutes so the error can be read before it shuts down.
+
 ## Jobs
 | Job | What it does | Expected time |
 |---|---|---|

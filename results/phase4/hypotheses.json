@@ -1,0 +1,27 @@
+{
+ "error_model": "measured_rho0.0",
+ "level": 0.9,
+ "note": "Simulation results on simulated farms; not field results.",
+ "H13": {
+  "rule": "interval false alarms at most 1/5 of naive, and share of losses of 5+ caught at most 0.10 lower",
+  "naive_fa": 19.675503758729594,
+  "interval_fa": 3.7520572928250524,
+  "naive_k5_caught": 0.8636363636363636,
+  "interval_k5_caught": 0.5,
+  "outcome": "not held"
+ },
+ "H14": {
+  "rule": "recount false alarms at most half the interval rule's, and mean surveys until a loss of 5+ is caught at most 1 higher",
+  "interval_fa": 3.7520572928250524,
+  "recount_fa": 1.506827988078822,
+  "interval_delay": 1.5454545454545454,
+  "recount_delay": 1.6,
+  "outcome": "held"
+ },
+ "H15": {
+  "rule": "on farms with unrecorded-move share above 0.05, farm-rule false alarms at most half the recount rule's",
+  "recount_fa": 1.4140101928649944,
+  "farm_fa": 1.3340661536924152,
+  "outcome": "not held"
+ }
+}

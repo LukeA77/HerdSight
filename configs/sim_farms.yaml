@@ -1,0 +1,75 @@
+# Simulated farms for Phase 4 (herd register and alerts, S4). The owner has no farm data and asked
+# for these to be set from published sources (docs/questions.md Q11). Each value records its
+# source; where sources are thin, the value is a range that the results are swept across, so no
+# single assumption decides an outcome. Results from this file are simulation results, never field
+# results.
+
+herd_size_range:
+  value: [20, 600]
+  placeholder: HERD_SIZE_RANGE
+  source: "Animals per farm, swept. South African beef study estimate: average commercial herd 413 head, smallholder 19 (cited in a South African beef industry study report, via farms.com 'A glimpse into South African beef production'); the UK beef breeding herd is 1.3 million cows (Defra, Livestock populations in the UK at 1 June 2025), mostly in herds far smaller than South African commercial ones. The range covers smallholder to large commercial."
+
+camps_per_farm_range:
+  value: [2, 13]
+  placeholder: CAMPS_RANGE
+  source: "Swept. Upper end from a KwaZulu-Natal extensive operation with 13 grazing camps of 470-840 ha on 9,000 ha (Farmer's Weekly, 'Beefing up cattle using the continuous grazing system'); lower end for small enclosed UK fields."
+
+annual_mortality_range:
+  value: [0.02, 0.12]
+  placeholder: MORTALITY
+  source: "Adult breeder mortality per year, swept, central value 0.057. Extensive northern Australian systems: 2-12% per year (Meat & Livestock Australia, B.NBP.0664 literature review), median 5.7% over 36 properties (Fordyce et al., Animal Production Science, AN19431). No UK or South African adult-cow figure was found; Australia's extensive systems are used as the closest published evidence and the range covers lower-risk UK farms."
+
+theft_share_per_year:
+  value: [0.0, 0.01]
+  placeholder: THEFT_SHARE
+  source: "Share of a farm's cattle stolen per year, swept; 0 for farms without theft. South Africa: 53,600 cattle reported stolen to SAPS in 2024/25 (South African Government media statement, Minister Steenhuisen, 27 June 2025) out of roughly 12-14 million cattle, about 0.4% on average, with heavy concentration in some areas; official figures are said to undercount (ISS/ENACT)."
+
+theft_event_size_range:
+  value: [1, 20]
+  placeholder: THEFT_SIZE
+  source: "Animals taken per theft, swept. SAPS 2024/25: 190,000 head of livestock in 25,606 complaints, about 7 animals per complaint across species (same statement); the range covers single animals to a lorry load."
+
+straying_events_per_camp_year:
+  value: [0.0, 2.0]
+  placeholder: STRAYING
+  source: "Animals leaving a camp through a fence and turning up later, swept. No published rate was found; the range spans none to frequent, and results are reported across it."
+
+unrecorded_move_share:
+  value: [0.0, 0.2]
+  placeholder: UNRECORDED_MOVES
+  source: "Share of moves between camps not entered in the register, swept. No direct figure was found; a 52-herd Australian study found 10.9% of pregnant cows went 'missing' per year, a figure that includes lost tags and unrecorded movements (Fordyce et al., AN19431), so record-keeping gaps of this order are plausible."
+
+register_error_share:
+  value: [0.0, 0.05]
+  placeholder: REGISTER_ERRORS
+  source: "Share of birth, sale or death events entered wrongly or late, swept. No published figure was found; chosen to span perfect records to occasional mistakes."
+
+surveys_per_month:
+  value: [1, 4]
+  placeholder: SURVEY_FREQUENCY
+  source: "How often each camp is surveyed, swept: monthly to weekly. Design choice for a drone service; no published standard."
+
+months_per_farm:
+  value: 12
+  placeholder: SIM_MONTHS
+  source: "Length of each simulated farm history; long enough for several losses per farm at the rates above."
+
+farms_validation:
+  value: 400
+  placeholder: N_FARMS_VAL
+  source: "Simulated farms for choosing the alert rule and the dial (seed below)."
+
+farms_test:
+  value: 400
+  placeholder: N_FARMS_TEST
+  source: "Simulated farms held out for the Phase 7 test run, with a different seed; never used for tuning."
+
+seed_validation:
+  value: 20261121
+  placeholder: SEED_VAL
+  source: "Fixed before any Phase 4 run."
+
+seed_test:
+  value: 20271121
+  placeholder: SEED_TEST
+  source: "Fixed before any Phase 4 run; different from the validation seed."
