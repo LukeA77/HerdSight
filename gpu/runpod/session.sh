@@ -68,9 +68,11 @@ print(json.dumps(row, indent=1))
 PY
 
 # --- upload to a new private Kaggle dataset -------------------------------------------------
-USER_REF=$(kaggle datasets list --mine --csv 2>/dev/null | sed -n 2p | cut -d, -f1 | cut -d/ -f1)
+kaggle datasets list --mine --csv > /tmp/mine_up.csv 2>&1
+USER_REF=$(grep -m1 '/' /tmp/mine_up.csv | cut -d, -f1 | cut -d/ -f1)
 if [ -z "$USER_REF" ]; then
-    echo "could not read the Kaggle username from the token"
+    echo "could not read the Kaggle username (Kaggle's reply below; no key is printed):"
+    head -3 /tmp/mine_up.csv
     stop_pod
     park
 fi

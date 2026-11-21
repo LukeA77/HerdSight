@@ -22,16 +22,26 @@ python -c "import torch; print('torch', torch.__version__, 'cuda', torch.version
 
 echo "== 2. training tiles from Kaggle"
 T=$(date +%s)
-kaggle datasets list --mine --csv | cut -d, -f1 | grep -i herdsight | grep -v herdsight-rp- \
-    | while read -r ref; do
-        echo "downloading $ref"
-        kaggle datasets download "$ref" -p "$PKG" --unzip -q
-    done
+if ! kaggle datasets list --mine --csv > /tmp/mine.csv 2>&1; then
+    echo "Kaggle refused the request (is the kaggle_api_token secret valid?):"
+    head -5 /tmp/mine.csv
+    exit 3
+fi
+REFS=$(cut -d, -f1 /tmp/mine.csv | grep -i herdsight | grep -v herdsight-rp- || true)
+if [ -z "$REFS" ]; then
+    echo "No HerdSight datasets found on the Kaggle account. First lines of the listing:"
+    head -5 /tmp/mine.csv
+    exit 3
+fi
+for ref in $REFS; do
+    echo "downloading $ref"
+    kaggle datasets download "$ref" -p "$PKG" --unzip -q || { echo "download failed: $ref"; exit 3; }
+done
 TILES_S=$(( $(date +%s) - T ))
 du -sh "$PKG"
 
 echo "== 3. Zenodo download speed (2 minutes)"
-ZEN=$(curl -s -L -o /dev/null --max-time 120 -w '%{size_download} %{time_total}' \
+ZEN=$(curl -s -L -o /dev/null --connect-timeout 20 --max-time 120 -w '%{size_download} %{time_total}' \
     "https://zenodo.org/records/11048412/files/Cattle_drone_images_042024.zip?download=1")
 echo "zenodo bytes and seconds: $ZEN"
 

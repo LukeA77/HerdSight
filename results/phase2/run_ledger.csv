@@ -1,0 +1,2 @@
+tag,date_utc,job,gpu,cloud,price_per_hr,minutes,cost_usd,outcome,note
+smoke-1,2026-11-21,smoke,NVIDIA A40,SECURE,0.59,7,0.07,failed,"Kaggle API token not accepted by kaggle CLI 2.2.5; pod deleted by hand; cost estimated from run time"
