@@ -47,7 +47,13 @@ echo "open-file limit: $(ulimit -n)"
 python -m pip install -q -U kaggle >/dev/null 2>&1 || echo "WARNING: kaggle install failed"
 
 JOB="$REPO/gpu/runpod/job_${HS_JOB}.sh"
-if [ -f "$JOB" ]; then
+# Some rented hosts show the GPU but its driver cannot start (CUDA error 999; sessions g0-2 and
+# g0-6). Check before downloading anything; such a host is not worth holding (exit code 10).
+GPU_INIT=$(python -c 'import ctypes; print(ctypes.CDLL("libcuda.so.1").cuInit(0))' 2>&1 | tail -1)
+if [ "$GPU_INIT" != "0" ]; then
+    echo "host GPU unusable (cuInit returned: $GPU_INIT); not running the job"
+    JOB_RC=10
+elif [ -f "$JOB" ]; then
     bash "$JOB"
     JOB_RC=$?
 else
@@ -56,7 +62,7 @@ else
 fi
 echo "job exit code: $JOB_RC"
 T1=$(date +%s)
-if [ "$JOB_RC" -ne 0 ]; then
+if [ "$JOB_RC" -ne 0 ] && [ "$JOB_RC" -ne 10 ]; then
     # keep the machine for 10 minutes so the error can be read on it, then carry on as normal
     echo "job failed: holding the pod for 10 minutes before uploading and shutting down"
     sleep 600

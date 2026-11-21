@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/LukeA77/HerdSight/dashboard/schemas/survey_result.v1.json",
+  "title": "HerdSight survey result, version 1",
+  "description": "One drone check of one camp: the count with its likely ranges, the number in the herd records, the camp's status and any alert. The dashboard reads only this record (D-17). Produced by python/herdsight/herd/messages.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "survey_id", "farm_id", "camp_id", "surveyed_at", "mode", "simulated",
+    "count", "intervals", "expected_count", "status", "alerts", "notes", "evidence", "pipeline"
+  ],
+  "properties": {
+    "schema_version": {"const": "1"},
+    "survey_id": {"type": "string", "minLength": 1},
+    "farm_id": {"type": "string", "minLength": 1},
+    "camp_id": {"type": "string", "minLength": 1},
+    "camp_name": {"type": "string"},
+    "surveyed_at": {"type": "string", "format": "date-time"},
+    "mode": {
+      "enum": ["survey", "recount"],
+      "description": "survey = scheduled check; recount = second check after a shortfall"
+    },
+    "simulated": {
+      "type": "boolean",
+      "description": "true for records from the farm simulator; such records are never field results"
+    },
+    "count": {"type": "integer", "minimum": 0},
+    "intervals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["level", "low", "high"],
+        "properties": {
+          "level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+          "low": {"type": "integer", "minimum": 0},
+          "high": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "dense_herd": {"type": "boolean"},
+    "coverage": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "share of the camp area seen, when known"
+    },
+    "expected_count": {"type": ["integer", "null"], "minimum": 0},
+    "status": {"enum": ["ok", "check", "moved", "missing", "unknown"]},
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["alert_id", "kind", "message", "shortfall_low", "shortfall_high", "checks", "rule"],
+        "properties": {
+          "alert_id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["missing", "moved"]},
+          "message": {"type": "string", "minLength": 1},
+          "shortfall_low": {"type": "integer", "minimum": 0},
+          "shortfall_high": {"type": "integer", "minimum": 0},
+          "checks": {"type": "integer", "minimum": 1, "description": "drone checks that agree"},
+          "other_camp_id": {"type": ["string", "null"]},
+          "rule": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "level"],
+            "properties": {
+              "name": {"enum": ["naive", "interval", "recount", "farm"]},
+              "level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+              "large_loss": {"type": "number", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "notes": {"type": "array", "items": {"type": "string"}},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "uri"],
+        "properties": {
+          "type": {"enum": ["image", "map"]},
+          "uri": {"type": "string", "minLength": 1},
+          "caption": {"type": "string"}
+        }
+      }
+    },
+    "pipeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "count_error_model"],
+      "properties": {
+        "version": {"type": "string"},
+        "count_error_model": {"type": "string", "description": "which count error model the intervals came from"}
+      }
+    }
+  }
+}

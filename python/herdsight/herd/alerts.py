@@ -62,13 +62,14 @@ def run_rule(
         exp = expected(s.camp, s.day)
         if not _short(s, exp, rule):
             continue
-        kind = "missing"
+        kind, checks, other = "missing", 1, None
         if rule.name in ("recount", "farm") and exp - s.hi[rule.level] < rule.big:
             day = s.day + 1
             t = true_by_day[min(int(day), len(true_by_day) - 1)][1][s.camp]
             again = survey(day, s.camp, t, err, q, {s.camp: s.z}, rng)
             if not _short(again, expected(s.camp, day), rule):
                 continue
+            checks = 2
         if rule.name == "farm":
             gap = exp - s.hi[rule.level]
             for c, o in recent.items():
@@ -76,10 +77,19 @@ def run_rule(
                     continue
                 surplus = o.lo[rule.level] - expected(c, o.day)
                 if surplus > 0 and surplus >= 0.5 * gap:
-                    kind = "moved"
+                    kind, other = "moved", c
                     break
         alerts.append(
-            {"day": s.day, "camp": s.camp, "kind": kind, "expected": exp, "count": s.count}
+            {
+                "day": s.day,
+                "camp": s.camp,
+                "kind": kind,
+                "expected": exp,
+                "count": s.count,
+                "checks": checks,
+                "other_camp": other,
+                "survey": s,
+            }
         )
         # the farmer checks; the register is set to the camp's true count
         fixes[s.camp].append((s.day, s.true - expected(s.camp, s.day)))

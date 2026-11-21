@@ -24,7 +24,7 @@ Exit (brief §12): the S4 trade-off curve on validation scenarios.
 - Empty `IdentitySource` interface kept (D-12).
 
 ### 2. Survey results the rule works on
-Each survey of a camp gives a count, a calibrated interval (68/90/95%) and a flag for dense herds (from Phase 2's density cross-check). This is the same record the dashboard will read (D-17), so a first version of the **results schema** (`schemas/survey_result.v1.json`) is written here and reused in Phase 6.
+Each survey of a camp gives a count, a calibrated interval (68/90/95%) and a flag for dense herds (from Phase 2's density cross-check). This is the same record the dashboard will read (D-17), so a first version of the **results schema** (`dashboard/schemas/survey_result.v1.json`, kept beside the dashboard that reads it) is written here and reused in Phase 6.
 
 ### 3. Simulator of surveys (Python, `herdsight.sim.surveys`)
 A simulated farm: camps, herds, events and surveys over months. Known truth at every moment.
@@ -114,4 +114,6 @@ Answers to the brief's questions:
   With the S3 target's count error, the recount rule at 90%: 1.17 (1.14-1.20), 67% (60%-73%). With correlated surveys of a camp (correlation 0.5) and the Phase 1 count error: 1.95 (1.89-2.00), 54% (47%-61%). The 400-farm figures for losses of 5 or more were low by chance; H13-H15 come out the same on 4000 farms.
 - **S4 target set** (D-37, `configs/specs.yaml`): recount rule at 90%, at most 1.5 false alarms per 100 surveys and at least 65% of losses of 5 or more caught within 3 surveys.
 - **Hypotheses** (`scripts/judge_s4.py`, `results/phase4/hypotheses.json`): H13 not held, H14 held, H15 not held.
+- **Results schema and messages** (steps 2 and 5): `dashboard/schemas/survey_result.v1.json` (one record per drone check of a camp: count, likely ranges, number in the records, status, alerts, notes, evidence, and a `simulated` flag so simulator output can never pass as field results); `dashboard/glossary.yaml` (every farmer-facing word and sentence, ready for translation, with a list of technical words that must never appear); `python/herdsight/herd/messages.py` builds the records. Alerts now record how many checks agreed and, for "may have moved", the other camp. Empty `IdentitySource` interface for later tags (D-12): `python/herdsight/herd/identity.py`.
+- **Tests:** `tests/test_messages.py` (schema valid; a record for each status validates; every glossary sentence is free of technical words; every survey of a simulated farm gives a valid, plain record with whole animal numbers).
 - **Tests:** `tests/test_herd.py` (register arithmetic and moves, fast expected-count table against the register, interval coverage at its nominal level, rule and scoring cases with known answers). A first version of the simulator's intervals scaled with the square root of the count and covered 83% at a nominal 68%, because flight-total errors grow with the herd; intervals now scale with the count and cover at their level.

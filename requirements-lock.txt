@@ -1,9 +1,12 @@
 # Pinned versions for development and CI (not for training notebooks; see docs/plans/phase0-setup.md).
+attrs==26.1.0
 colorama==0.4.6
 coverage==7.17.3
 defusedxml==0.7.1
 flatbuffers==25.12.19
 iniconfig==2.3.1
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
 numpy==2.5.5
 onnxruntime==1.32.0
 opencv-python-headless==5.1.0.95
@@ -18,5 +21,8 @@ pymap3d==3.2.0
 pytest==9.2.0
 pytest-cov==7.1.0
 PyYAML==6.0.3
+referencing==0.37.0
+rpds-py==2026.9.1
 ruff==0.17.5
 scipy==1.18.1
+typing_extensions==4.16.0

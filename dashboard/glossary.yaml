@@ -1,0 +1,56 @@
+# Plain-language glossary (D-17). Every technical term the system uses internally has one
+# plain version here; only the plain versions reach the farmer. Ready for translation: copy the
+# file per language and translate the right-hand sides. Message templates use {placeholders}
+# filled by python/herdsight/herd/messages.py.
+
+language: en-GB
+
+terms:
+  count: "count"
+  interval: "likely range"          # a calibrated count interval
+  expected_count: "number in your records"
+  herd_register: "herd records"
+  camp: "camp"                      # paddock / field; farms can rename it in settings
+  survey: "drone check"
+  recount: "second check"
+  false_alarm: "alert that turned out fine"
+  correction: "records updated"
+  dense_herd: "animals packed closely together"
+  partial_survey: "part of the camp was not seen"
+
+animals:
+  default: "animals"
+  cattle: "cows"
+
+# Camp status shown on the farm map.
+status:
+  ok: {colour: green, label: "All here"}
+  check: {colour: amber, label: "Checking again"}
+  moved: {colour: amber, label: "May have moved"}
+  missing: {colour: red, label: "Some may be missing"}
+  unknown: {colour: grey, label: "Not checked yet"}
+
+messages:
+  ok: "{camp}: {count} {animals} counted (likely between {low} and {high}). That matches your records ({expected})."
+  check: "{camp}: fewer {animals} than your records show. The drone will check again before raising an alert."
+  missing_checked_twice: "Some {animals} may be missing in {camp}: about {short_low} to {short_high} fewer than your records show ({expected}). Checked twice."
+  missing_large: "Some {animals} may be missing in {camp}: about {short_low} to {short_high} fewer than your records show ({expected}). This is a large difference, so you are told straight away."
+  moved: "{camp} has about {short_low} to {short_high} fewer {animals} than your records show, and {other_camp} has more than expected. They may have moved between camps."
+  dense_note: "The animals were packed closely together, so this count is less certain."
+  partial_note: "Part of the camp could not be seen."
+  action_resolved: "Mark as sorted"
+  action_records: "Update my records"
+
+# Words that must never appear in a farmer-facing message (checked by tests).
+banned_in_messages:
+  - interval
+  - conformal
+  - confidence
+  - quantile
+  - detector
+  - model
+  - recall
+  - precision
+  - register
+  - threshold
+  - percent

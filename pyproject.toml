@@ -29,6 +29,7 @@ dev = [
     "pymap3d",  # independent reference in tests only
     "pybind11>=2.12",  # C++ bindings; 2.12+ is needed for NumPy 2
     "opencv-python-headless",  # label tools under test
+    "jsonschema",  # results schema checks
 ]
 
 [tool.setuptools.packages.find]
