@@ -7,8 +7,9 @@
 set -uo pipefail
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 source "$REPO/gpu/runpod/lib.sh"
-PKGROOT=/workspace/packages
-WORK=/workspace/work
+# packages and training files on the container's local disk (fast); outputs go to $OUT
+PKGROOT=/root/hs_packages
+WORK=/root/hs_work
 download_tiles "$PKGROOT" || exit 3
 PKG=$(package_dir "$PKGROOT" herdsight_tiles_v1) || { echo "package not found"; exit 3; }
 python -m pip install -q onnxruntime-gpu || echo "WARNING: onnxruntime-gpu not installed, CPU scoring"
@@ -20,13 +21,14 @@ print(c["g0_holdout_group"]["value"], c["hypotheses"]["value"]["H9"]["centre_rec
 PY
 )
 echo "hold-out group: $HOLDOUT"
-NPROC=$(nproc)
-WORKERS=$(( NPROC > 16 ? 12 : NPROC - 2 ))
+NCPU=$(usable_cpus)
+WORKERS=$(( NCPU > 14 ? 12 : (NCPU > 3 ? NCPU - 2 : 1) ))
+echo "usable CPUs: $NCPU, data-loading workers: $WORKERS"
 for EP in 72 220; do
     RUN="g0_e${EP}"
     python "$REPO/gpu/train_dfine.py" --run "$RUN" --package "$PKG" --fold fold0 \
         --epochs "$EP" --recipe phase1 --exclude "$EXCLUDE" --holdout-group "$HOLDOUT" \
-        --workers "$WORKERS" --work "$WORK" || exit 4
+        --workers "$WORKERS" --work "$WORK" --dfine /root/D-FINE || exit 4
     python "$REPO/gpu/eval_tiles.py" --onnx "$WORK/$RUN/last.onnx" \
         --ann "$WORK/$RUN/holdout.json" --images "$PKG/images" --out "$OUT/${RUN}_eval.json" \
         || exit 5

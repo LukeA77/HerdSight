@@ -195,6 +195,9 @@ def main(argv: list[str] | None = None) -> int:
         help="local check only: N tiles, CPU, given --epochs; never a model to keep",
     )
     args = ap.parse_args(argv)
+    args.work, args.package, args.dfine = (
+        p.resolve() for p in (args.work, args.package, args.dfine)
+    )
     t0 = time.time()
     # augmentation stops for the last epochs: the authors' 220/200, Phase 1's 72/66
     aug_off = {220: 200, 72: 66}.get(args.epochs, max(1, args.epochs - round(args.epochs / 11)))
@@ -205,7 +208,17 @@ def main(argv: list[str] | None = None) -> int:
     sh("git", "-C", str(repo), "checkout", "-q", DFINE_COMMIT)
     if not (repo / ".hs_deps").exists() and not args.cpu_smoke:
         sh(sys.executable, "-m", "pip", "install", "-q", "-r", str(repo / "requirements.txt"))
-        sh(sys.executable, "-m", "pip", "install", "-q", "onnx", "onnxsim", "pycocotools")
+        sh(
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "-q",
+            "onnx",
+            "onnxsim",
+            "pycocotools",
+            "matplotlib",
+        )
         sh(sys.executable, "-m", "pip", "install", "-q", "faster-coco-eval==1.8.0")  # see Phase 1
         (repo / ".hs_deps").touch()
     # register the Phase 2 augmentations inside D-FINE (idempotent)
@@ -215,6 +228,8 @@ def main(argv: list[str] | None = None) -> int:
     if "hs_ops" not in init.read_text():
         init.write_text(init.read_text() + "\nfrom . import hs_ops  # HerdSight Phase 2 ops\n")
 
+    # fail in seconds, not after downloads and set-up, if a dependency is missing
+    sh(sys.executable, "-c", "import src.solver, src.data.transforms.hs_ops", cwd=repo)
     import torch
     import yaml
 

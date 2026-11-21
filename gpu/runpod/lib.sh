@@ -38,3 +38,19 @@ for d, _, files in os.walk(root):
 sys.exit(1)
 PY
 }
+
+# CPUs this container may use (cgroup quota), not the host's count that nproc reports.
+usable_cpus() {
+    python - <<'PY'
+import os
+n = len(os.sched_getaffinity(0))
+try:
+    quota, period = open("/sys/fs/cgroup/cpu.max").read().split()
+    if quota != "max":
+        n = min(n, max(1, int(int(quota) / int(period))))
+except (OSError, ValueError):
+    pass
+print(n)
+PY
+}
+
