@@ -147,6 +147,57 @@ def _greedy_tp(img: ImageDetections, kappa: float, threshold: float) -> NDArray[
     return tp
 
 
+def match_table(
+    images: Sequence[ImageDetections], kappa: float, thresholds: ArrayLike = COCO_THRESHOLDS
+) -> list[NDArray[np.bool_]]:
+    """Per image, a (P, K) table: is prediction p a true positive at similarity threshold k.
+
+    COCO matching never crosses images, so the table can be computed once and reused when images
+    are resampled (bootstrap intervals for AP)."""
+    thr = np.asarray(thresholds, float).reshape(-1)
+    return [
+        np.column_stack([_greedy_tp(img, kappa, t) for t in thr])
+        if img.pred_xy.shape[0]
+        else np.zeros((0, thr.shape[0]), bool)
+        for img in images
+    ]
+
+
+def _stack(parts: Sequence[NDArray[np.bool_]], k: int) -> NDArray[np.bool_]:
+    return np.concatenate(parts, axis=0) if len(parts) else np.zeros((0, k), bool)
+
+
+def _ap_per_threshold(scores: NDArray, tp: NDArray[np.bool_], n_true: int) -> NDArray[np.float64]:
+    """101-point interpolated AP per column of tp (one column per similarity threshold)."""
+    ap = np.full(tp.shape[1], np.nan)
+    if n_true == 0:
+        return ap
+    tp = tp[np.argsort(-scores, kind="stable")]
+    for k in range(tp.shape[1]):
+        ctp = np.cumsum(tp[:, k])
+        cfp = np.cumsum(~tp[:, k])
+        recall = ctp / n_true
+        precision = ctp / np.maximum(ctp + cfp, 1)
+        # Make precision monotonically non-increasing from the right (COCO's envelope).
+        precision = np.maximum.accumulate(precision[::-1])[::-1] if precision.size else precision
+        idx = np.searchsorted(recall, RECALL_POINTS, side="left")
+        sampled = np.array([precision[i] if i < precision.size else 0.0 for i in idx], dtype=float)
+        ap[k] = float(sampled.mean())
+    return ap
+
+
+def ap_mean_subset(
+    images: Sequence[ImageDetections], table: Sequence[NDArray[np.bool_]], idx: ArrayLike
+) -> float:
+    """Mean AP over thresholds for the images at idx (repeats allowed), from a match_table."""
+    idx = np.asarray(idx, int).reshape(-1)
+    n_true = int(sum(images[i].true_xy.shape[0] for i in idx))
+    k = table[0].shape[1] if len(table) else 0
+    scores = np.concatenate([images[i].pred_score for i in idx]) if idx.size else np.zeros(0, float)
+    ap = _ap_per_threshold(scores, _stack([table[i] for i in idx], k), n_true)
+    return float(np.nanmean(ap)) if np.isfinite(ap).any() else float("nan")
+
+
 def average_precision(
     images: Sequence[ImageDetections],
     kappa: float,
@@ -158,24 +209,10 @@ def average_precision(
     at all, AP is undefined and returned as NaN.
     """
     thr = np.asarray(thresholds, float).reshape(-1)
+    table = match_table(images, kappa, thr)
     n_true = sum(img.true_xy.shape[0] for img in images)
     scores = np.concatenate([img.pred_score for img in images]) if images else np.zeros(0)
-    order = np.argsort(-scores, kind="stable")
-    ap = np.full(thr.shape[0], np.nan)
-    for k, t in enumerate(thr):
-        if n_true == 0:
-            continue
-        tp = np.concatenate([_greedy_tp(img, kappa, t) for img in images]) if images else []
-        tp = np.asarray(tp, bool)[order]
-        ctp = np.cumsum(tp)
-        cfp = np.cumsum(~tp)
-        recall = ctp / n_true
-        precision = ctp / np.maximum(ctp + cfp, 1)
-        # Make precision monotonically non-increasing from the right (COCO's envelope).
-        precision = np.maximum.accumulate(precision[::-1])[::-1] if precision.size else precision
-        idx = np.searchsorted(recall, RECALL_POINTS, side="left")
-        sampled = np.array([precision[i] if i < precision.size else 0.0 for i in idx], dtype=float)
-        ap[k] = float(sampled.mean())
+    ap = _ap_per_threshold(scores, _stack(table, thr.shape[0]), n_true)
     return {
         "thresholds": thr.tolist(),
         "ap": ap.tolist(),

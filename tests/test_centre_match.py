@@ -8,9 +8,11 @@ import pytest
 from herdsight.evaluate.centre_match import (
     COCO_THRESHOLDS,
     ImageDetections,
+    ap_mean_subset,
     average_precision,
     box_centres,
     match_hungarian,
+    match_table,
     short_side,
     similarity_matrix,
 )
@@ -131,3 +133,19 @@ def test_stricter_thresholds_reject_offset_predictions():
 def test_no_truth_anywhere_is_nan():
     r = average_precision([_img([[0, 0]], [0.9], np.zeros((0, 2)))], KAPPA)
     assert math.isnan(r["ap_mean"])
+
+
+def test_ap_from_match_table_equals_full_ap_and_handles_resampling():
+    hit = _img([[0, 0]], [0.5], [[0, 0]])
+    empty_fp = _img([[10, 10]], [0.9], np.zeros((0, 2)))
+    miss = _img(np.zeros((0, 2)), [], [[100, 100]])
+    imgs = [hit, empty_fp, miss]
+    table = match_table(imgs, KAPPA)
+    assert [t.shape for t in table] == [(1, 10), (1, 10), (0, 10)]
+    full = average_precision(imgs, KAPPA)["ap_mean"]
+    assert ap_mean_subset(imgs, table, [0, 1, 2]) == pytest.approx(full)
+    # a resample that repeats one image and drops another equals AP on that multiset of images
+    assert ap_mean_subset(imgs, table, [0, 0, 2]) == pytest.approx(
+        average_precision([hit, hit, miss], KAPPA)["ap_mean"]
+    )
+    assert math.isnan(ap_mean_subset(imgs, table, [1]))  # no truth in the sample

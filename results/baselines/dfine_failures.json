@@ -1,0 +1,476 @@
+{
+ "detector": "dfine",
+ "note": "Diagnostic breakdown of out-of-fold errors at each fold's operating threshold. Public-data results, not field results.",
+ "n_images": 1323,
+ "n_animals": 3392,
+ "animals": {
+  "by_outcome": {
+   "below_cutoff": 443,
+   "found": 2909,
+   "badly_placed": 15,
+   "not_found": 25
+  },
+  "missed": 483,
+  "miss_rate_by_size_quintile": [
+   {
+    "short_side_px": [
+     8.1,
+     27.7
+    ],
+    "n": 679,
+    "miss_rate": 0.2931
+   },
+   {
+    "short_side_px": [
+     27.7,
+     35.9
+    ],
+    "n": 678,
+    "miss_rate": 0.177
+   },
+   {
+    "short_side_px": [
+     35.9,
+     46.3
+    ],
+    "n": 678,
+    "miss_rate": 0.0782
+   },
+   {
+    "short_side_px": [
+     46.3,
+     61.0
+    ],
+    "n": 678,
+    "miss_rate": 0.087
+   },
+   {
+    "short_side_px": [
+     61.0,
+     134.2
+    ],
+    "n": 679,
+    "miss_rate": 0.0766
+   }
+  ],
+  "miss_rate_by_touching": {
+   "True": {
+    "n": 736,
+    "miss_rate": 0.2812
+   },
+   "False": {
+    "n": 2656,
+    "miss_rate": 0.1039
+   }
+  },
+  "miss_rate_by_edge": {
+   "True": {
+    "n": 118,
+    "miss_rate": 0.4661
+   },
+   "False": {
+    "n": 3274,
+    "miss_rate": 0.1307
+   }
+  },
+  "miss_rate_by_altitude": {
+   "100m": {
+    "n": 2848,
+    "miss_rate": 0.1229
+   },
+   "60m": {
+    "n": 499,
+    "miss_rate": 0.2505
+   },
+   "90m": {
+    "n": 45,
+    "miss_rate": 0.1778
+   }
+  },
+  "miss_rate_by_group": {
+   "Derval/20230809": {
+    "n": 212,
+    "miss_rate": 0.6651
+   },
+   "Jalogny/20230623": {
+    "n": 77,
+    "miss_rate": 0.039
+   },
+   "Jalogny/20230627": {
+    "n": 94,
+    "miss_rate": 0.0319
+   },
+   "Jalogny/20230726": {
+    "n": 195,
+    "miss_rate": 0.0256
+   },
+   "Jalogny/20230803": {
+    "n": 195,
+    "miss_rate": 0.0205
+   },
+   "Jalogny/20230915": {
+    "n": 422,
+    "miss_rate": 0.09
+   },
+   "Jalogny/20230926": {
+    "n": 424,
+    "miss_rate": 0.0778
+   },
+   "Mauron/20230605": {
+    "n": 499,
+    "miss_rate": 0.1944
+   },
+   "Mauron/20230607": {
+    "n": 548,
+    "miss_rate": 0.1496
+   },
+   "Mauron/20231107": {
+    "n": 726,
+    "miss_rate": 0.1061
+   }
+  }
+ },
+ "false_detections": {
+  "total": 600,
+  "by_kind": {
+   "badly_placed": 48,
+   "duplicate": 3,
+   "background": 211,
+   "empty_image": 338
+  },
+  "empty_images": {
+   "images": 1019,
+   "images_with_any": 150,
+   "detections": 338,
+   "share_from_worst_10_images": 0.2633,
+   "per_group": {
+    "Derval/20230809": {
+     "images": 83,
+     "fp_per_image": 0.0
+    },
+    "Jalogny/20230623": {
+     "images": 35,
+     "fp_per_image": 0.3714
+    },
+    "Jalogny/20230627": {
+     "images": 102,
+     "fp_per_image": 0.4804
+    },
+    "Jalogny/20230726": {
+     "images": 31,
+     "fp_per_image": 0.1935
+    },
+    "Jalogny/20230803": {
+     "images": 22,
+     "fp_per_image": 0.0455
+    },
+    "Jalogny/20230915": {
+     "images": 77,
+     "fp_per_image": 0.0779
+    },
+    "Jalogny/20230926": {
+     "images": 82,
+     "fp_per_image": 0.9024
+    },
+    "Mauron/20230605": {
+     "images": 29,
+     "fp_per_image": 0.2414
+    },
+    "Mauron/20230607": {
+     "images": 390,
+     "fp_per_image": 0.0179
+    },
+    "Mauron/20231107": {
+     "images": 168,
+     "fp_per_image": 1.0417
+    }
+   },
+   "worst_images": [
+    {
+     "image": "Jalogny/DJI_202309261339_058/DJI_20230926134849_0032_V.JPG",
+     "group": "Jalogny/20230926",
+     "fp": 21
+    },
+    {
+     "image": "Jalogny/DJI_202309261339_058/DJI_20230926134844_0031_V.JPG",
+     "group": "Jalogny/20230926",
+     "fp": 15
+    },
+    {
+     "image": "Jalogny/DJI_202309261339_058/DJI_20230926134641_0009_V.JPG",
+     "group": "Jalogny/20230926",
+     "fp": 8
+    },
+    {
+     "image": "Mauron/DJI_202311071541_064/DJI_20231107154442_0028_V.JPG",
+     "group": "Mauron/20231107",
+     "fp": 8
+    },
+    {
+     "image": "Mauron/DJI_202311071541_065/DJI_20231107154934_0090_V.JPG",
+     "group": "Mauron/20231107",
+     "fp": 7
+    },
+    {
+     "image": "Jalogny/DJI_202309261339_059/DJI_20230926135434_0009_V.JPG",
+     "group": "Jalogny/20230926",
+     "fp": 6
+    },
+    {
+     "image": "Mauron/DJI_202311071541_064/DJI_20231107154439_0026_V.JPG",
+     "group": "Mauron/20231107",
+     "fp": 6
+    },
+    {
+     "image": "Mauron/DJI_202311071541_064/DJI_20231107154449_0033_V.JPG",
+     "group": "Mauron/20231107",
+     "fp": 6
+    },
+    {
+     "image": "Mauron/DJI_202311071541_065/DJI_20231107154856_0045_V.JPG",
+     "group": "Mauron/20231107",
+     "fp": 6
+    },
+    {
+     "image": "Mauron/DJI_202311071541_065/DJI_20231107154940_0097_V.JPG",
+     "group": "Mauron/20231107",
+     "fp": 6
+    }
+   ]
+  },
+  "score_share_at_least_0.9": {
+   "false": 0.41,
+   "true": 0.7906
+  }
+ },
+ "centre_placement_of_found_animals": {
+  "n": 2909,
+  "offset_over_short_side": {
+   "median": 0.0285,
+   "p90": 0.1221,
+   "rms": 0.0792
+  },
+  "hand_label_rms_kappa": 0.0764,
+  "share_failing_centre_match": 0.1605,
+  "explains": "Animals found by box overlap but whose box centre is further from the labelled centre than the centre-match rule allows; this is the gap between box-overlap recall and centre-matched recall."
+ },
+ "by_group": {
+  "Derval/20230809": {
+   "images": 124,
+   "animals": 212,
+   "median_alt_m": 60.1,
+   "count_mae": 0.9919,
+   "mean_signed_error": -0.9274,
+   "missed": 141,
+   "false": 26
+  },
+  "Jalogny/20230623": {
+   "images": 48,
+   "animals": 77,
+   "median_alt_m": 100.0,
+   "count_mae": 0.3542,
+   "mean_signed_error": 0.2292,
+   "missed": 3,
+   "false": 14
+  },
+  "Jalogny/20230627": {
+   "images": 121,
+   "animals": 94,
+   "median_alt_m": 60.0,
+   "count_mae": 0.6198,
+   "mean_signed_error": 0.5868,
+   "missed": 3,
+   "false": 74
+  },
+  "Jalogny/20230726": {
+   "images": 49,
+   "animals": 195,
+   "median_alt_m": 100.0,
+   "count_mae": 0.4694,
+   "mean_signed_error": 0.3061,
+   "missed": 5,
+   "false": 20
+  },
+  "Jalogny/20230803": {
+   "images": 43,
+   "animals": 195,
+   "median_alt_m": 100.0,
+   "count_mae": 0.3023,
+   "mean_signed_error": 0.1163,
+   "missed": 4,
+   "false": 9
+  },
+  "Jalogny/20230915": {
+   "images": 108,
+   "animals": 422,
+   "median_alt_m": 100.0,
+   "count_mae": 0.3981,
+   "mean_signed_error": -0.1759,
+   "missed": 38,
+   "false": 19
+  },
+  "Jalogny/20230926": {
+   "images": 107,
+   "animals": 424,
+   "median_alt_m": 100.0,
+   "count_mae": 1.028,
+   "mean_signed_error": 0.5981,
+   "missed": 33,
+   "false": 97
+  },
+  "Mauron/20230605": {
+   "images": 47,
+   "animals": 499,
+   "median_alt_m": 100.0,
+   "count_mae": 1.9362,
+   "mean_signed_error": -1.5957,
+   "missed": 97,
+   "false": 22
+  },
+  "Mauron/20230607": {
+   "images": 432,
+   "animals": 548,
+   "median_alt_m": 100.0,
+   "count_mae": 0.1991,
+   "mean_signed_error": -0.1667,
+   "missed": 82,
+   "false": 10
+  },
+  "Mauron/20231107": {
+   "images": 244,
+   "animals": 726,
+   "median_alt_m": 99.8,
+   "count_mae": 1.1803,
+   "mean_signed_error": 0.9508,
+   "missed": 77,
+   "false": 309
+  }
+ },
+ "worst_count_images": [
+  {
+   "image": "Jalogny/DJI_202309261339_058/DJI_20230926134849_0032_V.JPG",
+   "group": "Jalogny/20230926",
+   "true": 0,
+   "pred": 21,
+   "missed": 0,
+   "fp": 21
+  },
+  {
+   "image": "Mauron/DJI_202306071703_029/DJI_20230607171543_0003_V.JPG",
+   "group": "Mauron/20230607",
+   "true": 23,
+   "pred": 7,
+   "missed": 16,
+   "fp": 0
+  },
+  {
+   "image": "Jalogny/DJI_202309261339_058/DJI_20230926134844_0031_V.JPG",
+   "group": "Jalogny/20230926",
+   "true": 0,
+   "pred": 15,
+   "missed": 0,
+   "fp": 15
+  },
+  {
+   "image": "Mauron/DJI_202306051839_025/DJI_20230605184602_0025_V.JPG",
+   "group": "Mauron/20230605",
+   "true": 35,
+   "pred": 23,
+   "missed": 12,
+   "fp": 0
+  },
+  {
+   "image": "Mauron/DJI_202306051839_025/DJI_20230605184604_0026_V.JPG",
+   "group": "Mauron/20230605",
+   "true": 53,
+   "pred": 41,
+   "missed": 13,
+   "fp": 1
+  },
+  {
+   "image": "Mauron/DJI_202306051839_025/DJI_20230605184613_0033_V.JPG",
+   "group": "Mauron/20230605",
+   "true": 53,
+   "pred": 41,
+   "missed": 12,
+   "fp": 0
+  },
+  {
+   "image": "Derval/DJI_202308091442_012/DJI_20230809145621_0023_V.JPG",
+   "group": "Derval/20230809",
+   "true": 13,
+   "pred": 4,
+   "missed": 11,
+   "fp": 2
+  },
+  {
+   "image": "Derval/DJI_202308091507_014/DJI_20230809151207_0038_V.JPG",
+   "group": "Derval/20230809",
+   "true": 14,
+   "pred": 5,
+   "missed": 9,
+   "fp": 0
+  },
+  {
+   "image": "Derval/DJI_202308091507_014/DJI_20230809151208_0039_V.JPG",
+   "group": "Derval/20230809",
+   "true": 10,
+   "pred": 1,
+   "missed": 9,
+   "fp": 0
+  },
+  {
+   "image": "Mauron/DJI_202306051839_025/DJI_20230605184544_0012_V.JPG",
+   "group": "Mauron/20230605",
+   "true": 20,
+   "pred": 11,
+   "missed": 9,
+   "fp": 0
+  },
+  {
+   "image": "Mauron/DJI_202306051839_025/DJI_20230605184615_0034_V.JPG",
+   "group": "Mauron/20230605",
+   "true": 53,
+   "pred": 44,
+   "missed": 10,
+   "fp": 1
+  },
+  {
+   "image": "Derval/DJI_202308091442_012/DJI_20230809145618_0020_V.JPG",
+   "group": "Derval/20230809",
+   "true": 11,
+   "pred": 3,
+   "missed": 10,
+   "fp": 2
+  },
+  {
+   "image": "Derval/DJI_202308091442_012/DJI_20230809145619_0021_V.JPG",
+   "group": "Derval/20230809",
+   "true": 12,
+   "pred": 4,
+   "missed": 10,
+   "fp": 2
+  },
+  {
+   "image": "Derval/DJI_202308091442_012/DJI_20230809145623_0025_V.JPG",
+   "group": "Derval/20230809",
+   "true": 10,
+   "pred": 2,
+   "missed": 8,
+   "fp": 0
+  },
+  {
+   "image": "Derval/DJI_202308091507_014/DJI_20230809151123_0007_V.JPG",
+   "group": "Derval/20230809",
+   "true": 12,
+   "pred": 4,
+   "missed": 8,
+   "fp": 0
+  }
+ ],
+ "count_error_concentration": {
+  "total_abs_error": 869,
+  "share_from_worst_5pct_images": 0.4868,
+  "images_exact": 975
+ }
+}

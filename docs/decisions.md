@@ -154,7 +154,7 @@ Options considered: use every public dataset for training; use non-commercial da
 Choice: Training uses only data whose licence allows commercial use (for example CC BY 4.0). Non-commercial data (for example CC BY-NC-ND) is used for evaluation only, and marked as such in every result. Data with no stated licence is not used until its authors give written permission.
 Evidence / reasoning: The repository is all rights reserved and the project may become a product (brief §1, §6). A model trained on non-commercial data could not be sold without retraining, which would invalidate every result measured on it. Keeping training data commercially clean from the start means Stage A results carry into Stage B (brief §6).
 Easy option rejected (if any) and why: Training on everything available now and sorting out licences later. That would give more training data today, but results that cannot carry over to a product.
-Status: proposed (owner to confirm, docs/questions.md Q9)
+Status: adopted 2026-11-19 (docs/questions.md Q9)
 
 ## D-22: Phase 1 fine-tuned baseline recipe  (2026-11-18)
 Options considered: the authors' full D-FINE S custom-dataset recipe (220 epochs, batch 64); a shortened recipe that fits one free Kaggle session; a smaller model.
@@ -203,14 +203,14 @@ Options considered: any detected animal; a fixed count within a fixed area; sing
 Choice: A herd is a group of at least 3 animals in which each animal is within 10 m of another (single linkage on ground positions). S7's herd recall is the share of such herds in which the onboard detector finds at least one animal.
 Evidence / reasoning: The 95th percentile of the nearest-neighbour distance between cattle is 11.5 m (`results/data/herd_stats.json`). At 10 m, 87% of animals fall in groups of 3 or more. Herd mode's purpose is to stop over a group and capture it in a few frames (D-7), so a single straggler need not trigger it. A lone animal is still counted by the camp survey itself.
 Easy option rejected (if any) and why: Counting any single detection as a herd, which would make herd recall look higher than it is.
-Status: proposed (owner to confirm)
+Status: adopted 2026-11-19
 
 ## D-29: Onboard herd detector input for S7  (2026-11-18)
 Options considered: the home-base detector on full-resolution tiles onboard; a small detector on reduced images.
 Choice: D-FINE N trained on 640 px tiles of images reduced to a 1,280 px long side (6 tiles per Mavic 3E still), by the same three-fold cross-validation. Latency is reported as not measured until it is run on a Raspberry Pi 5; the input size is an estimate to be checked then.
 Evidence / reasoning: A full-resolution still is 108 tiles. At drone-ranger's estimated 285 ms per D-FINE N tile on a Pi 5 (an estimate, not a measurement), that is about 30 s per still, far slower than the few seconds between survey stills. Reduced to a 1,280 px long side, a still is about 2 s. Animals then shrink to roughly 20 px long, which is the cost S7 measures.
 Easy option rejected (if any) and why: Reporting S7 latency from a laptop or under ARM emulation, which D-10 rules out as a speed measurement.
-Status: proposed (input size to be confirmed on a Pi)
+Status: adopted 2026-11-19 with the input size as an estimate: no Raspberry Pi is available (docs/questions.md Q8), so S7 latency is reported as an estimate from published or drone-ranger figures, labelled as such, and never as a measurement
 
 ## D-30: Group animal links under a one-per-image constraint  (2026-11-18)
 Options considered: connected components of pairwise links; greedy shortest-first grouping that never puts two detections of one image in one identity; global assignment (D-9 step 3).
@@ -218,3 +218,17 @@ Choice: Greedy constrained grouping for the Phase 1 candidate identities and as 
 Evidence / reasoning: Plain connected components chained neighbours together. In flight Mauron/DJI_202311071416_061 they gave 2 animals for 142 labels, although one image alone shows 12 different cattle. With the constraint, every flight's count is at least its largest single-image count (14 for that flight; `results/data/s3_candidate_links.json` lists both).
 Easy option rejected (if any) and why: Connected components, the usual simple choice, which fails exactly in packed herds.
 Status: adopted
+
+## D-31: How the Phase 1 targets are set from the baselines  (2026-11-20)
+Options considered: a fixed rule applied by a script to the best baseline (close half the gap to perfect for scores, halve errors); targets set by judgement after reviewing the baseline results and where the baselines fail.
+Choice: Targets are set by the owner after reviewing the scored baselines and their failure cases, each with a stated reason, in `configs/specs.yaml`. `scripts/baseline_summary.py` first gathers, for each measure, the best Phase 1 baseline, its 95% interval and its source file (`results/baselines/spec_baselines.json`), with the half-the-gap value shown as a reference only. The targets file is frozen with its hash (`scripts/freeze.py phase1_specs`) before any Phase 2 model is trained or scored. The 90% count-interval coverage target stays 0.85–0.95, as the brief sets, and S7 latency is the D-29 estimate, marked as not measured.
+Evidence / reasoning: Before seeing the baselines it is not known which errors dominate or how much room there is to improve, so a single rule could set targets that are meaningless for some measures. What keeps the targets honest is that they are fixed, with reasons, before the system they judge exists.
+Easy option rejected (if any) and why: Leaving the targets open until Phase 2 results are in, which would invite targets the new system just meets.
+Status: adopted 2026-11-20 (owner); replaces the fixed-rule proposal of 2026-11-19
+
+## D-32: Keep the published ICAERUS labels for scoring  (2026-11-21)
+Options considered: score against the published labels unchanged; correct the images found with unlabelled cattle and rescore every baseline; re-check every image labelled empty by hand, without looking at any model's output.
+Choice: Score against the published labels unchanged. Images found to contain unlabelled cattle are listed in `docs/data.md` as a known data issue.
+Evidence / reasoning: The failure review (`results/baselines/dfine_failures.json`) found at least two images in Jalogny flight DJI_202309261339_058 whose label files are empty although they show a herd. Both were found because the fine-tuned detector fired on them. Correcting only the images a model flags would remove that model's false detections and not the errors other models make, so it would favour the model that found them. Leaving them in can only make the reported precision and false-detection rates slightly worse than the truth.
+Easy option rejected (if any) and why: Fixing the two obvious images, which is quick but biased for the reason above.
+Status: adopted 2026-11-21 (owner)

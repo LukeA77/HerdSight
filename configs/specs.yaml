@@ -1,0 +1,88 @@
+# HerdSight targets (brief section 5). Set by the owner on 2026-11-21 after reviewing the
+# Phase 1 baselines and their failure cases (D-31), then frozen before any Phase 2 model is
+# trained or scored (scripts/freeze.py --phase phase1_specs). null values are set in a later
+# phase; code refuses to use them.
+#
+# Baselines, their 95% intervals and sources: results/baselines/spec_baselines.json.
+# Failure analysis behind each reason: results/baselines/dfine_failures.json.
+# All baselines are public-data results (ICAERUS, France), not field results.
+#
+# Measured on: validation = grouped three-fold cross-validation over farm-date groups (D-26),
+# out-of-fold; final = the held-out test farm (Other_farms), run once in Phase 7. Every measure
+# is reported with its 95% interval (bootstrap over farm-date groups); a target is met when the
+# point estimate meets it. Scoring uses the published labels unchanged (D-32).
+
+s1_centre_matched_recall_min:
+  value: 0.80
+  placeholder: S1_RECALL
+  source: "Owner, 2026-11-21 (D-31). Found animals already miss the centre-match rule about as often as two people labelling the same animal would (dfine_failures.json: centre_placement_of_found_animals), which caps this measure near 0.85 with the current labels; 0.80 asks for most of the reachable gain."
+
+s1_centre_matched_precision_min:
+  value: 0.80
+  placeholder: S1_PRECISION
+  source: "Owner, 2026-11-21 (D-31). Most false detections are farmyard and pale objects concentrated in two farm-date groups (dfine_failures.json: false_detections), which hard-negative mining in Phase 2 is meant to remove."
+
+s1_centre_ap_min:
+  value: 0.62
+  placeholder: S1_CENTRE_AP
+  source: "Owner, 2026-11-21 (D-31). Moves with centre-matched recall and precision and shares the same label-noise ceiling. Upright-box AP50 is reported for comparison with published work, with no target."
+
+s2_count_mae_max:
+  value: 0.45
+  placeholder: S2_COUNT_MAE
+  source: "Owner, 2026-11-21 (D-31). Animals per image. Counting error is concentrated in a few images with identifiable, mostly fixable causes (dfine_failures.json: count_error_concentration, worst_count_images): unfamiliar farm, small or touching animals, farmyard false alarms. About a third less error than the baseline."
+
+s2_interval_90_coverage_range:
+  value: [0.85, 0.95]
+  placeholder: S2_COVERAGE
+  source: "Brief section 5; kept by D-31. Already met overall by the baseline."
+
+s2_interval_90_coverage_20plus_min:
+  value: 0.85
+  placeholder: S2_COVERAGE_DENSE
+  source: "Owner, 2026-11-21 (D-31). Coverage on images with 20 or more animals; the baseline is lowest there (dfine_scores.json: intervals 0.90 coverage_by_band), where a count range matters most."
+
+s3_flight_error_max:
+  value: 0.15
+  placeholder: S3_FLIGHT_ERROR
+  source: "Owner, 2026-11-21 (D-31). Mean absolute relative error of the flight total on the owner-verified flights. Perfect detection with the Phase 1 linking method gives about this error on the same flights, so Phase 2 detection plus Phase 3 linking should reach it. Ten verified flights checked by one person: indicative, no interval."
+
+s4_alert_targets:
+  value: null
+  placeholder: S4_TARGETS
+  source: null
+
+s5_mission:
+  value: "pass, automated in CI"
+  placeholder: S5_MISSION
+  source: "Brief section 5"
+
+s6_min_testers:
+  value: 5
+  placeholder: S6_TESTERS
+  source: "docs/questions.md Q6 (owner, 2026-11-18). Pass or fail per tester, all reported."
+
+s7_herd_recall_found_min:
+  value: 0.95
+  placeholder: S7_FOUND
+  source: "Owner, 2026-11-21 (D-31). Already high; the target stops it slipping while the onboard model changes."
+
+s7_herd_recall_grouped_min:
+  value: 0.85
+  placeholder: S7_GROUPED
+  source: "Owner, 2026-11-21 (D-31). Herds are missed as groups mainly because missed animals break the 10 m chain; better recall on small and touching animals should close most of this."
+
+s7_false_herd_alarms_per_image_max:
+  value: 0.05
+  placeholder: S7_FALSE_ALARMS
+  source: "Owner, 2026-11-21 (D-31). Keeps false herd-mode triggers near the baseline level."
+
+s7_latency_per_still_s_max:
+  value: 2.0
+  placeholder: S7_LATENCY
+  source: "D-29 estimate from published and drone-ranger per-tile figures; never reported as a measurement, since no Raspberry Pi 5 is available (docs/questions.md Q8)."
+
+diagnostic_empty_image_false_detections_max:
+  value: 0.10
+  placeholder: EMPTY_FALSE_DETECTIONS
+  source: "Owner, 2026-11-21 (D-31). Reported, not a pass/fail target: H5's 0.05 proved too strict for images of farmyards; tracked because false alarms on empty pasture inflate flight totals."

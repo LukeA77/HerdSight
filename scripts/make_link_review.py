@@ -1,9 +1,14 @@
 """Make the owner's review task that turns candidate animal links into S3 ground truth (brief 8.3).
 
-Usage: python scripts/make_link_review.py
+Usage: python scripts/make_link_review.py [--round 2]
 
-Flights reviewed (rule fixed before any result): in each cross-validation fold, the flight with
-the most labelled animals among flights with at least 5 registered image pairs.
+Flights reviewed (each rule fixed before any detector result was scored on S3):
+* round 1: in each cross-validation fold, the flight with the most labelled animals among
+  flights with at least 5 registered image pairs;
+* round 2 (added 2026-11-19, after round 1 showed the unverified candidates are 6-21% off, so
+  only verified flights can be scored): in each farm-date group not covered by round 1, the
+  flight with the most labelled animals among flights with at least 5 registered image pairs.
+Round 1 is written to exports/link_review/, later rounds to exports/link_review_<round>/.
 
 Two kinds of question, written to $HERDSIGHT_STORAGE/exports/link_review/ (index.html + pictures):
 
@@ -20,6 +25,7 @@ scripts/build_s3_truth.py applies the answers.
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 
@@ -27,6 +33,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from herdsight.data.icaerus import default_root
+from herdsight.data.splits import FlightStats
 from herdsight.geo.register import apply_homography
 from herdsight.utils.config import REPO_ROOT
 from herdsight.utils.io import load_rgb
@@ -57,19 +64,35 @@ def draw_boxes(
         )
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--round", type=int, default=1, choices=[1, 2])
+    args = ap.parse_args(argv)
     summary = json.loads((REPO_ROOT / "results" / "data" / "s3_candidate_links.json").read_text())
     splits = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"][
         "flights"
     ]
+
+    def group(key: str) -> str:
+        return FlightStats(*key.split("/"), 0, 0).group
+
+    if args.round == 1:
+        bucket = splits.get
+        exclude: set[str] = set()
+    else:
+        bucket = group
+        done = json.loads((storage_path("exports", "link_review") / "tasks.json").read_text())
+        exclude = {group(k) for k in done["flights"].values()}
     chosen = {}
-    for key, v in summary.items():
-        fold = splits[key]
-        if v["registered_pairs"] >= MIN_REGISTERED_PAIRS:
-            if fold not in chosen or v["naive_sum"] > summary[chosen[fold]]["naive_sum"]:
-                chosen[fold] = key
+    for key, v in sorted(summary.items()):
+        b = bucket(key)
+        if b in exclude or v["registered_pairs"] < MIN_REGISTERED_PAIRS:
+            continue
+        if b not in chosen or v["naive_sum"] > summary[chosen[b]]["naive_sum"]:
+            chosen[b] = key
     links_dir = storage_path("processed", "s3_links")
-    out = storage_path("exports", "link_review", create=True)
+    folder = "link_review" if args.round == 1 else f"link_review_{args.round}"
+    out = storage_path("exports", folder, create=True)
     (out / "pics").mkdir(exist_ok=True)
     root = default_root()
     tasks = []
@@ -145,6 +168,9 @@ def main() -> int:
                 break  # one check per lone animal is enough
         cache.clear()
     html = (REPO_ROOT / "scripts" / "assets" / "link_review.html").read_text(encoding="utf-8")
+    if args.round > 1:  # own saved progress and own file name, so rounds never mix
+        html = html.replace('"link-answers-v1"', f'"link-answers-round{args.round}"')
+        html = html.replace('"link_answers.json"', f'"link_answers_{args.round}.json"')
     (out / "index.html").write_text(html.replace("__TASKS__", json.dumps(tasks)), encoding="utf-8")
     (out / "tasks.json").write_text(json.dumps({"flights": chosen, "tasks": tasks}, indent=1))
     n_same = sum(t["kind"] == "same" for t in tasks)

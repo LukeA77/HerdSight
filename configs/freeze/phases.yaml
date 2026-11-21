@@ -6,3 +6,11 @@ phases:
   phase1_splits:
     - results/splits.json
     - results/data/icaerus_inventory.json
+  # Phase 1 exit (D-31): targets (set by the owner after review), the baseline evidence they were
+  # set from, and the evaluation settings they were measured with.
+  phase1_specs:
+    - configs/specs.yaml
+    - results/baselines/spec_baselines.json
+    - configs/evaluation.yaml
+    - configs/baselines.yaml
+    - results/data/s3_truth.json

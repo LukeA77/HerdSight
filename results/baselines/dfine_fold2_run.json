@@ -1,0 +1,32 @@
+{
+ "finished_utc": "2026-11-20T15:55:16+00:00",
+ "detector": "dfine",
+ "fold": "fold2",
+ "onboard_long_side_px": null,
+ "n_images": 540,
+ "tile_px": 640,
+ "overlap_px": 192,
+ "onnx": "D:\\HerdSight-storage\\runs\\baselines\\models\\dfine_s_baseline_fold2\\last.onnx",
+ "predictions": [
+  "D:\\HerdSight-storage\\runs\\baselines\\dfine\\fold2.jsonl"
+ ],
+ "environment": {
+  "generated_utc": "2026-11-20T15:55:16+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

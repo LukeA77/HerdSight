@@ -1,6 +1,9 @@
 """Apply the owner's link review to the candidate identities: the S3 ground truth (brief 8.3).
 
-Usage: python scripts/build_s3_truth.py <link_answers.json>
+Usage: python scripts/build_s3_truth.py <answers.json> [<answers.json> ...]
+
+Each answers file must sit in its review folder, next to that review's tasks.json (one file per
+review round; scripts/make_link_review.py).
 
 Rules:
 * "Same animal?": a picture marked as a different animal is split off as its own animal. This is
@@ -10,6 +13,9 @@ Rules:
   other image; "unboxed" is recorded as a missing label (the count is unchanged, since the animal
   is already counted once); "absent" and "unsure" change nothing.
 * Unanswered tasks are reported, and the flight is marked incomplete.
+* A "boxed" answer can join two candidate animals that both appear in one image (a conflict).
+  Such a group is at least as many animals as its most-repeated image shows, so the verified
+  count adds that number for it, not 1. The number of conflicts is reported.
 
 Writes results/data/s3_truth.json.
 """
@@ -18,7 +24,7 @@ from __future__ import annotations
 
 import json
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from herdsight.utils.config import REPO_ROOT
@@ -26,11 +32,15 @@ from herdsight.utils.paths import storage_path
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 1:
+    if not argv:
         print(__doc__)
         return 2
-    answers = json.loads(Path(argv[0]).read_text(encoding="utf-8"))
-    review = json.loads((storage_path("exports", "link_review") / "tasks.json").read_text())
+    answers: dict = {}
+    review: dict = {"tasks": []}
+    for arg in argv:
+        path = Path(arg)
+        answers |= json.loads(path.read_text(encoding="utf-8"))
+        review["tasks"] += json.loads((path.parent / "tasks.json").read_text())["tasks"]
     links_dir = storage_path("processed", "s3_links")
     summary = json.loads((REPO_ROOT / "results" / "data" / "s3_candidate_links.json").read_text())
     by_flight: dict[str, list] = defaultdict(list)
@@ -71,10 +81,12 @@ def main(argv: list[str]) -> int:
                 missing_labels += 1
         comps = [c for c in comps if c]
         conflicts = sum(1 for c in comps if len({i for i, _ in c}) < len(c))
+        verified = sum(max(Counter(i for i, _ in c).values()) for c in comps)
         out[key] = {
             "naive_sum": summary[key]["naive_sum"],
             "candidate_unique": summary[key]["candidate_unique"],
-            "verified_unique": len(comps),
+            "verified_unique": verified,
+            "verified_groups_before_conflict_rule": len(comps),
             "splits": splits,
             "merges": merges,
             "missing_labels_found": missing_labels,

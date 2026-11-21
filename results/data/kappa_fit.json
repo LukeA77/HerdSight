@@ -1,0 +1,13 @@
+{
+ "kappa": 0.07637579766635422,
+ "kappa_ci95": [
+  0.06331947881454311,
+  0.09011845223230928
+ ],
+ "n_answers": 94,
+ "n_skipped": 6,
+ "n_unmatched": 0,
+ "normalised_distance_median": 0.049539152285830064,
+ "normalised_distance_p90": 0.1080705311188172,
+ "rule": "kappa = sqrt(mean((d / short_side)^2)) between owner and original box centres"
+}

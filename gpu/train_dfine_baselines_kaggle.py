@@ -48,6 +48,10 @@ JOBS = {
 }
 # (job, fold) in the order they run; cut this list down to rerun only what is missing
 RUNS = [(j, f) for j in JOBS for f in ("fold0", "fold1", "fold2")]
+# runs already trained in an earlier session (a full run takes about 3.2 hours on Kaggle's GPU, so
+# the six do not fit in one 12-hour session)
+DONE = {"dfine_s_baseline_fold0", "dfine_s_baseline_fold1", "dfine_s_baseline_fold2"}
+RUNS = [(j, f) for j, f in RUNS if f"{j}_{f}" not in DONE]
 RES, BATCH = 640, 16
 EPOCHS, AUG_OFF = 72, 66
 NUM_CLASSES = 2  # category id 1 = cattle; slot 0 unused (remap_mscoco_category False)
@@ -65,6 +69,27 @@ T0 = time.time()
 
 def sh(*cmd, **kw):
     subprocess.run(list(cmd), check=True, **kw)
+
+
+# D-FINE's own exporter, run with PyTorch's TorchScript-based ONNX exporter (dynamo=False), which
+# it was written for: from PyTorch 2.9 the default exporter needs onnxscript and traces the model
+# differently. Two changes that do not alter the exported model: the dummy input is 2 images, not
+# 32, and gradients are off. With 32 images and gradients on, the export ran out of memory on
+# Kaggle after the first full training run. (With 1 image, tracing fixes the batch size at 1.)
+# scripts/export_dfine_onnx.py reads this same text to export a downloaded checkpoint locally.
+EXPORT = """
+import functools, inspect, os, sys, torch
+if "dynamo" in inspect.signature(torch.onnx.export).parameters:
+    torch.onnx.export = functools.partial(torch.onnx.export, dynamo=False)
+path = os.path.abspath("tools/deployment/export_onnx.py")
+src = open(path).read()
+old = "torch.rand(32, 3, 640, 640)"
+assert src.count(old) == 1, "export_onnx.py is not the pinned version"
+src = src.replace(old, "torch.rand(2, 3, 640, 640)")
+sys.argv = [path] + sys.argv[1:]
+torch.set_grad_enabled(False)
+exec(compile(src, path, "exec"), {"__name__": "__main__", "__file__": path})
+"""
 
 
 def sha256(p: Path) -> str:
@@ -104,7 +129,11 @@ if not repo.exists():
 sh("git", "-C", str(repo), "checkout", "-q", DFINE_COMMIT)
 if not SMOKE:
     sh(sys.executable, "-m", "pip", "install", "-q", "-r", str(repo / "requirements.txt"))
-    sh(sys.executable, "-m", "pip", "install", "-q", "onnx", "onnxsim", "pycocotools")
+    sh(sys.executable, "-m", "pip", "install", "-q", "onnx", "onnxsim", "pycocotools", "matplotlib")
+    # D-FINE asks only for >=1.6.6; 1.8.1 (released 2026-11-20) breaks its per-epoch evaluation
+    # ('COCO' object has no attribute 'getAnns'). The earlier Kaggle runs and the smoke test used
+    # 1.8.0.
+    sh(sys.executable, "-m", "pip", "install", "-q", "faster-coco-eval==1.8.0")
 
 import torch
 import yaml
@@ -233,15 +262,17 @@ for job, fold in RUNS:
     if (out / "log.txt").exists():
         rows = [json.loads(x) for x in (out / "log.txt").read_text().splitlines() if x.strip()]
         epochs_done = max((r["epoch"] for r in rows), default=-1) + 1
-    sh(
-        sys.executable,
-        "tools/deployment/export_onnx.py",
-        "-c",
-        str(cfg_path),
-        "-r",
-        str(out / "last.pth"),
-        cwd=repo,
-    )
+    # an export failure must not lose the trained checkpoint: it is zipped anyway and can be
+    # exported locally with scripts/export_dfine_onnx.py
+    export_error = None
+    try:
+        sh(sys.executable, "-c", EXPORT, "-c", str(cfg_path), "-r", str(out / "last.pth"), cwd=repo)
+    except subprocess.CalledProcessError as e:
+        export_error = f"ONNX export failed ({e.returncode}); export last.pth locally"
+        print(run, export_error, flush=True)
+    onnx = out / "last.onnx"
+    if export_error and onnx.exists():
+        onnx.unlink()  # may be half-written
     info = {
         "generated_utc": datetime.now(UTC).isoformat(timespec="seconds"),
         "run": run,
@@ -265,7 +296,8 @@ for job, fold in RUNS:
         "seed": SEED,
         "checkpoint": "last.pth (no selection)",
         "stopped_by_time_limit": stopped_by_time,
-        "onnx_sha256": sha256(out / "last.onnx"),
+        "onnx_sha256": sha256(onnx) if onnx.exists() and export_error is None else None,
+        "export_error": export_error,
         "torch": torch.__version__,
         "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
         "python": platform.python_version(),

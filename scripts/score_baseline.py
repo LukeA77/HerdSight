@@ -31,8 +31,11 @@ from herdsight.data.icaerus import default_root, iter_images
 from herdsight.data.splits import FlightStats
 from herdsight.evaluate.centre_match import (
     ImageDetections,
+    ap_mean_subset,
     average_precision,
     box_centres,
+    match_hungarian,
+    match_table,
     short_side,
 )
 from herdsight.evaluate.counts import count_errors, count_interval, fit_count_conformal
@@ -220,6 +223,39 @@ def evaluate(
         }
     else:
         out["centre_ap"] = average_precision(imgs, float(kappa))
+        # S1: centre-matched precision and recall at each fold's operating point
+        sim = float(ev.require("centre_match_similarity"))
+        ctp = np.array(
+            [
+                match_hungarian(
+                    box_centres(preds[k][0][m]),
+                    box_centres(truth[k]),
+                    np.maximum(short_side(truth[k]), 1.0),
+                    float(kappa),
+                    sim,
+                ).tp
+                for k, m in zip(keys, kept, strict=True)
+            ],
+            float,
+        )
+        out["centre_matched"] = {
+            "similarity_threshold": sim,
+            "recall": float(ctp.sum() / max(true_n.sum(), 1)),
+            "recall_ci95": ci(lambda i: float(ctp[i].sum() / max(true_n[i].sum(), 1))),
+            "precision": float(ctp.sum() / max(pred_n.sum(), 1)),
+            "precision_ci95": ci(lambda i: float(ctp[i].sum() / max(pred_n[i].sum(), 1))),
+        }
+        # H1 judges centre AP by its interval; drawn last so every earlier interval is unchanged
+        table = match_table(imgs, float(kappa))
+        out["centre_ap"]["ap_mean_ci95"] = (
+            list(
+                group_bootstrap_ci(
+                    idx, groups, lambda i: ap_mean_subset(imgs, table, i), n_boot_ap, rng
+                )
+            )
+            if len(set(groups)) > 1
+            else None
+        )
     return out
 
 

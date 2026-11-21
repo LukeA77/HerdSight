@@ -1,9 +1,9 @@
 # Evaluation settings (brief section 9). null values are unresolved; code refuses to use them.
 
 centre_kappa:
-  value: null
+  value: 0.0764
   placeholder: CENTRE_KAPPA
-  source: null  # set from blind re-annotation of 100 random training cattle by the owner (Phase 1 plan, step 5)
+  source: "Blind re-annotation of 100 random training-fold cattle (94 answered, 6 skipped), 2026-11-19: kappa = sqrt(mean((d / short side)^2)) = 0.0764, 95% interval 0.063 to 0.090 (results/data/kappa_fit.json)"
 
 centre_kappa_sensitivity:
   value: [0.1, 0.2, 0.3, 0.5]
@@ -44,3 +44,8 @@ herd_min_animals:
   value: 3
   placeholder: HERD_MIN_ANIMALS
   source: "D-28 (proposed): herd mode is for groups, so a lone animal or a pair does not trigger it"
+
+centre_match_similarity:
+  value: 0.5
+  placeholder: CENTRE_MATCH_SIM
+  source: "Similarity a prediction needs to count as a match for centre-matched precision and recall at the operating point (S1); 0.5 is the loosest threshold of COCO's keypoint AP range, as IoU 0.5 is for boxes. Fixed before any baseline was scored"

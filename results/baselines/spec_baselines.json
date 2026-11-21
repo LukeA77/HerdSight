@@ -1,0 +1,111 @@
+{
+ "note": "Baseline evidence for each target. Targets are set by the owner in configs/specs.yaml after review, then frozen before Phase 2 (D-31). halve_the_gap is a reference point only.",
+ "S1": {
+  "centre_matched_recall": {
+   "baseline": 0.7205,
+   "baseline_ci95": [
+    0.6275,
+    0.8193
+   ],
+   "baseline_source": "dfine_scores.json: out_of_fold",
+   "better": "higher",
+   "halve_the_gap": 0.8603
+  },
+  "centre_matched_precision": {
+   "baseline": 0.6965,
+   "baseline_ci95": [
+    0.6028,
+    0.8147
+   ],
+   "baseline_source": "dfine_scores.json: out_of_fold",
+   "better": "higher",
+   "halve_the_gap": 0.8482
+  },
+  "centre_ap": {
+   "baseline": 0.5413,
+   "baseline_ci95": [
+    0.4243,
+    0.6901
+   ],
+   "baseline_source": "dfine_scores.json: out_of_fold",
+   "better": "higher",
+   "halve_the_gap": 0.7707
+  },
+  "upright_ap50": {
+   "baseline": 0.8653,
+   "baseline_ci95": [
+    0.7853,
+    0.9295
+   ],
+   "baseline_source": "dfine_scores.json: out_of_fold",
+   "better": "higher",
+   "halve_the_gap": 0.9327
+  }
+ },
+ "S2": {
+  "count_mae": {
+   "baseline": 0.6568,
+   "baseline_ci95": [
+    0.364,
+    1.0377
+   ],
+   "baseline_source": "dfine_scores.json: out_of_fold",
+   "better": "lower",
+   "halve_the_gap": 0.3284
+  },
+  "interval_90_coverage": {
+   "baseline": 0.9335,
+   "baseline_ci95": [
+    0.873362701166284,
+    0.9792013689571017
+   ],
+   "baseline_source": "dfine_scores.json: out_of_fold",
+   "brief_target": [
+    0.85,
+    0.95
+   ]
+  }
+ },
+ "S3": {
+  "flight_count_mean_abs_relative_error": {
+   "baseline": 0.2643,
+   "baseline_ci95": null,
+   "baseline_source": "dfine_s3.json: registration on 10 verified flights",
+   "better": "lower",
+   "halve_the_gap": 0.1321,
+   "all_methods": {
+    "naive": 2.7048584493916357,
+    "geotag": 0.3529525718443252,
+    "registration": 0.26429275299863536
+   }
+  }
+ },
+ "S7": {
+  "herd_recall_found": {
+   "baseline": 0.9381,
+   "baseline_ci95": [
+    0.8775,
+    0.9799
+   ],
+   "baseline_source": "dfine_onboard_herds.json",
+   "better": "higher",
+   "halve_the_gap": 0.969
+  },
+  "herd_recall_grouped": {
+   "baseline": 0.7463,
+   "baseline_ci95": [
+    0.5953,
+    0.8691
+   ],
+   "baseline_source": "dfine_onboard_herds.json",
+   "better": "higher",
+   "halve_the_gap": 0.8732
+  },
+  "latency_per_still_s": {
+   "estimate": 2.0,
+   "measured": false,
+   "source": "D-29 estimate (no Raspberry Pi available, docs/questions.md Q8)"
+  }
+ },
+ "missing": []
+}
