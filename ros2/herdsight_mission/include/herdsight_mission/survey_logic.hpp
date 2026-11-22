@@ -44,9 +44,12 @@ struct Limits {
   bool pass_through{true};           // take survey stills in passing (see above)
   float capture_m{3.0f};             // in passing: largest distance off the line for a still
   float line_cos{0.996f};            // photo points within about 5 degrees count as one line
+  float floor_margin_m{0.5f};        // herd stills aim this far above the floor (position wobble)
+  float descent_margin_m{2.0f};      // the descent point is this far outside the clearance radius
+  float descent_settled_m{0.3f};     // the descent ends this close to its height, before moving in
 };
 
-enum class TargetKind { Photo, Transit, HerdPhoto };
+enum class TargetKind { Photo, Transit, Descent, HerdPhoto };
 
 struct Target {
   Eigen::Vector3f ned;

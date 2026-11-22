@@ -4,7 +4,8 @@ Command line: python scripts/freeze.py --phase phase1            (write the mani
        python scripts/freeze.py --phase phase1 --check    (exit 1 if anything changed)
 
 The files each phase's test run depends on are listed in configs/freeze/phases.yaml. The
-manifest (results/frozen/<phase>.json) records the SHA-256 of each of those files, the git
+manifest (results/frozen/<phase>.json) records the SHA-256 of each of those files (text files
+with LF line ends, so a Windows working copy and a Linux checkout give the same hash), the git
 commit, and any uncommitted changes to them. `--check` recomputes the hashes; test runs call
 it first and stop if any file differs, so settings cannot drift between freezing and testing.
 
@@ -47,7 +48,10 @@ def sha256(root: Path, rel: str) -> str:
     path = root / rel
     if not path.is_file():
         raise FreezeError(f"frozen file not found: {rel}")
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    data = path.read_bytes()
+    if b"\0" not in data[:8192]:  # text: hash with LF line ends, as the repository stores it
+        data = data.replace(b"\r\n", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def git(root: Path, *args: str) -> str:
@@ -67,7 +71,7 @@ def write_manifest(phase: str, files: list[str], root: Path = REPO_ROOT) -> dict
     }
     dest = root / "results" / "frozen" / f"{phase}.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8")
+    dest.write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8", newline="\n")
     return manifest
 
 

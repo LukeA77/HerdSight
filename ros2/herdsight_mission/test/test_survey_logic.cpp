@@ -171,3 +171,21 @@ TEST(SurveyLogic, InPassingHerdModeStillStopsAtEachTarget) {
   EXPECT_EQ(s.herdStills(), 1);
   EXPECT_EQ(s.photosTaken(), 6);
 }
+
+TEST(SurveyLogic, DescentEndsBeforeMovingInOverTheHerd) {
+  Limits lim;
+  lim.frame_along_m = 90.0f;
+  SurveyLogic s(line_plan(6), lim);
+  s.update(s.current()->ned);
+  ASSERT_TRUE(s.herdFound(Eigen::Vector2f(25.0f, 40.0f), 30.0f));
+  s.update(s.current()->ned);  // approach reached at survey height
+  const auto descent = s.current();
+  ASSERT_EQ(descent->kind, TargetKind::Descent);
+  const float off = (descent->ned.head<2>() - Eigen::Vector2f(25, 40)).norm();
+  EXPECT_NEAR(off, 30.0f / 2 + lim.clearance_m + lim.descent_margin_m, 1e-3f);
+  // 1 m above the descent height: within reached_m, but the descent is not finished
+  s.update(descent->ned + Eigen::Vector3f(0, 0, -1.0f));
+  EXPECT_EQ(s.current()->kind, TargetKind::Descent);
+  s.update(descent->ned + Eigen::Vector3f(0.5f, 0, -0.2f));
+  EXPECT_EQ(s.current()->kind, TargetKind::HerdPhoto);
+}

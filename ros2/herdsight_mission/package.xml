@@ -2,7 +2,7 @@
 <package format="3">
   <name>herdsight_mission</name>
   <version>0.1.0</version>
-  <description>HerdSight onboard mission: survey and herd mode as PX4 custom modes, run by a behaviour tree (D-16).</description>
+  <description>HerdSight onboard mission: survey and herd mode through PX4 offboard setpoints (D-41) or a custom mode, run by a behaviour tree (D-16).</description>
   <maintainer email="maintainer@example.invalid">HerdSight</maintainer>
   <license>All rights reserved</license>
   <buildtool_depend>ament_cmake</buildtool_depend>

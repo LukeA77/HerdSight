@@ -44,3 +44,19 @@ def test_malformed_phase_list_rejected(tmp_path):
 
 def test_shipped_phase_file_is_valid():
     freeze.load_phases()
+
+
+def test_line_endings_do_not_change_the_hash(tmp_path):
+    (tmp_path / "a.txt").write_bytes(b"x: 1\ny: 2\n")
+    lf = freeze.sha256(tmp_path, "a.txt")
+    (tmp_path / "a.txt").write_bytes(b"x: 1\r\ny: 2\r\n")
+    assert freeze.sha256(tmp_path, "a.txt") == lf
+    (tmp_path / "a.txt").write_bytes(b"x: 2\ny: 2\n")
+    assert freeze.sha256(tmp_path, "a.txt") != lf
+
+
+def test_binary_files_are_hashed_as_they_are(tmp_path):
+    (tmp_path / "w.bin").write_bytes(b"\0\r\n")
+    a = freeze.sha256(tmp_path, "w.bin")
+    (tmp_path / "w.bin").write_bytes(b"\0\n")
+    assert freeze.sha256(tmp_path, "w.bin") != a

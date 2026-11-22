@@ -1,0 +1,44 @@
+{
+ "note": "Simulation results, one flight per case on one world; not field results.",
+ "interface": "offboard_mission_node (D-41)",
+ "flight_log_checks": {
+  "normal": {
+   "final_distance_from_launch_m": 0.06832197308540344
+  },
+  "herd": {
+   "lowest_height_within_60m_of_herd_m": 40.47307586669922,
+   "height_on_entering_clearance_zone_m": 40.873573303222656,
+   "height_lost_inside_zone_m": 0.4004974365234375,
+   "final_distance_from_launch_m": 0.053673140704631805
+  },
+  "crash": {
+   "lowest_height_until_back_over_launch_m": 80.00078582763672,
+   "final_distance_from_launch_m": 0.07129895687103271
+  }
+ },
+ "stills": {
+  "normal": {
+   "survey_stills": 44,
+   "planned": 44,
+   "herd_mode_stills": 0,
+   "herd_still_height_m": [],
+   "max_distance_to_planned_m": 2.6185708309515903
+  },
+  "herd": {
+   "survey_stills": 44,
+   "planned": 44,
+   "herd_mode_stills": 1,
+   "herd_still_height_m": [
+    40.473487854003906
+   ],
+   "max_distance_to_planned_m": 2.591363315022385
+  },
+  "crash": {
+   "survey_stills": 15,
+   "planned": 44,
+   "herd_mode_stills": 0,
+   "herd_still_height_m": [],
+   "max_distance_to_planned_m": 2.598696318874291
+  }
+ }
+}

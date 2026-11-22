@@ -1,0 +1,96 @@
+{
+ "environment": {
+  "generated_utc": "2026-11-22T19:04:54+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ },
+ "bootstrap": {
+  "resamples": 5000,
+  "seed": 0,
+  "unit": "flight",
+  "paired": true,
+  "level": 0.95
+ },
+ "rule": {
+  "auc_gain_min": 0.03,
+  "ci_excludes_zero": true
+ },
+ "dfine": {
+  "pairs_known": 14341,
+  "auc_without_appearance": 0.9620717294025598,
+  "colour_texture": {
+   "auc": 0.9552238457836424,
+   "gain": -0.006847883618917416,
+   "gain_ci95": [
+    -0.015350637618846382,
+    0.002333930658838226
+   ],
+   "holds": false,
+   "distance_median_same_animal": 0.12303102208675151,
+   "distance_median_different": 0.22545570046911867,
+   "auc_of_distance_alone": 0.7049340889376248
+  },
+  "pretrained": {
+   "auc": 0.9641752351074798,
+   "gain": 0.0021035057049200168,
+   "gain_ci95": [
+    -1.4445947342311964e-05,
+    0.0032883367223328934
+   ],
+   "holds": false,
+   "distance_median_same_animal": 0.29520103840888645,
+   "distance_median_different": 0.397812242422373,
+   "auc_of_distance_alone": 0.7187138260300383
+  }
+ },
+ "labels": {
+  "pairs_known": 19515,
+  "auc_without_appearance": 0.9659176599444974,
+  "colour_texture": {
+   "auc": 0.9611727250339479,
+   "gain": -0.004744934910549503,
+   "gain_ci95": [
+    -0.011869300403544267,
+    0.0017774275942461777
+   ],
+   "holds": false,
+   "distance_median_same_animal": 0.12619781199093397,
+   "distance_median_different": 0.2414274827335423,
+   "auc_of_distance_alone": 0.7207387116992227
+  },
+  "pretrained": {
+   "auc": 0.9673762819367908,
+   "gain": 0.0014586219922934074,
+   "gain_ci95": [
+    -0.00041012514402175005,
+    0.0027376040616630764
+   ],
+   "holds": false,
+   "distance_median_same_animal": 0.3018630598445087,
+   "distance_median_different": 0.4110024263299104,
+   "auc_of_distance_alone": 0.722723819897907
+  }
+ },
+ "H25": {
+  "judged_on": "dfine",
+  "holds": false,
+  "by_descriptor": {
+   "colour_texture": false,
+   "pretrained": false
+  }
+ }
+}

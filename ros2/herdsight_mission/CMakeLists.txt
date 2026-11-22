@@ -24,7 +24,11 @@ add_executable(mission_node src/mission_node.cpp)
 target_link_libraries(mission_node mission_core)
 ament_target_dependencies(mission_node rclcpp ament_index_cpp px4_ros2_cpp px4_msgs herdsight_msgs behaviortree_cpp)
 
-install(TARGETS mission_node DESTINATION lib/${PROJECT_NAME})
+add_executable(offboard_mission_node src/offboard_mission_node.cpp)
+target_link_libraries(offboard_mission_node mission_core)
+ament_target_dependencies(offboard_mission_node rclcpp ament_index_cpp px4_msgs herdsight_msgs behaviortree_cpp)
+
+install(TARGETS mission_node offboard_mission_node DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY behavior_trees DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)

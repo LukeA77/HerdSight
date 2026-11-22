@@ -4,6 +4,7 @@ Usage:
   python scripts/run_baseline.py --detector zeroshot --fold all
   python scripts/run_baseline.py --detector dfine --fold fold0 --onnx <fold0 last.onnx>
   python scripts/run_baseline.py --detector dfine --onboard --fold fold0 --onnx <onboard fold0>
+  python scripts/run_baseline.py --detector dfine --fold fold0 --onnx <model> --name dfine_g2
 
 Predictions go to $HERDSIGHT_STORAGE/runs/baselines/<detector>/<fold>.jsonl, one line per image
 (boxes in full-image pixels, scores). A run that stops part-way resumes where it left off.
@@ -46,6 +47,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--onnx", default=None)
     ap.add_argument("--threads", type=int, default=0)
     ap.add_argument("--onboard", action="store_true", help="S7 herd detector on reduced stills")
+    ap.add_argument(
+        "--name", default=None, help="runs/baselines subfolder (default: the detector's name)"
+    )
     args = ap.parse_args(argv)
     cfg = load_config("baselines")
     overlap = int(cfg.require("tile_overlap_px"))
@@ -55,7 +59,7 @@ def main(argv: list[str] | None = None) -> int:
             ap.error("--onboard applies to the dfine detector only")
         overlap = int(cfg.require("onboard_tile_overlap_px"))
         long_side = int(cfg.require("onboard_long_side_px"))
-    run_name = "dfine_onboard" if args.onboard else args.detector
+    run_name = args.name or ("dfine_onboard" if args.onboard else args.detector)
     sp = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"]
     folds = [f"fold{k}" for k in range(sp["n_folds"])]
     wanted = folds if args.fold == "all" else [args.fold]

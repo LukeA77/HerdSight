@@ -28,7 +28,7 @@ if(HERDSIGHT_SANITIZE)
   add_link_options(-fsanitize=address,undefined)
 endif()
 
-add_library(herdsight_core src/frames.cpp)
+add_library(herdsight_core src/frames.cpp src/count.cpp)
 target_include_directories(herdsight_core PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -37,7 +37,7 @@ target_link_libraries(herdsight_core PUBLIC Eigen3::Eigen)
 if(HERDSIGHT_BUILD_TESTS)
   enable_testing()
   find_package(GTest REQUIRED)
-  add_executable(herdsight_core_tests tests/test_frames.cpp)
+  add_executable(herdsight_core_tests tests/test_frames.cpp tests/test_count.cpp)
   target_link_libraries(herdsight_core_tests PRIVATE herdsight_core GTest::gtest_main)
   include(GoogleTest)
   gtest_discover_tests(herdsight_core_tests)

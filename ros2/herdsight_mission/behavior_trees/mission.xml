@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<!-- HerdSight mission (D-16). Herd mode runs inside the survey mode, which PX4 runs as a custom
-     mode; battery, link and GNSS failsafes are PX4's own, which end the survey and take over. -->
+<!-- HerdSight mission (D-16). Herd mode runs inside the survey step, flown through offboard
+     setpoints (D-41) or a custom mode; battery, link and GNSS failsafes are PX4's own, which end
+     the survey and take over. -->
 <root BTCPP_format="4">
   <BehaviorTree ID="Mission">
     <Sequence>

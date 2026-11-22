@@ -1,0 +1,87 @@
+{
+ "note": "Simulation results, one flight per case on one world; not field results.",
+ "planned_height_m": 82.69839942077192,
+ "interfaces": {
+  "custom": {
+   "normal": {
+    "stills": 44,
+    "planned_stills": 44,
+    "distance_to_planned_m_median": 1.3993588215737476,
+    "distance_to_planned_m_max": 1.4995209189495937,
+    "height_m_min": 81.51951599121094,
+    "height_m_max": 82.75242614746094,
+    "first_to_last_still_s": 170.181,
+    "final_distance_from_launch_m": 0.033391866552376075
+   },
+   "companion_lost_after_22_stills": {
+    "first_state_change_after_crash_s": 1.1502266260000056,
+    "lowest_height_after_crash_m": 82.69679260253906,
+    "landed_and_disarmed": true,
+    "final_distance_from_launch_m": 0.047372449126468416
+   },
+   "inserts_herd_targets": "yes: the mode chooses its next target each cycle",
+   "criteria": {
+    "normal_flight": true,
+    "companion_loss": true,
+    "inserts_targets": true
+   },
+   "passes": true
+  },
+  "offboard": {
+   "normal": {
+    "stills": 44,
+    "planned_stills": 44,
+    "distance_to_planned_m_median": 1.4349958920802048,
+    "distance_to_planned_m_max": 1.499033382450916,
+    "height_m_min": 82.66412353515625,
+    "height_m_max": 82.73631286621094,
+    "first_to_last_still_s": 150.49399999999997,
+    "final_distance_from_launch_m": 0.027510868451877196
+   },
+   "companion_lost_after_22_stills": {
+    "first_state_change_after_crash_s": 1.0530234270009515,
+    "lowest_height_after_crash_m": 82.66358184814453,
+    "landed_and_disarmed": true,
+    "final_distance_from_launch_m": 0.05232000813017193
+   },
+   "inserts_herd_targets": "yes: the companion chooses its next setpoint each cycle",
+   "criteria": {
+    "normal_flight": true,
+    "companion_loss": true,
+    "inserts_targets": true
+   },
+   "passes": true
+  },
+  "mission": {
+   "normal": {
+    "stills": 40,
+    "planned_stills": 44,
+    "distance_to_planned_m_median": 0.919140375034968,
+    "distance_to_planned_m_max": 2.181794515597922,
+    "height_m_min": 83.52803802490234,
+    "height_m_max": 83.5600357055664,
+    "first_to_last_still_s": 166.816,
+    "final_distance_from_launch_m": 0.05591714492096099
+   },
+   "companion_lost_after_22_stills": {
+    "first_state_change_after_crash_s": 75.90415468099971,
+    "lowest_height_after_crash_m": 82.86261749267578,
+    "landed_and_disarmed": true,
+    "final_distance_from_launch_m": 0.040746934739904005
+   },
+   "inserts_herd_targets": "no: a new target needs a mission re-upload",
+   "criteria": {
+    "normal_flight": false,
+    "companion_loss": true,
+    "inserts_targets": false
+   },
+   "passes": false
+  }
+ },
+ "passing": [
+  "custom",
+  "offboard"
+ ],
+ "winner_by_the_fixed_rule": "offboard",
+ "custom_time_over_winner": 0.13081584647892974
+}

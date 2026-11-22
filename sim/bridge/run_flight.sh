@@ -18,6 +18,11 @@ set -u
 SECONDS_LIMIT=${1:-900}
 SEED=${2:-0}
 OUT=${OUT:-/out}
+# offboard_mission_node (D-41) or mission_node (custom mode)
+MISSION_NODE=${MISSION_NODE:-offboard_mission_node}
+# failure and herd-mode checks, after 15 stills: INJECT=herd (a herd is reported), INJECT=crash
+# (the mission node is killed) or INJECT=gnss (the GPS fix is removed); none by default
+INJECT=${INJECT:-none}
 mkdir -p "$OUT"
 
 python3 /repo/sim/bridge/make_world.py --out "$OUT" --seed "$SEED" | tee "$OUT/world.txt"
@@ -48,6 +53,8 @@ P=./build/px4_sitl_default/bin
 $P/px4-param set COM_RC_IN_MODE 4
 $P/px4-param set NAV_DLL_ACT 0
 $P/px4-param set NAV_RCL_ACT 0
+# if the offboard setpoints stop, PX4 returns to launch (D-41)
+$P/px4-param set COM_OBL_RC_ACT 3
 # PX4 caps the mission's requested speed at its cruise speed (MPC_XY_CRUISE, default 5 m/s), so
 # the cruise speed is set to the plan's survey speed
 SPEED=$(python3 -c "import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))['speed_m_s'])" "$OUT/plan.yaml")
@@ -56,8 +63,9 @@ $P/px4-param set MPC_XY_CRUISE "$SPEED"
 python3 /repo/sim/bridge/herd_bridge.py --state "$OUT/herd_state.pkl" --seed "$SEED" \
   > "$OUT/herd_bridge.log" 2>&1 &
 pids+=($!)
-ros2 run herdsight_mission mission_node --ros-args -p plan_file:="$OUT/plan.yaml" \
-  -p autostart:=true > "$OUT/mission.log" 2>&1 &
+FRAME_ALONG=$(python3 -c "import sys, yaml; print(float(yaml.safe_load(open(sys.argv[1]))['footprint_m'][1]))" "$OUT/plan.yaml")
+ros2 run herdsight_mission "$MISSION_NODE" --ros-args -p plan_file:="$OUT/plan.yaml" \
+  -p autostart:=true -p frame_along_m:="$FRAME_ALONG" > "$OUT/mission.log" 2>&1 &
 pids+=($!)
 ros2 topic echo --csv herdsight/still herdsight_msgs/msg/StillCaptured > "$OUT/stills.csv" 2>&1 &
 pids+=($!)
@@ -66,7 +74,19 @@ pids+=($!)
 end=$((SECONDS + SECONDS_LIMIT))
 next_stats=0
 while [ $SECONDS -lt $end ]; do
-  grep -q "mission finished" "$OUT/mission.log" && break
+  grep -q "mission finished: SUCCESS" "$OUT/mission.log" && break
+  grep -q "Disarmed by landing" "$OUT/px4.log" && break
+  if [ "$INJECT" != none ] && [ "$(grep -c . "$OUT/stills.csv")" -ge 15 ]; then
+    if [ "$INJECT" = herd ]; then
+      ros2 topic pub --once herdsight/herd_found herdsight_msgs/msg/HerdFound         "{centre: {x: 120.0, y: 0.0, z: 0.0}, extent_m: 20.0, animals_estimate: 20}" > /dev/null
+    elif [ "$INJECT" = gnss ]; then
+      $P/px4-param set SIM_GPS_USED 0
+    else
+      pkill -9 -f "$MISSION_NODE"
+    fi
+    echo "injected $INJECT at ${SECONDS} s"
+    INJECT=none
+  fi
   if [ $SECONDS -ge $next_stats ]; then
     rtf=$(timeout 5 gz topic -e -t /world/herdsight_farm/stats -n 1 2>/dev/null       | awk '/real_time_factor/ {print $2}')
     echo "$SECONDS,${rtf:-}" >> "$OUT/real_time_factor.csv"

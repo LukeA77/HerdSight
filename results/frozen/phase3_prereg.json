@@ -1,16 +1,15 @@
 {
- "frozen_utc": "2026-11-22T18:01:51+00:00",
+ "frozen_utc": "2026-11-22T18:27:44+00:00",
  "phase": "phase3_prereg",
- "git_commit": "9834def",
+ "git_commit": "761b117",
  "uncommitted_changes_to_frozen_files": [
-  "M results/data/s3_truth.json",
-  "?? configs/phase3.yaml"
+  "M results/data/s3_truth.json"
  ],
  "files": {
   "configs/phase3.yaml": "016ecbe014af6e1a35f4b27d156aa6ce83044e3094f0fd355ac5090a5b694ffe",
   "configs/specs.yaml": "dd4889e562affa69ce1c7e25da35d23c573da63dc4e8f4bb076200438833b9d5",
-  "configs/evaluation.yaml": "64edfdc161e57e89c4944357feb4bc43ff12218305b9fca8615625a48adf15a6",
-  "results/data/s3_truth.json": "12a8f8584d92cb5f03952de7635dc113d6fb97794e2fd9b63afc3afc7e9245d9",
-  "results/splits.json": "c99fb03b8f02b222300f128084b4f68f28ecd6beb6e49c7baed1eca66dcc89ed"
+  "configs/evaluation.yaml": "4bf12773c36e9242858075488dae7c85d474e56f42d331b74e77b3cec0df2e82",
+  "results/data/s3_truth.json": "2e6878a57a2883fc3710f9d02b663f1f4d88876106d98617fb893f55af539bce",
+  "results/splits.json": "57da76a152c040541f09b32061b010d1392490f1b04700e0f0dfbc2ee23d9257"
  }
 }

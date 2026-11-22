@@ -1,0 +1,12 @@
+{
+ "note": "Simulation result, one flight on one world, no wind; not a field result.",
+ "seconds_from_gnss_loss_to_px4_failsafe": 4.1839999999999975,
+ "px4_action": "blind descent (no position estimate)",
+ "seconds_from_gnss_loss_to_touchdown": 127.632,
+ "height_at_gnss_loss_m": 82.65338897705078,
+ "horizontal_travel_from_loss_to_touchdown_m": 132.36749267578125,
+ "touchdown_distance_from_launch_m": 193.724365234375,
+ "touchdown_outside_camp_m": 16.414146423339844,
+ "touchdown_to_nearest_animal_start_position_m": 34.38857671766671,
+ "animals": 30
+}

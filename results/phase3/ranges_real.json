@@ -1,0 +1,1628 @@
+{
+ "levels": [
+  0.68,
+  0.9,
+  0.95
+ ],
+ "detections": "dfine (Phase 1, out of fold)",
+ "methods": {
+  "greedy_fixed": {
+   "mare_raw": 0.2645248118126475,
+   "mare_corrected": 0.2756006337949672,
+   "correction_kept": false,
+   "coverage": {
+    "0.68": {
+     "coverage": 0.75,
+     "finite_ranges": 20,
+     "mean_relative_width": 0.832321033075166
+    },
+    "0.90": {
+     "coverage": 0.95,
+     "finite_ranges": 20,
+     "mean_relative_width": 2.7095088835161234
+    },
+    "0.95": {
+     "coverage": 1.0,
+     "finite_ranges": 0,
+     "mean_relative_width": null
+    }
+   },
+   "calibration_all_flights": {
+    "centre": 0.048653094225519944,
+    "q": {
+     "0.68": 0.37407549466014794,
+     "0.90": 0.900427460471626,
+     "0.95": 1.1409309726483166
+    },
+    "n": 20
+   },
+   "flights": [
+    {
+     "flight": "Derval/DJI_202308091442_012",
+     "count": 18,
+     "truth": 27,
+     "corrected": 19.0220548687194,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 12.731357142857144,
+      "hi": 28.42105263157895,
+      "inside": true,
+      "relative_width": 0.5810998329156224
+     },
+     "0.90": {
+      "lo": 6.11804347826087,
+      "hi": 59.142857142857146,
+      "inside": true,
+      "relative_width": 1.9638819875776397
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Derval/DJI_202308091507_014",
+     "count": 12,
+     "truth": 31,
+     "corrected": 12.6813699124796,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 8.48757142857143,
+      "hi": 18.94736842105263,
+      "inside": false,
+      "relative_width": 0.337412806209071
+     },
+     "0.90": {
+      "lo": 4.078695652173913,
+      "hi": 39.42857142857143,
+      "inside": true,
+      "relative_width": 1.140318573432178
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202306231103_031",
+     "count": 56,
+     "truth": 59,
+     "corrected": 58.09371106003094,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 40.177134103885244,
+      "hi": 84.0,
+      "inside": true,
+      "relative_width": 0.7427604389171992
+     },
+     "0.90": {
+      "lo": 18.341735134382393,
+      "hi": 184.00000000000006,
+      "inside": true,
+      "relative_width": 2.807767201112164
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202306271323_032",
+     "count": 90,
+     "truth": 65,
+     "corrected": 95.110274343597,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 63.65678571428572,
+      "hi": 142.10526315789474,
+      "inside": true,
+      "relative_width": 1.2068996529786002
+     },
+     "0.90": {
+      "lo": 30.59021739130435,
+      "hi": 295.7142857142857,
+      "inside": true,
+      "relative_width": 4.078831820353559
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202307260838_039",
+     "count": 111,
+     "truth": 98,
+     "corrected": 115.15003442256132,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 79.63681938448683,
+      "hi": 166.5,
+      "inside": true,
+      "relative_width": 0.8863589858725834
+     },
+     "0.90": {
+      "lo": 36.355939284222245,
+      "hi": 364.7142857142858,
+      "inside": true,
+      "relative_width": 3.3505953717353423
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202308031317_042",
+     "count": 131,
+     "truth": 120,
+     "corrected": 138.43828821123563,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 92.6559880952381,
+      "hi": 206.8421052631579,
+      "inside": true,
+      "relative_width": 0.9515509763993316
+     },
+     "0.90": {
+      "lo": 44.52576086956522,
+      "hi": 430.42857142857144,
+      "inside": true,
+      "relative_width": 3.215856754658385
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309151045_055",
+     "count": 170,
+     "truth": 158,
+     "corrected": 169.88107728520097,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 107.51608391608391,
+      "hi": 268.42105263157896,
+      "inside": true,
+      "relative_width": 1.0183858779461712
+     },
+     "0.90": {
+      "lo": 65.71441461764043,
+      "hi": 439.1666666666667,
+      "inside": true,
+      "relative_width": 2.3636218484115585
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309151045_056",
+     "count": 167,
+     "truth": 168,
+     "corrected": 166.88317592134447,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 105.61874125874127,
+      "hi": 263.6842105263158,
+      "inside": true,
+      "relative_width": 0.9408658884974673
+     },
+     "0.90": {
+      "lo": 64.55474847732913,
+      "hi": 431.4166666666667,
+      "inside": true,
+      "relative_width": 2.183701893984152
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309261339_058",
+     "count": 132,
+     "truth": 126,
+     "corrected": 139.4950690372756,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 93.36328571428572,
+      "hi": 208.42105263157896,
+      "inside": true,
+      "relative_width": 0.9131568802959781
+     },
+     "0.90": {
+      "lo": 44.86565217391305,
+      "hi": 433.7142857142858,
+      "inside": true,
+      "relative_width": 3.086100266193434
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309261339_059",
+     "count": 145,
+     "truth": 135,
+     "corrected": 153.23321977579516,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 102.55815476190477,
+      "hi": 228.94736842105263,
+      "inside": true,
+      "relative_width": 0.9362163974751693
+     },
+     "0.90": {
+      "lo": 49.284239130434784,
+      "hi": 476.4285714285715,
+      "inside": true,
+      "relative_width": 3.164032091097309
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306051814_022",
+     "count": 50,
+     "truth": 53,
+     "corrected": 51.86938487502763,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 35.87244116418326,
+      "hi": 75.0,
+      "inside": true,
+      "relative_width": 0.7382558270908819
+     },
+     "0.90": {
+      "lo": 16.37654922712714,
+      "hi": 164.28571428571433,
+      "inside": true,
+      "relative_width": 2.79073896336957
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306051839_025",
+     "count": 65,
+     "truth": 68,
+     "corrected": 67.43020033753591,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 46.634173513438235,
+      "hi": 97.5,
+      "inside": true,
+      "relative_width": 0.7480268600964965
+     },
+     "0.90": {
+      "lo": 21.289513995265278,
+      "hi": 213.5714285714286,
+      "inside": true,
+      "relative_width": 2.827675214355343
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071624_028",
+     "count": 23,
+     "truth": 35,
+     "corrected": 22.983910456233072,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 14.546293706293707,
+      "hi": 36.31578947368421,
+      "inside": true,
+      "relative_width": 0.6219855933540145
+     },
+     "0.90": {
+      "lo": 8.890773742386646,
+      "hi": 59.41666666666667,
+      "inside": true,
+      "relative_width": 1.443596940693715
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071703_029",
+     "count": 7,
+     "truth": 23,
+     "corrected": 6.995103182331804,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 4.427132867132867,
+      "hi": 11.052631578947368,
+      "inside": false,
+      "relative_width": 0.2880651613832392
+     },
+     "0.90": {
+      "lo": 2.7058876607263707,
+      "hi": 18.083333333333336,
+      "inside": false,
+      "relative_width": 0.6685845944611725
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071745_034",
+     "count": 43,
+     "truth": 46,
+     "corrected": 42.96991954860965,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 27.195244755244754,
+      "hi": 67.89473684210526,
+      "inside": true,
+      "relative_width": 0.8847715671056631
+     },
+     "0.90": {
+      "lo": 16.62188134446199,
+      "hi": 111.08333333333334,
+      "inside": true,
+      "relative_width": 2.0535098258450293
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071745_035",
+     "count": 80,
+     "truth": 86,
+     "corrected": 79.94403636950634,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 50.5958041958042,
+      "hi": 126.31578947368422,
+      "inside": true,
+      "relative_width": 0.8804649450916282
+     },
+     "0.90": {
+      "lo": 30.924430408301376,
+      "hi": 206.66666666666669,
+      "inside": true,
+      "relative_width": 2.043514375097271
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071416_061",
+     "count": 24,
+     "truth": 30,
+     "corrected": 24.89730474001326,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 17.21877175880796,
+      "hi": 36.0,
+      "inside": true,
+      "relative_width": 0.626040941373068
+     },
+     "0.90": {
+      "lo": 7.860743629021027,
+      "hi": 78.85714285714288,
+      "inside": true,
+      "relative_width": 2.3665466409373948
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071416_062",
+     "count": 24,
+     "truth": 12,
+     "corrected": 24.89730474001326,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 17.21877175880796,
+      "hi": 36.0,
+      "inside": false,
+      "relative_width": 1.56510235343267
+     },
+     "0.90": {
+      "lo": 7.860743629021027,
+      "hi": 78.85714285714288,
+      "inside": true,
+      "relative_width": 5.916366602343487
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071541_064",
+     "count": 19,
+     "truth": 30,
+     "corrected": 19.710366252510497,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 13.631527642389637,
+      "hi": 28.5,
+      "inside": false,
+      "relative_width": 0.4956157452536788
+     },
+     "0.90": {
+      "lo": 6.223088706308312,
+      "hi": 62.428571428571445,
+      "inside": true,
+      "relative_width": 1.8735160907421045
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071541_065",
+     "count": 41,
+     "truth": 25,
+     "corrected": 42.53289559752265,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 29.41540175463027,
+      "hi": 61.5,
+      "inside": false,
+      "relative_width": 1.2833839298147893
+     },
+     "0.90": {
+      "lo": 13.428770366244253,
+      "hi": 134.71428571428575,
+      "inside": true,
+      "relative_width": 4.85142061392166
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    }
+   ]
+  },
+  "phase1": {
+   "mare_raw": 0.28466557575379503,
+   "mare_corrected": 0.2967896859226579,
+   "correction_kept": false,
+   "coverage": {
+    "0.68": {
+     "coverage": 0.65,
+     "finite_ranges": 20,
+     "mean_relative_width": 0.7256377543068426
+    },
+    "0.90": {
+     "coverage": 0.95,
+     "finite_ranges": 20,
+     "mean_relative_width": 2.9746663869179377
+    },
+    "0.95": {
+     "coverage": 1.0,
+     "finite_ranges": 0,
+     "mean_relative_width": null
+    }
+   },
+   "calibration_all_flights": {
+    "centre": -0.07301577769437709,
+    "q": {
+     "0.68": 0.3477168025445757,
+     "0.90": 0.7989527810773134,
+     "0.95": 1.2625998445682136
+    },
+    "n": 20
+   },
+   "flights": [
+    {
+     "flight": "Derval/DJI_202308091442_012",
+     "count": 18,
+     "truth": 27,
+     "corrected": 17.15742238382977,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 14.173714285714286,
+      "hi": 20.769230769230766,
+      "inside": false,
+      "relative_width": 0.24427838827838816
+     },
+     "0.90": {
+      "lo": 4.977391304347826,
+      "hi": 59.142857142857146,
+      "inside": true,
+      "relative_width": 2.0061283643892343
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Derval/DJI_202308091507_014",
+     "count": 15,
+     "truth": 31,
+     "corrected": 14.297851986524808,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 11.811428571428571,
+      "hi": 17.307692307692307,
+      "inside": false,
+      "relative_width": 0.17729883020205597
+     },
+     "0.90": {
+      "lo": 4.147826086956521,
+      "hi": 49.28571428571429,
+      "inside": true,
+      "relative_width": 1.4560609096373474
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202306231103_031",
+     "count": 59,
+     "truth": 59,
+     "corrected": 58.14701044361104,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 38.73737373737374,
+      "hi": 87.28198371040723,
+      "inside": true,
+      "relative_width": 0.8227899995429406
+     },
+     "0.90": {
+      "lo": 17.441063938618917,
+      "hi": 193.8571428571429,
+      "inside": true,
+      "relative_width": 2.9901030325173554
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202306271323_032",
+     "count": 99,
+     "truth": 65,
+     "corrected": 94.36582311106373,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 77.95542857142857,
+      "hi": 114.23076923076923,
+      "inside": false,
+      "relative_width": 0.5580821639898562
+     },
+     "0.90": {
+      "lo": 27.375652173913043,
+      "hi": 325.28571428571433,
+      "inside": true,
+      "relative_width": 4.583231724796943
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202307260838_039",
+     "count": 119,
+     "truth": 98,
+     "corrected": 117.2795634371138,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 78.13131313131314,
+      "hi": 176.04332307692306,
+      "inside": true,
+      "relative_width": 0.9991021423021421
+     },
+     "0.90": {
+      "lo": 35.177739130434766,
+      "hi": 391.00000000000006,
+      "inside": true,
+      "relative_width": 3.6308393966282173
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202308031317_042",
+     "count": 163,
+     "truth": 120,
+     "corrected": 155.3699915869029,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 128.35085714285714,
+      "hi": 188.07692307692307,
+      "inside": false,
+      "relative_width": 0.4977172161172161
+     },
+     "0.90": {
+      "lo": 45.073043478260864,
+      "hi": 535.5714285714287,
+      "inside": true,
+      "relative_width": 4.087486542443065
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309151045_055",
+     "count": 178,
+     "truth": 158,
+     "corrected": 149.36053293589822,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 101.13636363636364,
+      "hi": 220.57910722503448,
+      "inside": true,
+      "relative_width": 0.7559667315738661
+     },
+     "0.90": {
+      "lo": 60.643082998084985,
+      "hi": 367.86666666666673,
+      "inside": true,
+      "relative_width": 1.9444530611935553
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309151045_056",
+     "count": 175,
+     "truth": 168,
+     "corrected": 146.843220583046,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 99.43181818181819,
+      "hi": 216.86148182236536,
+      "inside": true,
+      "relative_width": 0.6989860930984951
+     },
+     "0.90": {
+      "lo": 59.62100856553299,
+      "hi": 361.6666666666667,
+      "inside": true,
+      "relative_width": 1.7978908220305578
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309261339_058",
+     "count": 138,
+     "truth": 126,
+     "corrected": 131.54023827602822,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 108.66514285714287,
+      "hi": 159.23076923076923,
+      "inside": true,
+      "relative_width": 0.40131449502878064
+     },
+     "0.90": {
+      "lo": 38.16,
+      "hi": 453.42857142857144,
+      "inside": true,
+      "relative_width": 3.2957823129251707
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309261339_059",
+     "count": 159,
+     "truth": 135,
+     "corrected": 151.55723105716297,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 125.20114285714287,
+      "hi": 183.46153846153845,
+      "inside": true,
+      "relative_width": 0.4315584859584858
+     },
+     "0.90": {
+      "lo": 43.96695652173913,
+      "hi": 522.4285714285714,
+      "inside": true,
+      "relative_width": 3.54416011042098
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306051814_022",
+     "count": 56,
+     "truth": 53,
+     "corrected": 55.1903827939359,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 36.76767676767677,
+      "hi": 82.84391674208145,
+      "inside": true,
+      "relative_width": 0.869363018384994
+     },
+     "0.90": {
+      "lo": 16.554230179028124,
+      "hi": 184.00000000000003,
+      "inside": true,
+      "relative_width": 3.159354147565508
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306051839_025",
+     "count": 82,
+     "truth": 68,
+     "corrected": 80.81448909112042,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 53.83838383838384,
+      "hi": 121.30716380090497,
+      "inside": true,
+      "relative_width": 0.9921879406253107
+     },
+     "0.90": {
+      "lo": 24.240122762148328,
+      "hi": 269.42857142857144,
+      "inside": true,
+      "relative_width": 3.605712480388575
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071624_028",
+     "count": 34,
+     "truth": 35,
+     "corrected": 28.529539998991794,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 19.31818181818182,
+      "hi": 42.1330878969167,
+      "inside": true,
+      "relative_width": 0.6518544593924251
+     },
+     "0.90": {
+      "lo": 11.583510235589266,
+      "hi": 70.26666666666668,
+      "inside": true,
+      "relative_width": 1.6766616123164975
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071703_029",
+     "count": 7,
+     "truth": 23,
+     "corrected": 5.87372882332184,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 3.9772727272727275,
+      "hi": 8.674459272894614,
+      "inside": false,
+      "relative_width": 0.2042255019835603
+     },
+     "0.90": {
+      "lo": 2.3848403426213194,
+      "hi": 14.466666666666669,
+      "inside": false,
+      "relative_width": 0.5252967966976239
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071745_034",
+     "count": 43,
+     "truth": 46,
+     "corrected": 36.08147705754844,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 24.431818181818183,
+      "hi": 53.28596410492406,
+      "inside": true,
+      "relative_width": 0.6272640418066495
+     },
+     "0.90": {
+      "lo": 14.649733533245248,
+      "hi": 88.86666666666667,
+      "inside": true,
+      "relative_width": 1.6134115898569874
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071745_035",
+     "count": 85,
+     "truth": 86,
+     "corrected": 71.32384999747948,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 48.29545454545455,
+      "hi": 105.33271974229174,
+      "inside": true,
+      "relative_width": 0.6632240139167116
+     },
+     "0.90": {
+      "lo": 28.958775588973165,
+      "hi": 175.66666666666669,
+      "inside": true,
+      "relative_width": 1.7059057102057387
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071416_061",
+     "count": 26,
+     "truth": 30,
+     "corrected": 25.624106297184525,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 17.070707070707073,
+      "hi": 38.46324705882353,
+      "inside": true,
+      "relative_width": 0.7130846662705485
+     },
+     "0.90": {
+      "lo": 7.685892583120202,
+      "hi": 85.42857142857143,
+      "inside": true,
+      "relative_width": 2.5914226281817077
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071416_062",
+     "count": 25,
+     "truth": 12,
+     "corrected": 24.638563747292814,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 16.414141414141415,
+      "hi": 36.98389140271493,
+      "inside": false,
+      "relative_width": 1.7141458323811263
+     },
+     "0.90": {
+      "lo": 7.390281329923271,
+      "hi": 82.14285714285715,
+      "inside": true,
+      "relative_width": 6.22938131774449
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071541_064",
+     "count": 38,
+     "truth": 30,
+     "corrected": 37.45061689588508,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 24.949494949494948,
+      "hi": 56.215514932126695,
+      "inside": true,
+      "relative_width": 1.042200666087725
+     },
+     "0.90": {
+      "lo": 11.23322762148337,
+      "hi": 124.85714285714288,
+      "inside": true,
+      "relative_width": 3.7874638411886505
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071541_065",
+     "count": 44,
+     "truth": 25,
+     "corrected": 43.36387219523535,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 28.88888888888889,
+      "hi": 65.09164886877828,
+      "inside": false,
+      "relative_width": 1.4481103991955757
+     },
+     "0.90": {
+      "lo": 13.006895140664955,
+      "hi": 144.57142857142858,
+      "inside": true,
+      "relative_width": 5.262581337230545
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    }
+   ]
+  },
+  "global_fixed": {
+   "mare_raw": 0.2699793714142659,
+   "mare_corrected": 0.29423380923442066,
+   "correction_kept": false,
+   "coverage": {
+    "0.68": {
+     "coverage": 0.75,
+     "finite_ranges": 20,
+     "mean_relative_width": 0.6413518995134693
+    },
+    "0.90": {
+     "coverage": 0.95,
+     "finite_ranges": 20,
+     "mean_relative_width": 2.9737339747171014
+    },
+    "0.95": {
+     "coverage": 1.0,
+     "finite_ranges": 0,
+     "mean_relative_width": null
+    }
+   },
+   "calibration_all_flights": {
+    "centre": -0.02326000781744641,
+    "q": {
+     "0.68": 0.3205115312853781,
+     "0.90": 0.9723405625145924,
+     "0.95": 1.2128440746912827
+    },
+    "n": 20
+   },
+   "flights": [
+    {
+     "flight": "Derval/DJI_202308091442_012",
+     "count": 20,
+     "truth": 27,
+     "corrected": 20.05979086583004,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 14.946107784431135,
+      "hi": 26.923076923076927,
+      "inside": true,
+      "relative_width": 0.4435914495794738
+     },
+     "0.90": {
+      "lo": 6.123405363186669,
+      "hi": 65.71428571428572,
+      "inside": true,
+      "relative_width": 2.2070696426332983
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Derval/DJI_202308091507_014",
+     "count": 12,
+     "truth": 31,
+     "corrected": 12.035874519498023,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 8.967664670658682,
+      "hi": 16.153846153846153,
+      "inside": false,
+      "relative_width": 0.2318123059092733
+     },
+     "0.90": {
+      "lo": 3.6740432179120015,
+      "hi": 39.42857142857143,
+      "inside": true,
+      "relative_width": 1.1533718777632074
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202306231103_031",
+     "count": 56,
+     "truth": 59,
+     "corrected": 58.09371106003094,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 44.64126011542805,
+      "hi": 75.60000000000001,
+      "inside": true,
+      "relative_width": 0.5247244048232536
+     },
+     "0.90": {
+      "lo": 18.341735134382393,
+      "hi": 184.00000000000006,
+      "inside": true,
+      "relative_width": 2.807767201112164
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202306271323_032",
+     "count": 90,
+     "truth": 65,
+     "corrected": 90.26905889623518,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 67.25748502994011,
+      "hi": 121.15384615384616,
+      "inside": false,
+      "relative_width": 0.8291747865216315
+     },
+     "0.90": {
+      "lo": 27.55532413434001,
+      "hi": 295.7142857142857,
+      "inside": true,
+      "relative_width": 4.125522485845319
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202307260838_039",
+     "count": 118,
+     "truth": 98,
+     "corrected": 122.41174830506519,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 94.06551238608053,
+      "hi": 159.3,
+      "inside": true,
+      "relative_width": 0.6656580368767294
+     },
+     "0.90": {
+      "lo": 38.64865617602005,
+      "hi": 387.7142857142858,
+      "inside": true,
+      "relative_width": 3.561894178961895
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202308031317_042",
+     "count": 131,
+     "truth": 120,
+     "corrected": 131.39163017118676,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 97.89700598802393,
+      "hi": 176.34615384615387,
+      "inside": true,
+      "relative_width": 0.6537428988177495
+     },
+     "0.90": {
+      "lo": 40.108305128872686,
+      "hi": 430.42857142857144,
+      "inside": true,
+      "relative_width": 3.252668885830823
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309151045_055",
+     "count": 170,
+     "truth": 158,
+     "corrected": 157.242666890299,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 107.73532152842496,
+      "hi": 229.50000000000003,
+      "inside": true,
+      "relative_width": 0.7706625219719941
+     },
+     "0.90": {
+      "lo": 56.300393830983374,
+      "hi": 439.1666666666667,
+      "inside": true,
+      "relative_width": 2.423204258453692
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309151045_056",
+     "count": 167,
+     "truth": 168,
+     "corrected": 154.46779629811724,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 105.83410997204099,
+      "hi": 225.45000000000002,
+      "inside": true,
+      "relative_width": 0.711999345404518
+     },
+     "0.90": {
+      "lo": 55.30685746926014,
+      "hi": 431.4166666666667,
+      "inside": true,
+      "relative_width": 2.238748864270277
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309261339_058",
+     "count": 132,
+     "truth": 126,
+     "corrected": 132.39461971447827,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 98.64431137724549,
+      "hi": 177.6923076923077,
+      "inside": true,
+      "relative_width": 0.6273650501195415
+     },
+     "0.90": {
+      "lo": 40.414475397032014,
+      "hi": 433.7142857142858,
+      "inside": true,
+      "relative_width": 3.1214270660099506
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Jalogny/DJI_202309261339_059",
+     "count": 145,
+     "truth": 135,
+     "corrected": 145.43348377726778,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 108.35928143712573,
+      "hi": 195.1923076923077,
+      "inside": true,
+      "relative_width": 0.6432076018902368
+     },
+     "0.90": {
+      "lo": 44.39468888310335,
+      "hi": 476.4285714285715,
+      "inside": true,
+      "relative_width": 3.2002509818182827
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306051814_022",
+     "count": 50,
+     "truth": 53,
+     "corrected": 51.86938487502763,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 39.85826796020361,
+      "hi": 67.5,
+      "inside": true,
+      "relative_width": 0.5215421139584224
+     },
+     "0.90": {
+      "lo": 16.37654922712714,
+      "hi": 164.28571428571433,
+      "inside": true,
+      "relative_width": 2.79073896336957
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306051839_025",
+     "count": 74,
+     "truth": 68,
+     "corrected": 76.76668961504089,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 58.99023658110135,
+      "hi": 99.9,
+      "inside": true,
+      "relative_width": 0.6016141679249802
+     },
+     "0.90": {
+      "lo": 24.237292856148166,
+      "hi": 243.1428571428572,
+      "inside": true,
+      "relative_width": 3.2191994748045443
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071624_028",
+     "count": 26,
+     "truth": 35,
+     "corrected": 24.04887846557514,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 16.477166821994405,
+      "hi": 35.1,
+      "inside": true,
+      "relative_width": 0.5320809479430171
+     },
+     "0.90": {
+      "lo": 8.610648468268046,
+      "hi": 67.16666666666667,
+      "inside": true,
+      "relative_width": 1.6730290913828179
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071703_029",
+     "count": 7,
+     "truth": 23,
+     "corrected": 6.474698048424076,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 4.436160298229263,
+      "hi": 9.450000000000001,
+      "inside": false,
+      "relative_width": 0.21799303051177124
+     },
+     "0.90": {
+      "lo": 2.318251510687551,
+      "hi": 18.083333333333336,
+      "inside": false,
+      "relative_width": 0.6854383401150341
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071745_034",
+     "count": 43,
+     "truth": 46,
+     "corrected": 39.77314515460504,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 27.2506989748369,
+      "hi": 58.050000000000004,
+      "inside": true,
+      "relative_width": 0.6695500222861545
+     },
+     "0.90": {
+      "lo": 14.240687851366383,
+      "hi": 111.08333333333334,
+      "inside": true,
+      "relative_width": 2.10527490178189
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202306071745_035",
+     "count": 80,
+     "truth": 86,
+     "corrected": 73.99654912484658,
+     "calibration_flights": 14,
+     "0.68": {
+      "lo": 50.69897483690586,
+      "hi": 108.0,
+      "inside": true,
+      "relative_width": 0.6662909902685364
+     },
+     "0.90": {
+      "lo": 26.494302979286296,
+      "hi": 206.66666666666669,
+      "inside": true,
+      "relative_width": 2.095027484736981
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071416_061",
+     "count": 36,
+     "truth": 30,
+     "corrected": 37.34595711001989,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 28.697952931346602,
+      "hi": 48.6,
+      "inside": true,
+      "relative_width": 0.6634015689551133
+     },
+     "0.90": {
+      "lo": 11.79111544353154,
+      "hi": 118.2857142857143,
+      "inside": true,
+      "relative_width": 3.5498199614060924
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071416_062",
+     "count": 24,
+     "truth": 12,
+     "corrected": 24.89730474001326,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 19.131968620897734,
+      "hi": 32.400000000000006,
+      "inside": false,
+      "relative_width": 1.105669281591856
+     },
+     "0.90": {
+      "lo": 7.860743629021027,
+      "hi": 78.85714285714288,
+      "inside": true,
+      "relative_width": 5.916366602343487
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071541_064",
+     "count": 30,
+     "truth": 30,
+     "corrected": 31.121630925016575,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 23.914960776122168,
+      "hi": 40.5,
+      "inside": true,
+      "relative_width": 0.5528346407959277
+     },
+     "0.90": {
+      "lo": 9.825929536276282,
+      "hi": 98.5714285714286,
+      "inside": true,
+      "relative_width": 2.958183301171744
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    },
+    {
+     "flight": "Mauron/DJI_202311071541_065",
+     "count": 54,
+     "truth": 25,
+     "corrected": 56.01893566502984,
+     "calibration_flights": 12,
+     "0.68": {
+      "lo": 43.0469293970199,
+      "hi": 72.9,
+      "inside": false,
+      "relative_width": 1.1941228241192041
+     },
+     "0.90": {
+      "lo": 17.686673165297307,
+      "hi": 177.42857142857147,
+      "inside": true,
+      "relative_width": 6.3896759305309665
+     },
+     "0.95": {
+      "lo": 0.0,
+      "hi": null,
+      "inside": true,
+      "relative_width": null
+     }
+    }
+   ]
+  }
+ },
+ "environment": {
+  "generated_utc": "2026-11-22T19:13:33+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

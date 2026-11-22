@@ -43,6 +43,11 @@ std::optional<Target> SurveyLogic::flyTo(const Eigen::Vector3f& pos_ned) const {
 // In passing, a photo point counts as reached once the drone, close enough to the line, is level
 // with it or beyond; otherwise (and for every other target) within reached_m.
 bool SurveyLogic::passed(const Target& t, const Eigen::Vector3f& pos_ned) const {
+  if (t.kind == TargetKind::Descent) {  // finish descending before moving in over the herd (D-6)
+    const Eigen::Vector3f off = pos_ned - t.ned;
+    return off.head<2>().norm() <= limits_.reached_m &&
+           std::abs(off.z()) <= limits_.descent_settled_m;
+  }
   if ((pos_ned - t.ned).norm() <= limits_.reached_m) return true;
   if (!limits_.pass_through || t.kind != TargetKind::Photo || !last_) return false;
   const Eigen::Vector3f leg = t.ned - *last_;
@@ -75,7 +80,7 @@ bool SurveyLogic::herdFound(const Eigen::Vector2f& centre_ne, float extent_m) {
   if (herd_queued_ || queue_.empty()) return false;
   const float survey_h = plan_.height_agl_m;
   // lowest height (not below the herd-mode floor) whose still frames the herd with a margin
-  float h = limits_.herd_mode_height_m;
+  float h = limits_.herd_mode_height_m + limits_.floor_margin_m;
   if (limits_.frame_along_m > 0) {
     h = std::max(h, survey_h * 1.2f * extent_m / limits_.frame_along_m);
   }
@@ -86,14 +91,14 @@ bool SurveyLogic::herdFound(const Eigen::Vector2f& centre_ne, float extent_m) {
   Eigen::Vector2f away = here - centre_ne;
   if (away.norm() < 1e-3f) away = Eigen::Vector2f(1.0f, 0.0f);
   away.normalize();
-  const Eigen::Vector2f descent = centre_ne + away * (extent_m / 2 + limits_.clearance_m);
+  const Eigen::Vector2f descent = centre_ne + away * (extent_m / 2 + limits_.clearance_m + limits_.descent_margin_m);
   const float ground = resume.ned.z() + survey_h;  // down coordinate of the ground, approx.
   auto at = [&](const Eigen::Vector2f& ne, float height) {
     return Eigen::Vector3f(ne.x(), ne.y(), ground - height);
   };
   std::vector<Target> ins = {
       {at(descent, survey_h), TargetKind::Transit, -1},   // approach at survey height
-      {at(descent, h), TargetKind::Transit, -1},          // descend clear of the herd
+      {at(descent, h), TargetKind::Descent, -1},          // descend clear of the herd
       {at(centre_ne, h), TargetKind::HerdPhoto, -1},      // over the herd at herd-mode height
       {at(centre_ne, survey_h), TargetKind::Transit, -1}, // climb straight up
   };

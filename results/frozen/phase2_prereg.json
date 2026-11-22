@@ -1,13 +1,11 @@
 {
- "frozen_utc": "2026-11-21T20:53:20+00:00",
+ "frozen_utc": "2026-11-22T18:27:43+00:00",
  "phase": "phase2_prereg",
- "git_commit": "fe1330c",
- "uncommitted_changes_to_frozen_files": [
-  "M configs/specs.yaml"
- ],
+ "git_commit": "761b117",
+ "uncommitted_changes_to_frozen_files": [],
  "files": {
   "configs/phase2.yaml": "69cceef959dd1de0bb0c0edc17b6d0f0b3111c5b3b7b6d9e170e9e44e2bec4f4",
   "configs/specs.yaml": "dd4889e562affa69ce1c7e25da35d23c573da63dc4e8f4bb076200438833b9d5",
-  "configs/evaluation.yaml": "64edfdc161e57e89c4944357feb4bc43ff12218305b9fca8615625a48adf15a6"
+  "configs/evaluation.yaml": "4bf12773c36e9242858075488dae7c85d474e56f42d331b74e77b3cec0df2e82"
  }
 }
