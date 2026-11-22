@@ -4,6 +4,7 @@ Usage:
   python scripts/mine_hard_negatives.py mine --models DIR [--workers N] [--limit-images N]
   python scripts/mine_hard_negatives.py select
   python scripts/mine_hard_negatives.py apply --answers FILE
+  python scripts/mine_hard_negatives.py package
 
 DIR holds the three mining models from gpu/runpod/job_g3.sh: g3_mine_fold<k>/last.onnx, each
 trained on fold k's tiles only. Everything is written under
@@ -24,7 +25,11 @@ select  For each fold k (the model that trains on the other two folds a and b): 
 apply   Reads the reviewer's answers (tiles marked as showing an animal are dropped), keeps the
         best-ranked accepted tiles up to the number needed, and writes
         processed/herdsight_hardneg_v1/: images/*.jpg and hardneg_fold<k>.json (COCO, no boxes),
-        for G2 to add to train_fold<k>.json.
+        for G2 to add to train_fold<k>.json. Tiles from photos on the training exclusions list
+        (C4, which can grow after mining) are dropped as well.
+package Zips the set with a manifest into exports/herdsight_hardneg_v1.zip (uploaded once as a
+        private Kaggle dataset, like the tile package) and writes its manifest to
+        results/phase2/.
 Speed (laptop CPU, about 0.25 s per tile per model): mining uses the same 640 px tiles but
 without overlap (overlap only adds near-duplicate candidates, which PER_IMAGE then drops), and a
 random IMAGE_SHARE of the photos (seeded), which gives several times the candidates needed; if
@@ -40,6 +45,7 @@ import html
 import json
 import math
 import sys
+import zipfile
 from collections.abc import Callable
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -62,6 +68,7 @@ THREADS = 2  # ONNX Runtime threads per worker process
 IMAGE_SHARE = 0.5  # share of photos mined (seeded)
 IMAGE_SEED = 20261122
 MINING_OVERLAP_PX = 0  # tiles without overlap
+NAME = "herdsight_hardneg_v1"
 
 _SESSIONS: dict[str, object] = {}
 
@@ -145,9 +152,7 @@ def cmd_mine(args: argparse.Namespace) -> int:
         raise SystemExit(f"missing mining models: {missing}")
     cfg = load_config("baselines")
     tile_px, overlap = int(cfg.require("dfine_tile_px")), MINING_OVERLAP_PX
-    excluded = set(
-        json.loads((REPO_ROOT / "results" / "data" / "training_exclusions.json").read_text())
-    )
+    excluded = set(training_exclusions())
     out = run_dir() / "candidates.jsonl"
     done = set()
     if out.exists():
@@ -182,6 +187,11 @@ def load_candidates() -> list[dict]:
     path = run_dir() / "candidates.jsonl"
     rows = [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines() if x]
     return [r for row in rows for r in row["records"]]
+
+
+def training_exclusions() -> list[str]:
+    """Photos left out of Phase 2 training (C4): farm/flight/photo name."""
+    return json.loads((REPO_ROOT / "results" / "data" / "training_exclusions.json").read_text())
 
 
 def needed_per_fold() -> dict[str, int]:
@@ -333,15 +343,23 @@ show();
 def cmd_apply(args: argparse.Namespace) -> int:
     folds, _ = folds_and_groups()
     answers = json.loads(args.answers.read_text(encoding="utf-8"))
-    animal = set(answers["animal"])
     cands = load_candidates()
+    # tiles marked as showing an animal, and tiles cut from photos left out of training (C4,
+    # which can grow after mining) are never used
+    excluded_photos = set(training_exclusions())
+    animal = set(answers["animal"]) | {c["tile"] for c in cands if c["source"] in excluded_photos}
     need = needed_per_fold()
     sel = json.loads((run_dir() / "selection.json").read_text(encoding="utf-8"))
     reviewed = {t for k in folds for t in sel["folds"][k]}
-    out = storage_path("processed", "herdsight_hardneg_v1", create=True)
+    out = storage_path("processed", NAME, create=True)
     (out / "images").mkdir(exist_ok=True)
     resolve = photo_resolver()
-    summary = {"need": need, "rejected_as_animal": len(animal & reviewed), "folds": {}}
+    summary = {
+        "need": need,
+        "rejected_as_animal": len(set(answers["animal"]) & reviewed),
+        "from_excluded_photos": len((animal - set(answers["animal"])) & reviewed),
+        "folds": {},
+    }
     for k in folds:
         tiles = []
         for _, pool in ranked(cands, k, folds):
@@ -361,6 +379,48 @@ def cmd_apply(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_package(args: argparse.Namespace) -> int:
+    """Zip the reviewed set for the GPU sessions (uploaded once as a private Kaggle dataset)."""
+    src = storage_path("processed", NAME)
+    summary = json.loads((src / "summary.json").read_text(encoding="utf-8"))
+    if any(f["short_by"] for f in summary["folds"].values()):
+        raise SystemExit("a fold is short of hard negatives; see summary.json")
+    images = sorted((src / "images").glob("*.jpg"))
+    manifest = {
+        "name": NAME,
+        "made_by": "scripts/mine_hard_negatives.py (mine, select, apply, package)",
+        "settings": {
+            "score_min": SCORE_MIN,
+            "per_image": PER_IMAGE,
+            "overselect": OVERSELECT,
+            "mining_overlap_px": MINING_OVERLAP_PX,
+        },
+        "training_exclusions_sha256": hashlib.sha256(
+            (REPO_ROOT / "results" / "data" / "training_exclusions.json").read_bytes()
+        ).hexdigest(),
+        "summary": summary,
+        "images": len(images),
+        "licence": "Crops of ICAERUS grazing cows v2 photos, CC BY 4.0",
+    }
+    (src / "manifest.json").write_text(json.dumps(manifest, indent=1), encoding="utf-8")
+    zpath = storage_path("exports", create=True) / f"{NAME}.zip"
+    with zipfile.ZipFile(zpath, "w", compression=zipfile.ZIP_STORED) as z:
+        z.write(src / "manifest.json", f"{NAME}/manifest.json")
+        for k in summary["folds"]:
+            z.write(src / f"hardneg_{k}.json", f"{NAME}/hardneg_{k}.json")
+        for im in images:
+            z.write(im, f"{NAME}/images/{im.name}")
+    h = hashlib.sha256()
+    with zpath.open("rb") as fh:
+        for block in iter(lambda: fh.read(1 << 20), b""):
+            h.update(block)
+    manifest.update(zip_bytes=zpath.stat().st_size, zip_sha256=h.hexdigest())
+    dest = REPO_ROOT / "results" / "phase2" / f"{NAME}_manifest.json"
+    dest.write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8")
+    print(f"{zpath} ({manifest['zip_bytes'] / 1e6:.0f} MB, {len(images)} tiles); manifest {dest}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -372,8 +432,14 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("select")
     a = sub.add_parser("apply")
     a.add_argument("--answers", type=Path, required=True)
+    sub.add_parser("package")
     args = ap.parse_args(argv)
-    return {"mine": cmd_mine, "select": cmd_select, "apply": cmd_apply}[args.cmd](args)
+    return {
+        "mine": cmd_mine,
+        "select": cmd_select,
+        "apply": cmd_apply,
+        "package": cmd_package,
+    }[args.cmd](args)
 
 
 if __name__ == "__main__":

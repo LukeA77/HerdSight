@@ -1,0 +1,38 @@
+{
+ "name": "herdsight_hardneg_v1",
+ "made_by": "scripts/mine_hard_negatives.py (mine, select, apply, package)",
+ "settings": {
+  "score_min": 0.3,
+  "per_image": 2,
+  "overselect": 1.15,
+  "mining_overlap_px": 0
+ },
+ "training_exclusions_sha256": "a8224204d42031b0fd620589cca4a2208670d6423334f33036da99258d4c7755",
+ "summary": {
+  "need": {
+   "fold0": 698,
+   "fold1": 790,
+   "fold2": 855
+  },
+  "rejected_as_animal": 4,
+  "from_excluded_photos": 7,
+  "folds": {
+   "fold0": {
+    "tiles": 698,
+    "short_by": 0
+   },
+   "fold1": {
+    "tiles": 790,
+    "short_by": 0
+   },
+   "fold2": {
+    "tiles": 856,
+    "short_by": 0
+   }
+  }
+ },
+ "images": 1958,
+ "licence": "Crops of ICAERUS grazing cows v2 photos, CC BY 4.0",
+ "zip_bytes": 455658436,
+ "zip_sha256": "56379a7c7927409674540ae6254a86234ecc6fc5433a643d6f71d0c2cfae7b46"
+}

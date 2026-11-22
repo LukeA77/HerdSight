@@ -1,0 +1,44 @@
+# Phase 2 step G2: the combined recipe, written down on 2026-11-22 before any G2 model was trained
+# (plan: "combined into one recipe, written down before the run and not tuned per fold").
+# Read by gpu/runpod/job_g2.sh. The augmentation settings themselves are in gpu/train_dfine.py
+# (G2_FRONT_OPS, G2_OPS) and gpu/dfine_ops.py; this file records the choices and their reasons.
+
+oversample_touching:
+  value: 2
+  placeholder: G2_OVERSAMPLE
+  source: "Each training tile with touching or overlapping animals appears twice (once extra). Chosen without tuning: Phase 1's failure analysis (results/baselines/dfine_failures.json) found touching animals among the most missed, and a factor of 2 adds emphasis without letting a few crowded tiles dominate."
+
+copy_paste:
+  value: {p: 0.5, animals: [2, 6], max_cover: 0.3}
+  placeholder: G2_COPY_PASTE
+  source: "Crowding (C1): on half the training samples, 2 to 6 labelled animals from another training tile are pasted as a touching group; never over more than 30% of an animal already present, so every visible animal keeps a box."
+
+scale_jitter:
+  value: {p: 0.5, scale: [0.8, 1.25]}
+  placeholder: G2_SCALE
+  source: "C1 found image scale does not explain the Derval failure, so only a mild change is used; animals less than half inside the tile are dropped, as in the tile package (configs/baselines.yaml)."
+
+appearance:
+  value: [HsRandomRot90, HsRandomVFlip, HsDarkenShade, HsRandomShadow, HsRandomGrayscale, HsRandomBlur]
+  placeholder: G2_APPEARANCE
+  source: "C1: the new farm has mostly dark cattle, often in tree shade; nadir images have no up."
+
+hard_negatives:
+  value: herdsight_hardneg_v1
+  placeholder: G2_HARDNEG
+  source: "G3 / D-34: nested mining, reviewed by the owner (4 of 2179 tiles marked as animals), one hard negative per two animal tiles; manifest results/phase2/herdsight_hardneg_v1_manifest.json."
+
+training_exclusions:
+  value: results/data/training_exclusions.json
+  placeholder: G2_EXCLUSIONS
+  source: "C4: 6 photos with cattle or possible cattle and no labels (owner's review, 2026-11-22); training only."
+
+reference:
+  value: {recipe: phase1, exclusions: none, hard_negatives: none, oversample_touching: 1}
+  placeholder: G2_REFERENCE
+  source: "The Phase 1 recipe, retrained in the same session on the same GPU type as G2 (D-35), so the paired comparison differs only in the recipe."
+
+epochs:
+  value: 72
+  placeholder: G2_EPOCHS
+  source: "G0 (H9 not held): 220 epochs gave no gain."

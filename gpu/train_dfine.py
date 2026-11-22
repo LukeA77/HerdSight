@@ -8,8 +8,9 @@ Starts from the authors' COCO weights at the pinned D-FINE commit, as in Phase 1
 that Phase 2 needs, each an option:
   --size s|m|n            model size (plan step G4)
   --epochs N              72 for screening, 220 for the authors' full schedule (G0, D-22)
-  --recipe phase1|g2      g2 adds the ops in gpu/dfine_ops.py (dark/shade, shadow, greyscale,
-                          blur, 90-degree turns, vertical flip) to Phase 1's augmentation (G2)
+  --recipe phase1|g2      g2 adds the ops in gpu/dfine_ops.py (copy-paste groups, mild scale
+                          jitter, dark/shade, shadow, greyscale, blur, 90-degree turns,
+                          vertical flip) to Phase 1's augmentation (G2)
   --oversample-touching K repeat each training tile with touching animals K times in total (G2)
   --exclude FILE          JSON list of source images ("farm/flight/image.JPG") left out of
                           training, e.g. images with unlabelled cattle (C4, D-32)
@@ -18,6 +19,9 @@ that Phase 2 needs, each an option:
   --only-fold F           train on the tiles of fold F only, taken from train_<fold>.json (so F
                           must not be --fold); used by the half-schedule mining models of G3
                           (D-34), which are monitored on --fold's tiles, never their own
+  --hardneg DIR           the reviewed hard-negative package (scripts/mine_hard_negatives.py, G3,
+                          D-34): hardneg_<fold>.json's tiles are added to training as background
+                          (no boxes); they never come from --fold's own images
   --workers N             data-loading processes (the Phase 1 value of 4 left the GPU idle)
   --seed N
 Writes WORK/RUN/: last.pth, last.onnx, log.txt, train_stdout.txt, the config, the label files
@@ -51,6 +55,11 @@ PHASE1_OPS = [
     {"type": "RandomIoUCrop", "p": 0.8},
     {"type": "SanitizeBoundingBoxes", "min_size": 1},
     {"type": "RandomHorizontalFlip"},
+]
+# G2 ops that need the original tile: crowding (copy-paste) and mild scale change come first
+G2_FRONT_OPS = [
+    {"type": "HsCopyPaste", "p": 0.5},
+    {"type": "HsScaleJitter", "p": 0.5},
 ]
 G2_OPS = [
     {"type": "HsRandomRot90", "p": 0.75},
@@ -118,6 +127,17 @@ def iou_any(boxes: list[list[float]]) -> bool:
     return False
 
 
+def link_hardneg(package: Path, hardneg: Path) -> None:
+    """Make the hard-negative tiles visible as images/hardneg/ beside the training tiles."""
+    dest = package / "images" / "hardneg"
+    if dest.exists():
+        return
+    try:
+        dest.symlink_to((hardneg / "images").resolve(), target_is_directory=True)
+    except OSError:  # no symlinks (e.g. Windows without developer mode): copy instead
+        shutil.copytree(hardneg / "images", dest)
+
+
 def build_sets(args: argparse.Namespace, out: Path) -> tuple[Path, Path, dict]:
     """Training and evaluation label files for this run, and counts for run.json."""
     data = args.package
@@ -165,6 +185,22 @@ def build_sets(args: argparse.Namespace, out: Path) -> tuple[Path, Path, dict]:
         }, repeated
 
     train, repeated = coco_of(train_imgs, args.oversample_touching)
+    hardneg = 0
+    if args.hardneg:
+        # background tiles, served from images/hardneg/ (link_hardneg); never a fold's own images
+        hn = json.loads((args.hardneg / f"hardneg_{args.fold}.json").read_text())
+        splits = json.loads((HERE.parent / "results" / "splits.json").read_text())
+        groups = splits["icaerus_v2"]["groups"]
+        for im in hn["images"]:
+            farm, flight, image = source_image(im["file_name"])
+            if f"{farm}/{flight}/{image}" in excluded:
+                raise SystemExit(f"hard negative from an excluded photo: {im['file_name']}")
+            if groups.get(group_of(farm, flight)) == args.fold:
+                raise SystemExit(f"hard negative from {args.fold}'s own images: {im['file_name']}")
+            train["images"].append(
+                {**im, "id": len(train["images"]) + 1, "file_name": f"hardneg/{im['file_name']}"}
+            )
+            hardneg += 1
     train_path = out / "train.json"
     train_path.write_text(json.dumps(train))
     if args.holdout_group:
@@ -178,6 +214,7 @@ def build_sets(args: argparse.Namespace, out: Path) -> tuple[Path, Path, dict]:
         "train_tiles_before_repeats": len(train_imgs),
         "tiles_with_touching_animals_repeated": repeated,
         "train_boxes": len(train["annotations"]),
+        "hard_negative_tiles": hardneg,
         "excluded_tiles": dropped,
         "holdout_tiles": len(hold_imgs),
     }
@@ -196,6 +233,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--exclude", type=Path, default=None)
     ap.add_argument("--holdout-group", default=None)
     ap.add_argument("--only-fold", default=None)
+    ap.add_argument("--hardneg", type=Path, default=None)
     ap.add_argument("--workers", type=int, default=12)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--work", type=Path, default=Path("/workspace/work"))
@@ -253,6 +291,9 @@ def main(argv: list[str] | None = None) -> int:
     if not weights.exists():
         urllib.request.urlretrieve(WEIGHTS.format(args.size), weights.with_suffix(".part"))
         os.replace(weights.with_suffix(".part"), weights)
+    if args.hardneg:
+        args.hardneg = args.hardneg.resolve()
+        link_hardneg(args.package, args.hardneg)
     train_ann, eval_ann, counts = build_sets(args, out)
     if args.cpu_smoke:  # keep a few tiles with animals in each set
         for p in (train_ann, eval_ann):
@@ -266,9 +307,10 @@ def main(argv: list[str] | None = None) -> int:
 
     base_cfg = repo / f"configs/dfine/custom/dfine_hgnetv2_{args.size}_custom.yml"
     lr_scale = BATCH / AUTHORS_BATCH[args.size]
-    ops = PHASE1_OPS + (G2_OPS if args.recipe == "g2" else []) + TAIL_OPS
+    g2 = args.recipe == "g2"
+    ops = (G2_FRONT_OPS if g2 else []) + PHASE1_OPS + (G2_OPS if g2 else []) + TAIL_OPS
     stop_ops = ["RandomPhotometricDistort", "RandomZoomOut", "RandomIoUCrop"] + (
-        [o["type"] for o in G2_OPS] if args.recipe == "g2" else []
+        [o["type"] for o in G2_FRONT_OPS + G2_OPS] if g2 else []
     )
     img_folder = (args.package / "images").as_posix()
     cfg = {
@@ -348,6 +390,9 @@ def main(argv: list[str] | None = None) -> int:
         "excluded_images": sorted(json.loads(args.exclude.read_text())) if args.exclude else [],
         "holdout_group": args.holdout_group,
         "only_fold": args.only_fold,
+        "hardneg_manifest_sha256": (
+            sha256(args.hardneg / "manifest.json") if args.hardneg else None
+        ),
         "counts": counts,
         "tile_px": RES,
         "epochs_planned": args.epochs,
