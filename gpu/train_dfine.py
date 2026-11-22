@@ -15,6 +15,9 @@ that Phase 2 needs, each an option:
                           training, e.g. images with unlabelled cattle (C4, D-32)
   --holdout-group G       farm-date group removed from training and used as the evaluation set
                           (G0: a training-side hold-out, never the fold's validation images)
+  --only-fold F           train on the tiles of fold F only, taken from train_<fold>.json (so F
+                          must not be --fold); used by the half-schedule mining models of G3
+                          (D-34), which are monitored on --fold's tiles, never their own
   --workers N             data-loading processes (the Phase 1 value of 4 left the GPU idle)
   --seed N
 Writes WORK/RUN/: last.pth, last.onnx, log.txt, train_stdout.txt, the config, the label files
@@ -120,6 +123,12 @@ def build_sets(args: argparse.Namespace, out: Path) -> tuple[Path, Path, dict]:
     data = args.package
     coco = json.loads((data / f"train_{args.fold}.json").read_text())
     excluded = set(json.loads(args.exclude.read_text())) if args.exclude else set()
+    fold_groups: dict[str, str] = {}
+    if args.only_fold:
+        if args.only_fold == args.fold:
+            raise SystemExit("--only-fold must differ from --fold (its tiles are not in the file)")
+        splits = json.loads((HERE.parent / "results" / "splits.json").read_text())
+        fold_groups = splits["icaerus_v2"]["groups"]
     anns: dict[int, list] = {}
     for a in coco["annotations"]:
         anns.setdefault(a["image_id"], []).append(a)
@@ -128,6 +137,8 @@ def build_sets(args: argparse.Namespace, out: Path) -> tuple[Path, Path, dict]:
         farm, flight, image = source_image(im["file_name"])
         if f"{farm}/{flight}/{image}" in excluded:
             dropped += 1
+            continue
+        if args.only_fold and fold_groups.get(group_of(farm, flight)) != args.only_fold:
             continue
         if args.holdout_group and group_of(farm, flight) == args.holdout_group:
             hold_imgs.append(im)
@@ -184,6 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--oversample-touching", type=int, default=1)
     ap.add_argument("--exclude", type=Path, default=None)
     ap.add_argument("--holdout-group", default=None)
+    ap.add_argument("--only-fold", default=None)
     ap.add_argument("--workers", type=int, default=12)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--work", type=Path, default=Path("/workspace/work"))
@@ -335,6 +347,7 @@ def main(argv: list[str] | None = None) -> int:
         "oversample_touching": args.oversample_touching,
         "excluded_images": sorted(json.loads(args.exclude.read_text())) if args.exclude else [],
         "holdout_group": args.holdout_group,
+        "only_fold": args.only_fold,
         "counts": counts,
         "tile_px": RES,
         "epochs_planned": args.epochs,

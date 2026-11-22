@@ -1,0 +1,15 @@
+{
+ "onnx": "/root/hs_work/g0_e72/last.onnx",
+ "annotations": "/root/hs_work/g0_e72/holdout.json",
+ "tiles": 548,
+ "animals": 890,
+ "providers": [
+  "CPUExecutionProvider"
+ ],
+ "threshold_min_count_mae_on_this_set": 0.52,
+ "count_mae_per_tile": 0.10218978102189781,
+ "centre_matched_recall": 0.8775280898876404,
+ "centre_matched_precision": 0.8977011494252873,
+ "centre_ap": 0.721492324204341,
+ "upright_ap50": 0.9799064781976724
+}
