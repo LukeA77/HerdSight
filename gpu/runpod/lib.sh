@@ -4,11 +4,21 @@
 download_tiles() {
     local dest="$1"
     mkdir -p "$dest"
-    if ! kaggle datasets list --mine --csv > /tmp/mine.csv 2>&1; then
-        echo "Kaggle refused the request (is the kaggle_api_token secret valid?):"
-        head -5 /tmp/mine.csv
-        return 3
-    fi
+    # Kaggle lists 20 datasets per page; read every page (the session result datasets,
+    # herdsight-rp-*, soon fill the first one)
+    : > /tmp/mine.csv
+    local page=1 rows
+    while [ "$page" -le 50 ]; do
+        if ! kaggle datasets list --mine --csv --page "$page" > /tmp/page.csv 2>&1; then
+            echo "Kaggle refused the request (is the kaggle_api_token secret valid?):"
+            head -5 /tmp/page.csv
+            return 3
+        fi
+        rows=$(tail -n +2 /tmp/page.csv | grep -c . || true)
+        [ "$rows" -eq 0 ] && break
+        tail -n +2 /tmp/page.csv >> /tmp/mine.csv
+        page=$((page + 1))
+    done
     local refs
     refs=$(cut -d, -f1 /tmp/mine.csv | grep -i herdsight | grep -v herdsight-rp- || true)
     if [ -z "$refs" ]; then

@@ -1,13 +1,16 @@
 """Make the owner's review task that turns candidate animal links into S3 ground truth (brief 8.3).
 
-Usage: python scripts/make_link_review.py [--round 2]
+Usage: python scripts/make_link_review.py [--round 2|3]
 
 Flights reviewed (each rule fixed before any detector result was scored on S3):
 * round 1: in each cross-validation fold, the flight with the most labelled animals among
   flights with at least 5 registered image pairs;
 * round 2 (added 2026-11-19, after round 1 showed the unverified candidates are 6-21% off, so
   only verified flights can be scored): in each farm-date group not covered by round 1, the
-  flight with the most labelled animals among flights with at least 5 registered image pairs.
+  flight with the most labelled animals among flights with at least 5 registered image pairs;
+* round 3 (added 2026-11-22, Phase 3 plan): every remaining flight, so that all 20 flights have
+  verified counts and S3 can be fitted and scored out of fold with at least five flights per
+  fold. Flights without overlapping images get no questions; their count is the labels'.
 Round 1 is written to exports/link_review/, later rounds to exports/link_review_<round>/.
 
 Two kinds of question, written to $HERDSIGHT_STORAGE/exports/link_review/ (index.html + pictures):
@@ -66,7 +69,7 @@ def draw_boxes(
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--round", type=int, default=1, choices=[1, 2])
+    ap.add_argument("--round", type=int, default=1, choices=[1, 2, 3])
     args = ap.parse_args(argv)
     summary = json.loads((REPO_ROOT / "results" / "data" / "s3_candidate_links.json").read_text())
     splits = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"][
@@ -79,6 +82,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.round == 1:
         bucket = splits.get
         exclude: set[str] = set()
+    elif args.round == 3:
+        bucket = str  # every flight is its own bucket
+
+        def reviewed(folder: str) -> set[str]:
+            return set(
+                json.loads((storage_path("exports", folder) / "tasks.json").read_text())[
+                    "flights"
+                ].values()
+            )
+
+        exclude = reviewed("link_review") | reviewed("link_review_2")
     else:
         bucket = group
         done = json.loads((storage_path("exports", "link_review") / "tasks.json").read_text())
@@ -86,7 +100,7 @@ def main(argv: list[str] | None = None) -> int:
     chosen = {}
     for key, v in sorted(summary.items()):
         b = bucket(key)
-        if b in exclude or v["registered_pairs"] < MIN_REGISTERED_PAIRS:
+        if b in exclude or (args.round < 3 and v["registered_pairs"] < MIN_REGISTERED_PAIRS):
             continue
         if b not in chosen or v["naive_sum"] > summary[chosen[b]]["naive_sum"]:
             chosen[b] = key

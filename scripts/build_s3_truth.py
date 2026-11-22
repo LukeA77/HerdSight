@@ -37,15 +37,20 @@ def main(argv: list[str]) -> int:
         return 2
     answers: dict = {}
     review: dict = {"tasks": []}
+    reviewed_flights: set[str] = set()  # includes flights with no questions (no overlaps)
     for arg in argv:
         path = Path(arg)
         answers |= json.loads(path.read_text(encoding="utf-8"))
-        review["tasks"] += json.loads((path.parent / "tasks.json").read_text())["tasks"]
+        task_file = json.loads((path.parent / "tasks.json").read_text())
+        review["tasks"] += task_file["tasks"]
+        reviewed_flights.update(task_file["flights"].values())
     links_dir = storage_path("processed", "s3_links")
     summary = json.loads((REPO_ROOT / "results" / "data" / "s3_candidate_links.json").read_text())
     by_flight: dict[str, list] = defaultdict(list)
     for t in review["tasks"]:
         by_flight[t["flight"]].append(t)
+    for key in reviewed_flights:
+        by_flight.setdefault(key, [])
     out = {}
     for key, tasks in sorted(by_flight.items()):
         farm, flight = key.split("/")
