@@ -1,4 +1,5 @@
-"""Judge Phase 4 hypotheses H13-H15 from results/phase4/s4_validation.json.
+"""Judge Phase 4 hypotheses H13-H15 from results/phase4/s4_validation.json (400 farms) and
+H16-H17 from results/phase4/s4_validation_4000farms.json.
 
 Usage: python scripts/judge_s4.py
 
@@ -12,7 +13,7 @@ from __future__ import annotations
 import json
 import sys
 
-from herdsight.utils.config import REPO_ROOT
+from herdsight.utils.config import REPO_ROOT, load_config
 
 MODEL = "measured_rho0.0"
 LEVEL = 0.9
@@ -70,6 +71,71 @@ def main() -> int:
         else "not held"
     )
     out["H15"]["outcome"] = "held" if farm[fa_moves] <= 0.5 * recount[fa_moves] else "not held"
+
+    # second round (written after the breakdowns), on the 4000 validation farms
+    big = json.loads(
+        (REPO_ROOT / "results" / "phase4" / "s4_validation_4000farms.json").read_text()
+    )
+    runs4 = {r["rule"]: r for r in big["runs"] if r["error_model"] == MODEL}
+    cur, strict = runs4[f"recount@{LEVEL}"], runs4[f"recount@{LEVEL}_shortcut0.99"]
+    out["H16"] = {
+        "rule": "with the large-loss shortcut on the 99% interval, recount false alarms at least "
+        "40% lower and share of losses of 5+ caught at most 0.03 lower (4000 farms)",
+        "farms": big["farms"],
+        "current_fa": cur[fa],
+        "strict_fa": strict[fa],
+        "current_k5_caught": cur["k5_caught_share"],
+        "strict_k5_caught": strict["k5_caught_share"],
+    }
+    out["H16"]["outcome"] = (
+        "held"
+        if strict[fa] <= 0.6 * cur[fa]
+        and cur["k5_caught_share"] - strict["k5_caught_share"] <= 0.03
+        else "not held"
+    )
+    target = load_config("specs").require("s4_alert_targets")
+    levels = {}
+    for key, r in runs4.items():
+        if key.startswith("recount@") and key.endswith("_shortcut0.99"):
+            lv = float(key.split("@")[1].split("_")[0])
+            levels[lv] = {
+                "fa": r[fa],
+                "k5_caught": r["k5_caught_share"],
+                "meets": r[fa] <= target["false_alarms_per_100_surveys_max"]
+                and r["k5_caught_share"] >= target["losses_of_5_plus_caught_within_3_surveys_min"],
+            }
+    out["H17"] = {
+        "rule": "recount with the stricter shortcut meets the S4 target at one or more levels",
+        "target": target,
+        "levels": {str(k): v for k, v in sorted(levels.items())},
+        "outcome": "held" if any(v["meets"] for v in levels.values()) else "not held",
+    }
+    # third round: the history rule (Kalman filter of each camp's shortfall)
+    hist = {}
+    for key, r in runs4.items():
+        if key.startswith("history@"):
+            lv = float(key.split("@")[1])
+            hist[lv] = {
+                "fa": r[fa],
+                "k5_caught": r["k5_caught_share"],
+                "meets_target": r[fa] <= target["false_alarms_per_100_surveys_max"]
+                and r["k5_caught_share"] >= target["losses_of_5_plus_caught_within_3_surveys_min"],
+            }
+    if hist:
+        base = cur["k5_caught_share"]
+        out["H18"] = {
+            "rule": "history rule at some level: at most 1.5 false alarms per 100 surveys and "
+            "share of losses of 5+ caught at least 0.05 above the recount rule at 90%",
+            "recount_k5_caught": base,
+            "levels": {str(k): v for k, v in sorted(hist.items())},
+            "outcome": "held"
+            if any(v["fa"] <= 1.5 and v["k5_caught"] >= base + 0.05 for v in hist.values())
+            else "not held",
+        }
+        out["H19"] = {
+            "rule": "history rule meets the S4 target at one or more levels",
+            "outcome": "held" if any(v["meets_target"] for v in hist.values()) else "not held",
+        }
     dest = REPO_ROOT / "results" / "phase4" / "hypotheses.json"
     dest.write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
     print(json.dumps(out, indent=1))

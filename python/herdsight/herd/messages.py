@@ -18,7 +18,7 @@ import yaml
 
 from herdsight.herd.alerts import Rule
 from herdsight.herd.sim import Survey
-from herdsight.utils.config import REPO_ROOT
+from herdsight.utils.config import REPO_ROOT, load_config
 
 GLOSSARY = REPO_ROOT / "dashboard" / "glossary.yaml"
 SCHEMA = REPO_ROOT / "dashboard" / "schemas" / "survey_result.v1.json"
@@ -63,8 +63,15 @@ def survey_record(
     pipeline_version: str = "sim",
     simulated: bool = True,
     mode: str = "survey",
+    coverage: float | None = None,
+    recount_pending: bool = False,
 ) -> dict[str, Any]:
-    """One schema record for survey `s`; `alert` is the run_rule record it raised, if any."""
+    """One schema record for survey `s`; `alert` is the run_rule record it raised, if any.
+
+    `coverage` is the share of the camp photographed. Below `min_coverage_for_alert`
+    (configs/mission.yaml) the count is incomplete: status "unknown", no alert, and a plain note,
+    so a partial survey is never reported as lost animals. `recount_pending`: a first shortfall
+    is waiting for its second check (status "check", no alert yet; D-13)."""
     names = camp_names or {}
     camp = names.get(s.camp, s.camp)
     level = rule.level
@@ -73,9 +80,20 @@ def survey_record(
     notes = []
     if s.dense:
         notes.append(message("dense_note"))
+    if s.partial:
+        notes.append(message("partial_note"))
     alerts = []
-    if exp is None:
+    partial = coverage is not None and coverage < float(
+        load_config("mission").require("min_coverage_for_alert")
+    )
+    if partial:
         status = "unknown"
+        notes.insert(0, message("not_fully_checked", camp=camp))
+    elif exp is None:
+        status = "unknown"
+    elif recount_pending and alert is None:
+        status = "check"
+        notes.insert(0, message("check", camp=camp))
     elif alert is None:
         status = "ok"
     else:
@@ -85,6 +103,8 @@ def survey_record(
         if alert["kind"] == "moved":
             other = alert.get("other_camp")
             text = message("moved", other_camp=names.get(other, other), **fields)
+        elif rule.name == "history":
+            text = message("missing_history", **fields)
         elif alert.get("checks", 1) >= 2:
             text = message("missing_checked_twice", **fields)
         else:
@@ -117,7 +137,7 @@ def survey_record(
             {"level": lv, "low": _range(s, lv)[0], "high": _range(s, lv)[1]} for lv in sorted(s.lo)
         ],
         "dense_herd": bool(s.dense),
-        "coverage": None,
+        "coverage": None if coverage is None else round(float(coverage), 4),
         "expected_count": exp,
         "status": status,
         "alerts": alerts,

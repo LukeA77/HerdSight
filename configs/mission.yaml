@@ -1,0 +1,105 @@
+# Mission planning (Phase 5 plan, step 2; D-6, D-7, D-19). Every value records its source.
+# Values marked provisional are replaced when the named measurement exists, with a dated
+# decision.
+
+design_camera:
+  value: {name: "DJI Mavic 3E wide camera", width_px: 5280, height_px: 3956, focal_35mm: 24.0}
+  placeholder: DESIGN_CAMERA
+  source: "The camera of most ICAERUS flights (results/data/icaerus_images.csv: 5280 x 3956 px, 24 mm equivalent focal length in EXIF). A 20 MP stills camera as the brief's D-5 asks. Focal length in pixels from the 35 mm equivalent (python/herdsight/geo/nadir.py)."
+
+smallest_animal_length_m:
+  value: 0.8
+  placeholder: CALF_LENGTH
+  source: "Provisional. Newborn calf seen from above: body length 56.4 cm plus head 24.4 cm (means of 147 Belgian Blue calves at birth, Kolkman et al. 2010, Animal 4(5), doi 10.1017/S1751731109991558). Calves are the smallest animals to count (D-6)."
+
+pixels_for_smallest_animal:
+  value: 35.4
+  placeholder: CALF_PIXELS
+  source: "Provisional until the Phase 2 resolution study (G11): the 5th percentile of the long side of labelled adult boxes on the cross-validation farms (results/data/adult_size_px.json, scripts/adult_size_px.py), so a calf is no smaller in the image than the smallest adults the detector was trained on."
+
+survey_height_min_m:
+  value: 50.0
+  placeholder: SURVEY_MIN
+  source: "Animal welfare floor for surveys (brief D-6): reactions become likely below roughly 20-40 m (Purdue extension, Livestock reaction to UAV flight; RSPCA knowledge base) and the planner keeps a margin above that."
+
+herd_mode_height_m:
+  value: 40.0
+  placeholder: HERD_MODE_MIN
+  source: "Lowest height in herd mode: the cautious end of the brief's 30-40 m (D-6), same sources as survey_height_min_m."
+
+animal_clearance_radius_m:
+  value: 30.0
+  placeholder: CLEARANCE
+  source: "Design choice: the drone only climbs or descends where no animal is within this horizontal distance, so it never descends onto animals (D-6). Checked against true animal positions in simulation."
+
+rules_profiles:
+  value:
+    uk: {max_height_m: 120.0, max_distance_m: 500.0, min_distance_people_m: 50.0}
+    south_africa: {max_height_m: 120.0, max_distance_m: 500.0, min_distance_people_m: 50.0}
+  placeholder: RULES_PROFILES
+  source: "D-19. UK: never more than 120 m (400 ft) above the surface and always in sight (CAA, The Drone Code, CAP2320, March 2026); the CAA sets no fixed sight distance, so 500 m is used as a planning limit (assumption). South Africa: below 400 ft (120 m) above ground and within 500 m of the pilot for visual line of sight; 1000 m only with an observer (extended line of sight); not within 50 m of people (SACAA Part 101 and its Technical Guidance Manual, 2025). People distances are kept for the planner's people check."
+
+forward_overlap:
+  value: 0.7
+  placeholder: FORWARD_OVERLAP
+  source: "Provisional: chosen by a sweep on the validation seeds (Phase 5 plan, step 2). More overlap helps registration but gives moving animals more chances to be counted twice."
+
+side_overlap:
+  value: 0.6
+  placeholder: SIDE_OVERLAP
+  source: "Provisional, swept with forward_overlap."
+
+cruise_speed_m_s:
+  value: 8.0
+  placeholder: CRUISE_SPEED
+  source: "Design choice; the planner checks that stills are at least min_photo_interval_s apart at this speed and slows down if not."
+
+min_photo_interval_s:
+  value: 2.0
+  placeholder: PHOTO_INTERVAL
+  source: "Onboard herd detection takes about 2 s per still on Raspberry Pi 5 class compute (D-29 estimate, not measured), so stills are not taken faster than that."
+
+turn_time_s:
+  value: 6.0
+  placeholder: TURN_TIME
+  source: "Assumption: time to slow, turn and settle at the end of a survey line; swept in simulation."
+
+endurance_min:
+  value: 45.0
+  placeholder: ENDURANCE
+  source: "DJI Mavic 3 Enterprise maximum flight time, about 45 min with no wind; 38 min hovering; 30-36 min for the EU C1 variant with its battery and low-noise propellers (enterprise.dji.com, Mavic 3 Enterprise specs). Planning uses battery_reserve_share on top, and the EU variant is a swept case."
+
+battery_reserve_share:
+  value: 0.35
+  placeholder: BATTERY_RESERVE
+  source: "Design choice: a third of the battery kept for wind, the return and landing, beyond the manufacturer's no-wind figure."
+
+climb_speed_m_s:
+  value: 4.0
+  placeholder: CLIMB_SPEED
+  source: "Design choice below the Mavic 3 Enterprise's maximum ascent speed of 6 m/s in normal mode (8 m/s in sport mode; DJI support specifications)."
+
+max_resume_gap_min:
+  value: 60.0
+  placeholder: RESUME_GAP
+  source: "Design choice: the sorties of a split survey count as one survey only if each starts within this time of the previous one ending; otherwise coverage is reduced (Phase 5 plan, step 2)."
+
+min_coverage_for_alert:
+  value: 0.9
+  placeholder: MIN_COVERAGE
+  source: "Design choice (Phase 5 plan, step 5): if less than this share of a camp was photographed (an early return for battery, wind or a failure), the camp's status is 'not checked' and no missing-animal alert is raised, so a partial survey is never reported as lost animals (D-13)."
+
+herd_mode_min_animals:
+  value: 10
+  placeholder: HERD_MODE_MIN_ANIMALS
+  source: "Design choice: herd mode is used for groups of at least this many animals, where double counting between survey stills is most likely; smaller groups are left to the survey."
+
+herd_trigger_source:
+  value: results/baselines/dfine_onboard_herds.json
+  placeholder: HERD_TRIGGER
+  source: "Onboard herd trigger performance measured in Phase 1 (S7): a herd in view is found and grouped with probability herd_recall_grouped, and herd-free stills trigger falsely at false_triggers_per_image. Used as the S7 error model in simulation; latency is the D-29 estimate (not measured)."
+
+herd_mode_window_s:
+  value: 600
+  placeholder: HERD_WINDOW
+  source: "Design choice (merge rule, Phase 5 plan step 7): survey detections inside a herd-mode still's footprint and within this many seconds of it are replaced by the herd-mode still's detections."

@@ -1,0 +1,114 @@
+# Simulated worlds for Phase 5 (herds, their movement and the seeds). Each value records its
+# source. Values the public data cannot give are ranges that results are swept across, and are
+# listed in docs/limitations.md. Results from these worlds are simulation results, never field
+# results.
+
+nearest_neighbour_source:
+  value: results/data/herd_stats.json
+  placeholder: NN_SOURCE
+  source: "Nearest-neighbour distances between cattle in metres, 304 ICAERUS images, cross-validation farms only (scripts/herd_stats.py). Animals are placed so their nearest-neighbour distances match these quantiles."
+
+nearest_neighbour_match_max_m:
+  value: 0.75
+  placeholder: NN_MATCH
+  source: "Equivalence bound fixed before the herd model was run (Phase 5 plan, step 1): the mean absolute difference between simulated and measured nearest-neighbour quantiles (5th to 95th percentile) must be at most this many metres, at placement and after 10 minutes of grazing."
+
+min_spacing_m:
+  value: 0.7
+  placeholder: MIN_SPACING
+  source: "No two animals closer than this (bodies touching): below the 5th percentile of measured nearest-neighbour distance, 0.78 m (results/data/herd_stats.json)."
+
+grazing_diffusion_m2_per_s:
+  value: 0.0013
+  placeholder: GRAZE_D
+  source: "Measured: animal movement between overlapping ICAERUS stills seconds to two minutes apart, fitted as floor + 4 D t (results/data/herd_motion.json, scripts/herd_motion_stats.py). An underestimate for longer gaps (links were gated at about 1 m)."
+
+walking_speed_m_s:
+  value: [0.9, 1.46]
+  placeholder: WALK_SPEED
+  source: "Swept. 55 m/min (0.92 m/s) for grazing dairy cows moved on pasture (Massey University thesis, mro.massey.ac.nz/handle/10179/5490); median 1.40-1.46 m/s for cows walking to and from pasture on laneways (Frontiers in Veterinary Science 2021, 10.3389/fvets.2021.639096)."
+
+grazing_share:
+  value: [0.35, 0.65]
+  placeholder: GRAZE_SHARE
+  source: "Swept. Share of animals grazing at the time of a daytime survey. About 8.3 h of grazing per day measured with GPS collars and accelerometers (Cunningham et al. 2024, Smart Agricultural Technology, USDA ARS), concentrated in daylight; the rest of the day is resting, ruminating and walking."
+
+walking_share:
+  value: [0.02, 0.08]
+  placeholder: WALK_SHARE
+  source: "Swept. Walking without grazing is a small share of the day; grazing cattle walk a few steps between bites (UC ANR, Use of GPS tracking collars and accelerometers for rangeland livestock production)."
+
+state_bout_minutes:
+  value: [10, 60]
+  placeholder: BOUT_MIN
+  source: "Swept assumption: mean length of a grazing, walking or resting bout of a group. No published per-bout figure at survey timescales was found; the range spans a survey's length."
+
+groups_per_camp:
+  value: [1, 4]
+  placeholder: GROUPS_PER_CAMP
+  source: "Swept, not measured: the public images were taken where cattle were, so they do not show how herds spread across a whole camp (Phase 5 plan review). Listed as a limitation."
+
+cohesion_radius_m:
+  value: 25.0
+  placeholder: COHESION
+  source: "Animals further than this from their group's centre drift back towards it. Set from the measured groups: with a link distance of 20 m the median group has 5 animals and 95% of animals are in groups of 3 or more (results/data/herd_stats.json)."
+
+drone_reaction_height_m:
+  value: [0, 60]
+  placeholder: REACT_HEIGHT
+  source: "Swept from no reaction (0) to reaction at survey height (60 m). Beef heifers showed no significant change in heart rate or movement with a drone at 9 m (Abdulai et al., Applied Animal Behaviour Science); cattle moved away when a lowered drone entered their flight zone and habituated over seven days (Purdue extension, Livestock reaction to UAV flight); about 23% of cows startled on first exposure, falling with repeated flights (RSPCA knowledge base summary). No published reaction-distance curve was found."
+
+drone_reaction_radius_m:
+  value: 15.0
+  placeholder: REACT_RADIUS
+  source: "Horizontal distance from the drone within which animals may react (when below the reaction height). Assumption, swept with the reaction height."
+
+drone_reaction_speed_m_s:
+  value: 1.0
+  placeholder: REACT_SPEED
+  source: "Animals that react walk away at about walking speed (walking_speed_m_s)."
+
+seed_validation:
+  value: 20261122
+  placeholder: SIM_SEED_VAL
+  source: "Fixed before any Phase 5 run; used for building and choosing settings."
+
+seed_test:
+  value: 20271122
+  placeholder: SIM_SEED_TEST
+  source: "Fixed before any Phase 5 run; run once in Phase 7, never used for tuning."
+
+adult_length_source:
+  value: results/data/adult_size_px.json
+  placeholder: ADULT_LENGTH
+  source: "Long side of labelled adult cattle in metres on the cross-validation farms (long_side_m_quantiles; scripts/adult_size_px.py); simulated adults draw their length from it."
+
+calf_share:
+  value: [0.0, 0.3]
+  placeholder: CALF_SHARE
+  source: "Swept: share of calves in a camp, from none to a spring-calving herd. Calves are the animals the pixel budget is set for (D-6); their detection is extrapolated from adults (no calf labels; docs/limitations.md)."
+
+calf_length_m:
+  value: [0.8, 1.3]
+  placeholder: CALF_LENGTH_SIM
+  source: "Swept: from a newborn seen from above (0.8 m: body 56.4 cm plus head 24.4 cm, Kolkman et al. 2010, Animal) to a few months old (assumption)."
+
+trees_per_ha:
+  value: [0.0, 2.0]
+  placeholder: TREES
+  source: "Swept: single trees or small clumps in a camp, from open pasture to parkland. Assumption."
+
+tree_canopy_radius_m:
+  value: [3.0, 8.0]
+  placeholder: CANOPY
+  source: "Swept: canopy radius of a pasture tree. Assumption."
+
+visible_under_canopy:
+  value: [0.1, 0.5]
+  placeholder: UNDER_CANOPY
+  source: "Swept assumption: share of an animal seen from above when it stands under a canopy; the chance of finding it is scaled by this (no labels of hidden animals exist)."
+
+false_object_p_view:
+  value: [0.3, 0.8]
+  placeholder: P_VIEW
+  source: "Swept assumption: chance that a fixed object (rock, trough, post) that causes false detections is detected in one view. The real false-detection rate per hectare (results/data/detection_error_model.json) fixes the product of object density and this chance."

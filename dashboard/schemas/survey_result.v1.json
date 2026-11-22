@@ -67,7 +67,7 @@
             "additionalProperties": false,
             "required": ["name", "level"],
             "properties": {
-              "name": {"enum": ["naive", "interval", "recount", "farm"]},
+              "name": {"enum": ["naive", "interval", "recount", "farm", "history"]},
               "level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
               "large_loss": {"type": "number", "minimum": 0}
             }

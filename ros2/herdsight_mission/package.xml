@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>herdsight_mission</name>
+  <version>0.1.0</version>
+  <description>HerdSight onboard mission: survey and herd mode as PX4 custom modes, run by a behaviour tree (D-16).</description>
+  <maintainer email="maintainer@example.invalid">HerdSight</maintainer>
+  <license>All rights reserved</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>ament_index_cpp</depend>
+  <depend>px4_ros2_cpp</depend>
+  <depend>px4_msgs</depend>
+  <depend>herdsight_msgs</depend>
+  <depend>behaviortree_cpp</depend>
+  <depend>yaml-cpp</depend>
+  <depend>eigen</depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

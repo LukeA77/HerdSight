@@ -35,9 +35,11 @@ messages:
   check: "{camp}: fewer {animals} than your records show. The drone will check again before raising an alert."
   missing_checked_twice: "Some {animals} may be missing in {camp}: about {short_low} to {short_high} fewer than your records show ({expected}). Checked twice."
   missing_large: "Some {animals} may be missing in {camp}: about {short_low} to {short_high} fewer than your records show ({expected}). This is a large difference, so you are told straight away."
+  missing_history: "Some {animals} may be missing in {camp}: about {short_low} to {short_high} fewer than your records show ({expected}). Your recent drone checks since the records were last confirmed all point the same way."
   moved: "{camp} has about {short_low} to {short_high} fewer {animals} than your records show, and {other_camp} has more than expected. They may have moved between camps."
   dense_note: "The animals were packed closely together, so this count is less certain."
   partial_note: "Part of the camp could not be seen."
+  not_fully_checked: "Only part of {camp} could be checked on this flight, so its count is not complete and no alert has been raised. It will be checked again."
   action_resolved: "Mark as sorted"
   action_records: "Update my records"
 

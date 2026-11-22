@@ -1,0 +1,1040 @@
+{
+ "set": "validation",
+ "seed": 20261122,
+ "flights": 60,
+ "note": "Simulation results on simulated camps; not field results.",
+ "mean_error_still": 0.27823765246369914,
+ "mean_error_moving": 0.29931184683078105,
+ "mean_signed_error_still": 0.2775130147825397,
+ "mean_signed_error_moving": 0.29931184683078105,
+ "ratio": 1.075741705626385,
+ "ratio_ci95": [
+  1.0264027714474278,
+  1.1759743218908583
+ ],
+ "animals_that_reacted": 0,
+ "H20_rule": "held if moving / still mean error >= 1.5",
+ "H20": "not held",
+ "rows": [
+  {
+   "camp_ha": 6.74690327451305,
+   "animals": 127,
+   "photos": 70,
+   "still": {
+    "count": 131,
+    "error": 0.031496062992125984,
+    "signed": 0.031496062992125984,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 131,
+    "error": 0.031496062992125984,
+    "signed": 0.031496062992125984,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 13.793341858537097,
+   "animals": 112,
+   "photos": 115,
+   "still": {
+    "count": 128,
+    "error": 0.14285714285714285,
+    "signed": 0.14285714285714285,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 127,
+    "error": 0.13392857142857142,
+    "signed": 0.13392857142857142,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 18.21929493047566,
+   "animals": 39,
+   "photos": 154,
+   "still": {
+    "count": 48,
+    "error": 0.23076923076923078,
+    "signed": 0.23076923076923078,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 48,
+    "error": 0.23076923076923078,
+    "signed": 0.23076923076923078,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 14.654954198452536,
+   "animals": 94,
+   "photos": 126,
+   "still": {
+    "count": 115,
+    "error": 0.22340425531914893,
+    "signed": 0.22340425531914893,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 118,
+    "error": 0.2553191489361702,
+    "signed": 0.2553191489361702,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 12.336520869519031,
+   "animals": 141,
+   "photos": 119,
+   "still": {
+    "count": 151,
+    "error": 0.07092198581560284,
+    "signed": 0.07092198581560284,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 141,
+    "error": 0.0,
+    "signed": 0.0,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.698923268762792,
+   "animals": 101,
+   "photos": 75,
+   "still": {
+    "count": 107,
+    "error": 0.0594059405940594,
+    "signed": 0.0594059405940594,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 107,
+    "error": 0.0594059405940594,
+    "signed": 0.0594059405940594,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 9.456816782950995,
+   "animals": 60,
+   "photos": 84,
+   "still": {
+    "count": 62,
+    "error": 0.03333333333333333,
+    "signed": 0.03333333333333333,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 65,
+    "error": 0.08333333333333333,
+    "signed": 0.08333333333333333,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 6.431366280021738,
+   "animals": 120,
+   "photos": 60,
+   "still": {
+    "count": 138,
+    "error": 0.15,
+    "signed": 0.15,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 138,
+    "error": 0.15,
+    "signed": 0.15,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 11.863346529566227,
+   "animals": 43,
+   "photos": 115,
+   "still": {
+    "count": 47,
+    "error": 0.09302325581395349,
+    "signed": 0.09302325581395349,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 48,
+    "error": 0.11627906976744186,
+    "signed": 0.11627906976744186,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 10.923926481744779,
+   "animals": 23,
+   "photos": 98,
+   "still": {
+    "count": 55,
+    "error": 1.391304347826087,
+    "signed": 1.391304347826087,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 55,
+    "error": 1.391304347826087,
+    "signed": 1.391304347826087,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 16.27837607734492,
+   "animals": 118,
+   "photos": 140,
+   "still": {
+    "count": 121,
+    "error": 0.025423728813559324,
+    "signed": 0.025423728813559324,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 177,
+    "error": 0.5,
+    "signed": 0.5,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 12.73112233306031,
+   "animals": 68,
+   "photos": 108,
+   "still": {
+    "count": 91,
+    "error": 0.3382352941176471,
+    "signed": 0.3382352941176471,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 90,
+    "error": 0.3235294117647059,
+    "signed": 0.3235294117647059,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 7.620974275900217,
+   "animals": 98,
+   "photos": 78,
+   "still": {
+    "count": 101,
+    "error": 0.030612244897959183,
+    "signed": 0.030612244897959183,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 101,
+    "error": 0.030612244897959183,
+    "signed": 0.030612244897959183,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 9.09669107022135,
+   "animals": 39,
+   "photos": 90,
+   "still": {
+    "count": 63,
+    "error": 0.6153846153846154,
+    "signed": 0.6153846153846154,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 62,
+    "error": 0.5897435897435898,
+    "signed": 0.5897435897435898,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 9.817807084814426,
+   "animals": 94,
+   "photos": 90,
+   "still": {
+    "count": 103,
+    "error": 0.09574468085106383,
+    "signed": 0.09574468085106383,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 101,
+    "error": 0.07446808510638298,
+    "signed": 0.07446808510638298,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 6.101274885642608,
+   "animals": 91,
+   "photos": 65,
+   "still": {
+    "count": 91,
+    "error": 0.0,
+    "signed": 0.0,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 95,
+    "error": 0.04395604395604396,
+    "signed": 0.04395604395604396,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 16.41141597901853,
+   "animals": 86,
+   "photos": 147,
+   "still": {
+    "count": 116,
+    "error": 0.3488372093023256,
+    "signed": 0.3488372093023256,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 122,
+    "error": 0.4186046511627907,
+    "signed": 0.4186046511627907,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 11.220940028102719,
+   "animals": 138,
+   "photos": 95,
+   "still": {
+    "count": 142,
+    "error": 0.028985507246376812,
+    "signed": 0.028985507246376812,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 148,
+    "error": 0.07246376811594203,
+    "signed": 0.07246376811594203,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 4.723749638971673,
+   "animals": 36,
+   "photos": 50,
+   "still": {
+    "count": 39,
+    "error": 0.08333333333333333,
+    "signed": 0.08333333333333333,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 41,
+    "error": 0.1388888888888889,
+    "signed": 0.1388888888888889,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 24.45570002142771,
+   "animals": 57,
+   "photos": 220,
+   "still": {
+    "count": 59,
+    "error": 0.03508771929824561,
+    "signed": 0.03508771929824561,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 60,
+    "error": 0.05263157894736842,
+    "signed": 0.05263157894736842,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 13.88576577311641,
+   "animals": 21,
+   "photos": 133,
+   "still": {
+    "count": 49,
+    "error": 1.3333333333333333,
+    "signed": 1.3333333333333333,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 49,
+    "error": 1.3333333333333333,
+    "signed": 1.3333333333333333,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 4.102838195848758,
+   "animals": 46,
+   "photos": 40,
+   "still": {
+    "count": 45,
+    "error": 0.021739130434782608,
+    "signed": -0.021739130434782608,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 47,
+    "error": 0.021739130434782608,
+    "signed": 0.021739130434782608,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.771709033804697,
+   "animals": 130,
+   "photos": 84,
+   "still": {
+    "count": 135,
+    "error": 0.038461538461538464,
+    "signed": 0.038461538461538464,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 137,
+    "error": 0.05384615384615385,
+    "signed": 0.05384615384615385,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 5.150797201972038,
+   "animals": 144,
+   "photos": 55,
+   "still": {
+    "count": 163,
+    "error": 0.13194444444444445,
+    "signed": 0.13194444444444445,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 163,
+    "error": 0.13194444444444445,
+    "signed": 0.13194444444444445,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 17.462547675893305,
+   "animals": 134,
+   "photos": 168,
+   "still": {
+    "count": 204,
+    "error": 0.5223880597014925,
+    "signed": 0.5223880597014925,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 205,
+    "error": 0.5298507462686567,
+    "signed": 0.5298507462686567,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 22.22978635616519,
+   "animals": 92,
+   "photos": 210,
+   "still": {
+    "count": 99,
+    "error": 0.07608695652173914,
+    "signed": 0.07608695652173914,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 102,
+    "error": 0.10869565217391304,
+    "signed": 0.10869565217391304,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 15.414011473583637,
+   "animals": 53,
+   "photos": 140,
+   "still": {
+    "count": 98,
+    "error": 0.8490566037735849,
+    "signed": 0.8490566037735849,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 98,
+    "error": 0.8490566037735849,
+    "signed": 0.8490566037735849,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 16.76637124891381,
+   "animals": 114,
+   "photos": 154,
+   "still": {
+    "count": 122,
+    "error": 0.07017543859649122,
+    "signed": 0.07017543859649122,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 125,
+    "error": 0.09649122807017543,
+    "signed": 0.09649122807017543,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.239024309969658,
+   "animals": 118,
+   "photos": 80,
+   "still": {
+    "count": 121,
+    "error": 0.025423728813559324,
+    "signed": 0.025423728813559324,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 123,
+    "error": 0.0423728813559322,
+    "signed": 0.0423728813559322,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.311799210677428,
+   "animals": 64,
+   "photos": 75,
+   "still": {
+    "count": 71,
+    "error": 0.109375,
+    "signed": 0.109375,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 72,
+    "error": 0.125,
+    "signed": 0.125,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 11.725543923512724,
+   "animals": 119,
+   "photos": 102,
+   "still": {
+    "count": 119,
+    "error": 0.0,
+    "signed": 0.0,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 122,
+    "error": 0.025210084033613446,
+    "signed": 0.025210084033613446,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 6.97622394189859,
+   "animals": 104,
+   "photos": 65,
+   "still": {
+    "count": 136,
+    "error": 0.3076923076923077,
+    "signed": 0.3076923076923077,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 142,
+    "error": 0.36538461538461536,
+    "signed": 0.36538461538461536,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 10.270489918075643,
+   "animals": 58,
+   "photos": 96,
+   "still": {
+    "count": 62,
+    "error": 0.06896551724137931,
+    "signed": 0.06896551724137931,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 62,
+    "error": 0.06896551724137931,
+    "signed": 0.06896551724137931,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 20.677150668683993,
+   "animals": 78,
+   "photos": 189,
+   "still": {
+    "count": 82,
+    "error": 0.05128205128205128,
+    "signed": 0.05128205128205128,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 83,
+    "error": 0.0641025641025641,
+    "signed": 0.0641025641025641,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 14.33390788354788,
+   "animals": 126,
+   "photos": 136,
+   "still": {
+    "count": 133,
+    "error": 0.05555555555555555,
+    "signed": 0.05555555555555555,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 134,
+    "error": 0.06349206349206349,
+    "signed": 0.06349206349206349,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.786873752164949,
+   "animals": 55,
+   "photos": 78,
+   "still": {
+    "count": 56,
+    "error": 0.01818181818181818,
+    "signed": 0.01818181818181818,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 57,
+    "error": 0.03636363636363636,
+    "signed": 0.03636363636363636,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 15.00331530047723,
+   "animals": 21,
+   "photos": 128,
+   "still": {
+    "count": 50,
+    "error": 1.380952380952381,
+    "signed": 1.380952380952381,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 50,
+    "error": 1.380952380952381,
+    "signed": 1.380952380952381,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.405058705483903,
+   "animals": 107,
+   "photos": 78,
+   "still": {
+    "count": 115,
+    "error": 0.07476635514018691,
+    "signed": 0.07476635514018691,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 115,
+    "error": 0.07476635514018691,
+    "signed": 0.07476635514018691,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 5.808614636918377,
+   "animals": 97,
+   "photos": 55,
+   "still": {
+    "count": 108,
+    "error": 0.1134020618556701,
+    "signed": 0.1134020618556701,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 107,
+    "error": 0.10309278350515463,
+    "signed": 0.10309278350515463,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 22.961939481473532,
+   "animals": 34,
+   "photos": 207,
+   "still": {
+    "count": 105,
+    "error": 2.088235294117647,
+    "signed": 2.088235294117647,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 104,
+    "error": 2.0588235294117645,
+    "signed": 2.0588235294117645,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 16.48316492516262,
+   "animals": 61,
+   "photos": 154,
+   "still": {
+    "count": 85,
+    "error": 0.39344262295081966,
+    "signed": 0.39344262295081966,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 87,
+    "error": 0.4262295081967213,
+    "signed": 0.4262295081967213,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 6.92612623461731,
+   "animals": 129,
+   "photos": 64,
+   "still": {
+    "count": 133,
+    "error": 0.031007751937984496,
+    "signed": 0.031007751937984496,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 133,
+    "error": 0.031007751937984496,
+    "signed": 0.031007751937984496,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 22.182866458784023,
+   "animals": 35,
+   "photos": 198,
+   "still": {
+    "count": 43,
+    "error": 0.22857142857142856,
+    "signed": 0.22857142857142856,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 42,
+    "error": 0.2,
+    "signed": 0.2,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 17.012782282312475,
+   "animals": 128,
+   "photos": 153,
+   "still": {
+    "count": 166,
+    "error": 0.296875,
+    "signed": 0.296875,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 175,
+    "error": 0.3671875,
+    "signed": 0.3671875,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 18.93306343307103,
+   "animals": 49,
+   "photos": 176,
+   "still": {
+    "count": 113,
+    "error": 1.3061224489795917,
+    "signed": 1.3061224489795917,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 114,
+    "error": 1.3265306122448979,
+    "signed": 1.3265306122448979,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 15.440006519079018,
+   "animals": 121,
+   "photos": 136,
+   "still": {
+    "count": 123,
+    "error": 0.01652892561983471,
+    "signed": 0.01652892561983471,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 124,
+    "error": 0.024793388429752067,
+    "signed": 0.024793388429752067,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.108781295466406,
+   "animals": 23,
+   "photos": 75,
+   "still": {
+    "count": 54,
+    "error": 1.3478260869565217,
+    "signed": 1.3478260869565217,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 54,
+    "error": 1.3478260869565217,
+    "signed": 1.3478260869565217,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 13.1382816123894,
+   "animals": 45,
+   "photos": 126,
+   "still": {
+    "count": 52,
+    "error": 0.15555555555555556,
+    "signed": 0.15555555555555556,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 56,
+    "error": 0.24444444444444444,
+    "signed": 0.24444444444444444,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 9.28085912178303,
+   "animals": 71,
+   "photos": 90,
+   "still": {
+    "count": 74,
+    "error": 0.04225352112676056,
+    "signed": 0.04225352112676056,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 76,
+    "error": 0.07042253521126761,
+    "signed": 0.07042253521126761,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 14.774674150436898,
+   "animals": 81,
+   "photos": 136,
+   "still": {
+    "count": 83,
+    "error": 0.024691358024691357,
+    "signed": 0.024691358024691357,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 85,
+    "error": 0.04938271604938271,
+    "signed": 0.04938271604938271,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 18.7980877765273,
+   "animals": 88,
+   "photos": 168,
+   "still": {
+    "count": 91,
+    "error": 0.03409090909090909,
+    "signed": 0.03409090909090909,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 93,
+    "error": 0.056818181818181816,
+    "signed": 0.056818181818181816,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 10.524572805488896,
+   "animals": 141,
+   "photos": 96,
+   "still": {
+    "count": 181,
+    "error": 0.28368794326241137,
+    "signed": 0.28368794326241137,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 181,
+    "error": 0.28368794326241137,
+    "signed": 0.28368794326241137,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 10.42780936613009,
+   "animals": 41,
+   "photos": 105,
+   "still": {
+    "count": 45,
+    "error": 0.0975609756097561,
+    "signed": 0.0975609756097561,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 46,
+    "error": 0.12195121951219512,
+    "signed": 0.12195121951219512,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 10.717376769630318,
+   "animals": 99,
+   "photos": 92,
+   "still": {
+    "count": 104,
+    "error": 0.050505050505050504,
+    "signed": 0.050505050505050504,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 105,
+    "error": 0.06060606060606061,
+    "signed": 0.06060606060606061,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 15.05366442965575,
+   "animals": 104,
+   "photos": 128,
+   "still": {
+    "count": 108,
+    "error": 0.038461538461538464,
+    "signed": 0.038461538461538464,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 112,
+    "error": 0.07692307692307693,
+    "signed": 0.07692307692307693,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 8.039735542995023,
+   "animals": 139,
+   "photos": 75,
+   "still": {
+    "count": 141,
+    "error": 0.014388489208633094,
+    "signed": 0.014388489208633094,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 142,
+    "error": 0.02158273381294964,
+    "signed": 0.02158273381294964,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 13.10923713730142,
+   "animals": 56,
+   "photos": 126,
+   "still": {
+    "count": 62,
+    "error": 0.10714285714285714,
+    "signed": 0.10714285714285714,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 64,
+    "error": 0.14285714285714285,
+    "signed": 0.14285714285714285,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 11.529868145282705,
+   "animals": 115,
+   "photos": 112,
+   "still": {
+    "count": 148,
+    "error": 0.28695652173913044,
+    "signed": 0.28695652173913044,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 148,
+    "error": 0.28695652173913044,
+    "signed": 0.28695652173913044,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 15.476721437057728,
+   "animals": 126,
+   "photos": 153,
+   "still": {
+    "count": 137,
+    "error": 0.0873015873015873,
+    "signed": 0.0873015873015873,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 139,
+    "error": 0.10317460317460317,
+    "signed": 0.10317460317460317,
+    "reacted": 0
+   }
+  },
+  {
+   "camp_ha": 11.606097251245663,
+   "animals": 72,
+   "photos": 105,
+   "still": {
+    "count": 107,
+    "error": 0.4861111111111111,
+    "signed": 0.4861111111111111,
+    "reacted": 0
+   },
+   "moving": {
+    "count": 107,
+    "error": 0.4861111111111111,
+    "signed": 0.4861111111111111,
+    "reacted": 0
+   }
+  }
+ ]
+}

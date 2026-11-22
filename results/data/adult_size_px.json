@@ -1,0 +1,29 @@
+{
+ "images": 304,
+ "boxes": 3392,
+ "long_side_px_quantiles": {
+  "5": 35.35171200000012,
+  "25": 50.07975100000027,
+  "50": 67.30523600000015,
+  "75": 88.68855899999977,
+  "95": 134.16169140000005
+ },
+ "long_side_m_quantiles": {
+  "5": 0.9962066853919044,
+  "25": 1.6626489233686819,
+  "50": 2.038348059530708,
+  "75": 2.3132869765445734,
+  "95": 2.6282663716507204
+ },
+ "by_image_size": {
+  "4000x3000": {
+   "boxes": 1259,
+   "p5_px": 36.041599999999946
+  },
+  "5280x3956": {
+   "boxes": 2133,
+   "p5_px": 35.027100799999786
+  }
+ },
+ "note": "long side of upright label boxes, cross-validation farms only; a cautious provisional pixel budget until the Phase 2 resolution study (G11)"
+}

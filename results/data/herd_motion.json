@@ -1,0 +1,79 @@
+{
+ "flights": [
+  "Derval/DJI_202308091442_012",
+  "Derval/DJI_202308091507_014",
+  "Jalogny/DJI_202306231103_031",
+  "Jalogny/DJI_202306271323_032",
+  "Jalogny/DJI_202307260838_039",
+  "Jalogny/DJI_202308031317_042",
+  "Jalogny/DJI_202309151045_055",
+  "Jalogny/DJI_202309151045_056",
+  "Jalogny/DJI_202309261339_058",
+  "Jalogny/DJI_202309261339_059",
+  "Mauron/DJI_202306051814_022",
+  "Mauron/DJI_202306051839_025",
+  "Mauron/DJI_202306071624_028",
+  "Mauron/DJI_202306071745_035",
+  "Mauron/DJI_202311071416_061",
+  "Mauron/DJI_202311071416_062",
+  "Mauron/DJI_202311071541_064",
+  "Mauron/DJI_202311071541_065"
+ ],
+ "links": 5598,
+ "dt_s_median": 4.0,
+ "distance_m": {
+  "median": 0.4157688918175488,
+  "p90": 0.8734261666017061,
+  "max": 1.1867749444096938
+ },
+ "by_time_gap": [
+  {
+   "dt_s": [
+    0,
+    10
+   ],
+   "links": 4059,
+   "median_m": 0.36762978560635856,
+   "p90_m": 0.8184035255141171,
+   "rms_m": 0.49673741392094667
+  },
+  {
+   "dt_s": [
+    10,
+    30
+   ],
+   "links": 548,
+   "median_m": 0.4537687658113434,
+   "p90_m": 0.8525410359609585,
+   "rms_m": 0.5490753965748685
+  },
+  {
+   "dt_s": [
+    30,
+    60
+   ],
+   "links": 823,
+   "median_m": 0.6276289842986954,
+   "p90_m": 0.980312692565691,
+   "rms_m": 0.6738163547067988
+  },
+  {
+   "dt_s": [
+    60,
+    120
+   ],
+   "links": 112,
+   "median_m": 0.7847218237258863,
+   "p90_m": 1.0100966600454973,
+   "rms_m": 0.7927585153415728
+  }
+ ],
+ "fit": "mean squared distance = floor + 4 D t (least squares over links)",
+ "floor_rms_m": 0.4761681270191824,
+ "grazing_diffusion_m2_per_s": 0.001329172509270808,
+ "limits": [
+  "links only within a gate of half a median animal length: larger moves are missing",
+  "registration error is in the floor term; the cut-off at the gate makes D an underestimate for gaps of minutes, when moves approach the gate"
+ ],
+ "source": "S3 flights, cross-validation farms only (results/data/s3_truth.json)"
+}

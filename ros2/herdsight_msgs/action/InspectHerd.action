@@ -1,0 +1,10 @@
+# Hover above a herd found in flight and photograph it in one or a few frames (D-7 herd mode),
+# at or above the herd-mode height (D-6), approaching at survey height.
+geometry_msgs/Point position    # herd centre, local east-north-up metres
+float32 extent_m                # herd diameter
+---
+bool done
+uint32 photos_taken
+float32 height_agl_m
+---
+string phase                    # approach | descend | capture | climb

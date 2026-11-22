@@ -1,0 +1,13 @@
+# Survey one camp with geotagged stills along the planned route (D-7, D-16).
+string camp_id
+string plan_file            # the plan from python/herdsight/mission (JSON)
+---
+string outcome              # completed | partial | aborted
+uint32 photos_planned
+uint32 photos_taken
+float32 coverage            # share of the camp photographed
+string bundle_dir           # flight bundle handed to home base
+---
+uint32 photos_taken
+float32 battery_share       # remaining
+string phase                # take_off | survey | herd_mode | return | land

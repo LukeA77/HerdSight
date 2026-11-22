@@ -73,6 +73,11 @@ def test_records_for_each_status():
         and "twice" in a["message"]
     )
     assert any("packed closely" in n for n in twice["notes"])
+    s.partial = True
+    part = messages.survey_record(s, farm_id="f1", expected=40, rule=rule)
+    valid(part)
+    assert "could not be seen" in part["notes"][-1]
+    s.partial = False
 
     big = messages.survey_record(
         s, farm_id="f1", expected=60, rule=rule, alert={"kind": "missing", "checks": 1}
@@ -80,11 +85,33 @@ def test_records_for_each_status():
     valid(big)
     assert "straight away" in big["alerts"][0]["message"]
 
+    hist = messages.survey_record(
+        s, farm_id="f1", expected=50, rule=Rule("history"), alert={"kind": "missing", "checks": 2}
+    )
+    valid(hist)
+    assert "all point the same way" in hist["alerts"][0]["message"]
+
     moved = messages.survey_record(
         s, farm_id="f1", expected=50, rule=Rule("farm"), alert={"kind": "moved", "other_camp": "b"}
     )
     valid(moved)
     assert moved["status"] == "moved" and "may have moved" in moved["alerts"][0]["message"]
+
+    part = messages.survey_record(
+        s,
+        farm_id="f1",
+        expected=50,
+        rule=rule,
+        alert={"kind": "missing", "checks": 2},
+        coverage=0.6,
+    )
+    valid(part)
+    assert part["status"] == "unknown" and part["alerts"] == [] and part["coverage"] == 0.6
+    assert "no alert has been raised" in part["notes"][0]
+
+    pending = messages.survey_record(s, farm_id="f1", expected=50, rule=rule, recount_pending=True)
+    valid(pending)
+    assert pending["status"] == "check" and "check again" in pending["notes"][0]
 
     unknown = messages.survey_record(s, farm_id="f1", expected=None, rule=rule)
     valid(unknown)

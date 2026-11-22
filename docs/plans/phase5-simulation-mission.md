@@ -1,0 +1,183 @@
+# Phase 5 plan: simulation, ROS 2 and the mission
+
+Status: revised after an independent review (2026-11-22); work started on the owner's instruction to move to Phase 5; D-40 awaits the owner's confirmation. Runs in parallel with Phase 2 (detector training on rented GPUs) and Phase 3 (not started), after the Phase 4 exit; see D-40 for why this is allowed and what it costs.
+
+## Goal
+A simulated drone flies the real mission code over simulated camps with moving cattle, captures geotagged stills, hands them to home base, and home base produces a count with an interval, a camp status and any alert, shown on the dashboard (D-11, D-16, D-17).
+
+Exit (brief §12): **S5 passes in CI**: plan → fly → capture → count at home base → dashboard, in PX4 SITL with Gazebo, automatically. The dashboard is built in Phase 6, so S5 is declared passed only when the CI job also sends the result record to the dashboard's backend and checks that the camp's status and any alert are shown (D-40). Until then this plan reports progress as "S5 up to the result record", never as "S5 passes". S5 is re-run and re-declared when the Phase 3 duplicate-removal method replaces the Phase 1 baseline.
+
+## What the simulation is for, and what it is not for (D-11)
+- **For:** flight geometry, image overlap, duplicate removal while animals move, mission logic (survey, herd mode, battery, failures, return), coverage, data hand-off, and alerts.
+- **Not for:** detector accuracy. Rendered cattle are not real cattle, and no detection score is ever taken from rendered images.
+- **How home base gets detections in simulation.** Gazebo's bounding-box camera, mounted beside the RGB camera, reports which animals are visible in each still **actually captured**, at its real capture time and pose, with the share of each animal that is visible (trees, frame edges). A **detection error model fitted to real images** turns those into detections: misses, position noise and false detections. So a missed photo, a wrong pose or an animal under a tree changes the count, as it should. The real detector is also run on the rendered images, only to check the wiring (shapes, frames, timing). Every result record names its detection source and the error model version.
+
+## Approach
+
+### 1. Herds (`sim/herd/`, Python reference)
+- **Within-group spacing and group sizes:** reuse `results/data/herd_stats.json` (304 images, cross-validation farms only). Because groups are cut at image edges, whole-herd group sizes are measured from the hand-linked overlapping flights (`results/data/s3_truth.json`), which see whole herds.
+- **How herds are spread across a camp** (number of groups, distances between them, preference for water, shade and fences) is **not measured** by the public data (photos were taken where cows were). It is swept over a cited range and listed as a limitation. South African camps of 470–840 ha (`configs/sim_farms.yaml`) are included in the sweep.
+- **Movement:** how far animals move in the seconds to minutes between overlapping stills is fitted from the linked ICAERUS pairs with their EXIF times. GPS-collar studies are used only for longer timescales (grazing, walking, resting). A collective term keeps animals near neighbours.
+- **Reaction to the drone:** a distance-dependent response (bunching, moving off), swept from none to strong, with the D-6 sources cited. This is the main real cause of movement during a survey and of double counting.
+- **One implementation:** the Python model steps live with the simulation over gz-transport (needed for reaction to the drone). It moves to C++ with a parity test only when it stops changing (D-14).
+- **Tests:** equivalence bounds fixed in advance (for example, the Wasserstein distance between simulated and measured nearest-neighbour distances below a set number of metres), not "a two-sample test did not reject"; animals never leave their camp; a seed reproduces a run exactly.
+- **Seeds:** validation and test seeds in `configs/sim_worlds.yaml`; nothing is tuned on the test seeds.
+
+### 2. Mission planner (`python/herdsight/mission/`, Python reference; C++ later with a parity test)
+- **Flying height from the pixel budget (D-6):** height above ground = focal length in pixels × required GSD. The provisional GSD comes from published calf body lengths and the adult size in pixels measured in Phase 1, marked provisional; the Phase 2 resolution study (G11) replaces it, logged.
+- **Rules profiles (D-19):** UK and South Africa, each with a legal height ceiling, line-of-sight rules and welfare limits. If the pixel budget, the welfare floor and the legal ceiling cannot all be met, the planner **refuses the mission with a plain reason**; it never quietly breaks a limit.
+- **Welfare limits (D-6):** survey at 50 m or more; herd mode at 40 m (the cautious end of 30–40 m, cited); approach at survey height; prefer zoom over descending. Tested in simulation against Gazebo's true animal positions: height above ground never below the limit within a set radius of any animal, and descents only over ground with no animal within that radius.
+- **Survey route:** geotagged stills on parallel lines covering the camp, oriented along its long axis. Forward and side overlap are chosen by a sweep on the validation seeds (more overlap helps registration but gives moving animals more chances to be counted twice).
+- **Terrain:** a new terrain module (`geo/dem.py`) loads a terrain model (UK LIDAR; SRTM or ALOS for South Africa), smooths it and samples it along the route, computed once at planning time. In simulation, the planner's copy of the terrain carries the error level of those sources, so a hill is not followed perfectly. (The existing `geo/terrain.py` is a different tool: a local ground plane for ranging.)
+- **Battery and large camps:** the battery budget uses a cited endurance figure with a margin; large camps are split into sorties with battery swaps and resumption; a resumed survey counts as one survey only within a set time gap, otherwise its coverage is reduced. Tested on an 800 ha camp in the ROS-free run.
+
+### 3. Geotags, timing and registration as they really are
+- Each still is geotagged from **PX4's own position estimate** at the trigger time, not from Gazebo's true pose. Trigger delay and jitter and gimbal angle error are added. Their noise is set so that simulated geotag disagreement between overlapping stills matches the real measurement (`results/data/geolocation_check.json`: median 1.5 m, 90th percentile 6.4 m), tested, and swept.
+- **Registration** (D-27) needs real image content and cannot be tested on rendered ground. It is **modelled**, never tested, in simulation: a registration outcome model fitted to real ICAERUS pairs (acceptance rate, residual error, fallback to geotag), named in the result record like the detection error model.
+
+### 4. Detection error model (fitted to real images)
+- Detection probability by animal size in pixels, crowding and visible share, with **random effects per farm-date group and per image**, so misses cluster as they do on real farms (Derval lost 67% of its cattle, D-33).
+- **False detections are fixed objects** in the simulated world (rocks, troughs, posts), each detected with a probability per view, so they repeat across overlapping stills and can survive duplicate removal, as on real flights.
+- Calves (no labels) and partly hidden animals are **assumptions**, swept and listed in the limitations.
+- Fitted on the Phase 1 out-of-fold results, refitted after Phase 2; results are also shown under a "new farm like Derval" fit.
+
+### 5. Home base on simulated flights (`python/herdsight/sim/flight.py`)
+- The real home-base code: duplicate removal (Phase 1 registration method with the modelled registration now; the Phase 3 matcher when it exists, behind one interface), count interval, herd register and alert rule (Phase 4), result record.
+- **Intervals come from the real-flight calibration**, never from the simulation's own error model (that would make coverage circular). Simulated coverage is reported as a consistency check between simulation and real data, not as a system result.
+- **Coverage:** the mission log records which planned photos were taken. Home base computes `coverage`. Below a set coverage the camp status is `unknown` with a plain note, and **no missing alert is raised**. This stops an early battery or wind return from being reported as lost animals.
+- **Evidence:** crops of counted herds from the captured stills, marked simulated. Every mission outcome (completed, partial, aborted, returned early) has plain wording in `dashboard/glossary.yaml`; a test checks that no record contains a term outside the glossary.
+- **ROS-free end-to-end run:** the same pipeline driven by the Python herd model, planner and a simple flight model, without Gazebo. Fast, in ordinary CI, and the source of simulated S3 results for Phase 3.
+
+### 6. Gazebo world and drone (`sim/worlds/`, `sim/models/`)
+- Gazebo Harmonic: fenced camps, a hill, trees, water and shade points, fixed false-detection objects, wind (gz wind plugin; a wind case in the nightly run).
+- Cattle and calf meshes made for this project (no licence questions), sized from published body lengths.
+- PX4 x500 with a gimbal carrying an RGB camera, a **bounding-box camera** and a **thermal camera**, aligned, each with its TF frame (D-5). Night missions run in the nightly job; no thermal counting accuracy is claimed (no data).
+- The rendered RGB camera has fewer pixels than the design camera but the **same field of view and aspect ratio** (tested), so footprints and overlap are true; GSD is computed for the design camera.
+
+### 7. ROS 2 Jazzy mission (`ros2/`, C++, D-16)
+- Packages: `herdsight_msgs` (actions `SurveyCamp(camp_id)`, `InspectHerd(position)`), `herdsight_mission` (composable lifecycle nodes, intra-process), `herdsight_bringup`.
+- **PX4 interface:** survey and herd mode are registered as **PX4 custom modes** through `px4-ros2-interface-lib`, so PX4's own failsafes and arming checks stay in charge if a companion node fails. This is compared in the first spike with raw offboard setpoints and a mission upload with distance-based camera triggering, and the choice is logged (D-41). `px4_msgs` and the uXRCE-DDS agent are pinned to the PX4 release.
+- **Nodes:** camera capture (stills, geotag from the PX4 estimate, trigger time), onboard herd trigger, geolocator (ground projection with covariance, ported from the Python `geo/` modules with a parity test; matching stays at home base behind one interface until Phase 3), mission controller.
+- **Herd mode (D-7):** triggered from the bounding-box sensor through an **S7 error model** fitted to `results/baselines/dfine_onboard_herds.json` (herd recall and false triggers), with a forced-trigger test. The real onboard model also runs on renders, for wiring only, with the D-29 estimate of time per still added as a delay so the behaviour tree sees realistic timing; no timing is reported from CI. Herd-mode height is planned from the herd's extent, the field of view and the welfare floor, using zoom where needed. **Merge rule:** inside the hovered herd's area and time window, herd-mode detections replace survey detections; tested.
+- **BehaviorTree.CPP:** take off → survey → herd found → herd mode → resume → battery low → return → land, plus failures: lost data link, lost setpoints, a node crash, GNSS loss, geofence breach (camp and farm boundary), lifecycle error states. Each failure has a defined expected behaviour (hold, return, land, resume) and a `launch_testing` case.
+- **Data hand-off:** after landing, the flight bundle (stills, geotags, trigger times, camera model, mission log with photos taken) goes to the home-base folder.
+
+### 8. Environment and CI
+- **Spike first (step 1 of the work):** in GitHub Actions, run PX4 SITL in lockstep with headless Gazebo Harmonic and one camera; measure real-time factor, frame rate, memory, image size and run time. The CI design follows the measurement, recorded in Verification.
+- **Docker image** (`sim/docker/Dockerfile`): ROS 2 Jazzy, Gazebo Harmonic, PX4 at a pinned release, BehaviorTree.CPP, ONNX Runtime. Built only when the Dockerfile changes, pushed to the GitHub container registry, pinned by digest. On the laptop, Docker's data lives on the external drive.
+- **Model weights** for wiring checks come from a pinned release asset with a checksum, or a tiny test-only model; never from git.
+- **Per-push S5 job (certain checks only):** the planned photos were all captured, the welfare limits held, the drone landed, the hand-off happened, the record is schema-valid with the right camp, coverage is filled, and no record contains a term outside the glossary. A forced early battery return gives a record with status `unknown` and no alert. A statistical check (does the interval contain the truth?) is **not** a per-push pass condition, because a 90% interval misses about one run in ten by design.
+- **Nightly job (many seeds, fixed in advance):** S5 pass rate and interval coverage, each with a confidence interval; wind and night cases.
+- **Rosbags without images** (TF, poses, mission events, trigger times) as regression tests: replaying a bag through home base must reproduce the stored record exactly. Bags stay under the repository's 5 MB file limit.
+
+## Hypotheses (written before the first run)
+- H20: Animal movement during a survey raises the error of the flight count after duplicate removal: with the measured movement and a moderate reaction to the drone, the mean absolute relative flight error is at least 1.5 times that with static animals (validation seeds).
+- H21: Herd mode reduces the flight count error for packed herds: for groups of 20 or more animals, the error with herd mode is at most two thirds of that without it.
+- H22: The simulation is consistent with real flights: with the real-flight calibration, simulated 90% interval coverage of the flight count is within 10 percentage points of the real-flight coverage measured in Phase 3.
+Each is judged by a rule fixed in code before the run, on validation seeds; the test seeds are run once in Phase 7.
+
+## Order of work
+1. CI spike (PX4 SITL + headless Gazebo + one camera on GitHub Actions); record the measurements.
+2. Herd model from the measured statistics; tests.
+3. Terrain module, rules profiles, mission planner; tests.
+4. Detection, registration and geotag error models, fitted to real data; tests.
+5. ROS-free end-to-end run with coverage, evidence and messages; tests; H20–H22 on validation seeds.
+6. Docker image, Gazebo world and models, PX4 custom modes; PX4 flies a planned survey.
+7. ROS 2 nodes, behaviour tree, herd mode, failure cases, hand-off; `launch_testing`.
+8. Per-push and nightly CI jobs; S5 up to the result record. S5 itself with Phase 6 (D-40).
+
+## Alternatives considered
+- **Gazebo Classic / ROS 1:** end of life. Rejected.
+- **AirSim / Colosseum:** archived; photorealism is not needed because renders are never scored. Rejected.
+- **NVIDIA Isaac Sim:** photorealistic, needs a strong GPU, and invites detector claims from renders. Rejected for Stage A.
+- **ArduPilot SITL:** capable; PX4 chosen for its ROS 2 link and custom modes (D-11, D-16). Fallback if PX4 blocks progress.
+- **Raw offboard setpoints only:** simplest, but a companion-node crash mid-survey leaves recovery to PX4's default failsafe. Compared in the spike (D-41).
+- **Detections from the simulator's ground truth for every animal in the camp:** would make the count independent of what was captured. Rejected for the bounding-box sensor on captured stills.
+- **Perfect geotags and skipping registration:** flatters duplicate removal. Rejected for noise fitted to real flights and a modelled registration.
+- **Scoring the real detector on renders:** misleading (D-11). Rejected.
+- **A C++ Gazebo plugin for herd motion alongside the Python model:** two copies with no parity test. Rejected for one live Python implementation until it stabilises.
+
+## How success is measured
+- S5 per-push checks pass; nightly pass rate and coverage reported with confidence intervals.
+- Herd model within its pre-set equivalence bounds; planner and welfare-limit tests; failure-case tests.
+- H20–H22 judged by their pre-set rules; all simulated numbers labelled simulation results.
+
+## Risks
+- **Rendering on GPU-free CI runners may be too slow or fragile.** The spike measures it first; if it fails, rendering of RGB frames is reduced in CI and done in full locally, and the change is logged. The bounding-box camera is what home base needs, so S5's checks do not depend on RGB frame rate.
+- **The laptop's WSL has 6 cores and 7 GB of memory.** The owner can raise the memory limit; the per-push camp is small.
+- **Error models too kind.** Fitted to real data with farm and image effects, versioned, swept, and shown under a "new farm" fit.
+- **Herd spread across camps is unmeasured.** Swept and listed as a limitation.
+- **PX4 and Gazebo drift.** Pinned in the image.
+
+## What the owner will be asked to do
+1. Agree the plan, including D-40 (S5 declared only with the dashboard in the loop).
+2. Optionally raise WSL's memory limit (steps given when needed).
+
+## Review
+An independent reviewer (no part in writing the plan) reviewed the first draft as a hostile senior engineer against brief §3.2 and §14, checking each claim against the files. Main findings:
+1. The first draft ended S5 at the result record, which quietly redefines the brief's S5 (dashboard included).
+2. Detections were to come from the simulator's ground truth for the camp, so the count did not depend on what the camera captured.
+3. Phase 1 duplicate removal needs image content, which simulated detections do not have; skipping it or using perfect poses would flatter the results.
+4. Geotags, poses and capture times were perfect, although real geotags disagree by 1.5 m (median) to 6.4 m (90th percentile) against cattle spacing of 2–3 m.
+5. The detection error model treated misses as independent and false detections as new in every photo; calves and hidden animals were unmeasured assumptions not called out.
+6. The CI pass condition was statistical, so CI would fail at random or a passing seed would be fixed.
+7. Herd mode was triggered by the real onboard model on rendered cattle (it might never fire, or the renders would be tuned to it), and herd-mode photos had no merge rule or height rule.
+8. The dependency on unfinished Phase 3 was not handled: there is no C++ geolocation core yet, and S5 would pass on the baseline method.
+9. An early battery return would leave part of a camp unseen and raise a false "missing" alert.
+10. `geo/terrain.py` is a local ground plane for ranging, not a terrain model for planning.
+11. Failure cases (lost link, node crash, GNSS loss, geofence) were missing, and raw offboard control was chosen by familiarity.
+12. Thermal and night were dropped (D-5).
+13. Herd statistics already exist and are edge-cut; herd spread across a camp is not in the data; "a test did not reject" is not evidence of a match.
+14. Movement came from collar studies at the wrong timescale, and the drone's effect on animals was ignored.
+15. There was no Phase 1 calf estimate to use, no rule for conflicting limits, and no rules profiles (D-19).
+16. Large camps, battery swaps and wind were missing.
+17. CI feasibility was assumed, not measured (rendering, image size, weights, rosbag size).
+18. There were no held-out seeds and no hypotheses.
+19. The record lacked evidence and coverage, and mission outcomes had no farmer wording.
+20. Herd motion might be implemented twice (Python and a C++ plugin) without a parity test.
+21. Interval coverage in simulation would be circular if calibrated on the simulation's own error model.
+22. The rendered camera's field of view must match the design camera's.
+23. Onboard timing from CI is not a Pi 5 measurement.
+24. Overlap was unspecified; version pins were missing.
+
+Answers to the brief's three questions (from the review, accepted):
+1. *Best way regardless of effort:* fly real PX4 aircraft over farms with kraal counts; in Stage A, hardware-in-the-loop on a real companion computer, PX4 custom modes, error models with farm effects driven by sensors on the frames actually captured, geotag and timing noise from real logs, measured herd motion with reaction to the drone, many seeds nightly, and the record all the way to the dashboard. Hardware-in-the-loop is out of reach (no hardware); the rest is now in the plan.
+2. *Most likely failure on a real farm:* moving, drone-disturbed animals in packed herds combined with geotag and registration error breaking duplicate removal; partial surveys counted as losses; the onboard herd trigger not firing on unfamiliar farms; large camps exceeding one battery and line of sight.
+3. *How a sceptic would attack the results:* counts that never looked at the captured photos; perfect geotags; one fixed seed; independent misses fitted on three French farms; herd mode never triggered by detection; no dashboard in the loop; motion tuned on the worlds reported.
+
+## Changes after review
+Every finding was accepted; none was rejected.
+- S5 is declared only with the dashboard in the loop and re-declared after Phase 3 (finding 1; D-40).
+- Detections come from a bounding-box camera on the stills actually captured, through an error model with farm and image effects and fixed false-detection objects; calves and occlusion are swept assumptions (2, 5).
+- Registration is modelled from real pairs and named in the record; geotags come from PX4's estimate with timing and gimbal noise matched to the real measurement (3, 4).
+- Per-push CI checks only certain outcomes; statistics move to a nightly multi-seed job with confidence intervals (6).
+- Herd mode is triggered through an S7 error model with a forced-trigger test; merge and height rules added; zoom added; D-29 timing added as a delay (7, 23).
+- D-40 records running Phase 5 alongside Phases 2 and 3; the geolocator node is ground projection with a parity test; matching stays behind one interface; the matcher version goes into the record (8).
+- Coverage is computed from the mission log; low coverage gives `unknown` and no alert; tested with a forced battery return (9).
+- A new terrain module from real terrain sources, with error in the planner's copy (10).
+- PX4 custom modes, compared in the spike (D-41); failure cases with expected behaviours and tests (11).
+- Thermal camera and night missions added, without accuracy claims (12).
+- Existing herd statistics reused; whole-herd sizes from the linked flights; herd spread swept and listed as a limitation; equivalence bounds instead of non-rejection (13).
+- Short-timescale movement fitted from linked ICAERUS pairs; reaction to the drone added and swept (14).
+- Provisional GSD from published calf lengths plus measured adult pixels; rules profiles; refusal on conflicting limits; herd mode 40 m; a testable "no descent near animals" rule (15).
+- Sorties, battery swaps, resumption and wind (16).
+- A CI spike comes first; image built and pinned in the registry; weights from a pinned release; bags without images (17).
+- Validation and test seeds in `configs/sim_worlds.yaml`; hypotheses H20–H22 (18).
+- Evidence crops and coverage in the record; plain wording for every mission outcome; glossary test (19).
+- One live Python herd implementation until it stabilises (20).
+- Intervals from the real-flight calibration; simulated coverage reported as a consistency check (21).
+- Rendered camera field of view and aspect ratio tested against the design camera (22).
+- Overlap chosen by a sweep on validation seeds; version pins (24).
+
+## Verification
+*(Filled in as each step completes.)*
+- **Herd model** (`python/herdsight/sim/herds.py`, `configs/sim_worlds.yaml`, `tests/test_sim_herds.py`). Placement reproduces the measured nearest-neighbour distances (`results/data/herd_stats.json`) within the pre-set bound of 0.75 m, at placement and after 10 minutes of grazing; the fence holds; a seed reproduces a run; animals react only when the drone is lower than the reaction height. A first placement method packed animals too closely (median nearest neighbour 1.3 m against 3.3 m measured), and a first cohesion rule shrank large groups while grazing; both were caught by the tests and fixed. Movement between overlapping stills measured on the real flights (`scripts/herd_motion_stats.py`, `results/data/herd_motion.json`): 5598 registered links, a noise floor of 0.48 m and grazing drift D = 0.0013 m²/s.
+- **Mission planner** (`python/herdsight/mission/planner.py`, `python/herdsight/geo/dem.py`, `configs/mission.yaml`, `tests/test_mission_planner.py`). Provisional pixel budget: a calf of 0.8 m covers at least 35.4 pixels, the 5th percentile of labelled adults (`scripts/adult_size_px.py`), so the Mavic 3E design camera flies at 82.7 m (2.26 cm per pixel), above the 50 m welfare floor and below the 120 m ceiling of both rules profiles. A 400 × 250 m field takes 96 stills in one 7.6-minute sortie; an 810 ha South African camp takes 6840 stills in 20 sorties (7.8 hours of flying), each within the battery budget and 500 m of its take-off point. Tests: coverage of rectangular, L-shaped and skewed camps with overlap; terrain following over a hill and refusal over a cliff; refusal with a plain reason when a limit cannot be met.
+- **Error models fitted to real flights** (`python/herdsight/sim/errors.py`, `tests/test_sim_errors.py`). Detection (`scripts/fit_detection_model.py`, `results/data/detection_error_model.json`, 3392 labelled animals, Phase 1 out-of-fold predictions): logistic in log length (1.45) and crowding (-1.18) with random effects per farm-date group (sd 1.24), still (sd 0.54) and animal (sd 0.78, from 525 animals seen in several stills); 0.61 false detections per hectare in view; the "new farm" case uses Derval's group effect (recall 17%). The per-animal effect was added after a test showed that, without it, many views of each animal hid a new farm's misses. Geotags and registration (`scripts/fit_flight_error_models.py`, `results/data/flight_error_model.json`): per-flight geotag error weighted by each real flight's pairs, reproducing the real disagreement (test); 91.5% of 1427 real pairs registered.
+- **End-to-end run without ROS** (`python/herdsight/sim/flight.py`, `tests/test_sim_flight.py`): plan → fly over the moving herd → detections on the stills actually taken → linking and count at home base (Phase 1 method, modelled registration) → interval from the real-flight calibration → result record. Tests: a full survey gives a schema-valid, plain record with coverage 1 and the versions of every model used; an early return after a third of the stills gives status "not checked yet" and no alert; a camera that saw nothing gives a count of 0; a Derval-like farm finds fewer animals; a seed reproduces a flight. Results records now carry `coverage`, and a first shortfall is shown as "checking again" until its recount (D-13).
+- **H20** (`scripts/run_sim_flights.py`, `results/phase5/h20.json`, 60 validation flights): not held. Mean flight error 0.28 with still animals and 0.30 with movement (ratio 1.08, 1.03-1.18); the overcount (+28% with still animals) is close to the real flights' measured bias (+19%), a first sign the simulation is consistent with real flights. Simulation results, not field results.
+- **Simulation image** (`sim/docker/Dockerfile`): ROS 2 Jazzy, Gazebo Harmonic, PX4 v1.17.0, uXRCE-DDS agent v2.4.3, px4_msgs and px4-ros2-interface-lib, pinned by commit. The CI spike (step 1) needs the image pushed from GitHub Actions; it is measured locally first.
+- **Herd mode without ROS** (`python/herdsight/sim/flight.py`): the onboard trigger is the S7 error model from Phase 1 (`results/baselines/dfine_onboard_herds.json`: herds found and grouped 75% of the time, false triggers on 3.2% of stills); the drone descends only where no animal is within 30 m, takes one still of the herd from the lowest height that frames it (never below 40 m), and climbs back; at home base the merge rule replaces survey detections in that footprint and time window. Test: a forced trigger gives herd-mode stills at or above 40 m with every descent at least 30 m from the nearest animal. **H21** (40 validation camps): not held, ratio 0.86 (0.74-1.04); the overcount fell from +23% to +11%.
+- **Onboard mission in C++** (`ros2/herdsight_msgs`, `ros2/herdsight_mission`): builds in the simulation image against px4-ros2-interface-lib at the pinned commit with no compiler warnings, and its 4 unit tests pass. The survey is a PX4 custom mode run by a mode executor as a behaviour tree (wait until ready to arm, arm, take off, survey, return, wait until landed). Two names had changed in the library release (the multicopter go-to setpoint and the executor constructor) and were corrected. A simulation-only `autostart` parameter starts the mission without a pilot selecting the mode; on the drone it stays off.
+- **First flight in PX4 SITL and Gazebo** (`sim/bridge/run_flight.sh`, one validation-style world: 250 × 180 m camp, 30 animals, 44 planned stills; logs kept on the storage drive): PX4 armed itself through the executor, took off, flew the survey in the custom mode and published 41 of the 44 stills before the 20-minute time limit, each with PX4's own position estimate, 81.6–83.0 m above ground (planned 82.7 m) and within 1.5 m of its planned point. The laptop was also running the detector mining job, so the simulation ran far slower than real time (about 0.14 times real time, estimated from the still spacing and the planned 8 m/s); the script now records Gazebo's real-time factor and PX4's flight log, and a complete flight is the next run. The comparison of custom modes with plain offboard control and a mission upload (D-41) has not been run yet, so D-41 is still open. Simulation results, not field results.
+- **First complete flight in PX4 SITL and Gazebo** (same world and seed, with the laptop otherwise idle; mean Gazebo real-time factor 0.95, recorded every 30 s): arm, take off, survey, return and land all completed and the mission reported success. All 44 planned stills were published, each within 1.5 m of its planned point and 81.5–82.7 m above ground. The survey took about 346 s of simulated time against the planner's 224 s for the sortie, because the mission flies to each still point and slows to reach it within 1.5 m rather than passing through it at 8 m/s. Before the battery and sortie numbers are relied on, either the mission is changed to take stills while passing through, or the planner's time model is fitted to measured flights; this is open. Simulation results, not field results.

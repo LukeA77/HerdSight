@@ -23,5 +23,87 @@
   "recount_fa": 1.4140101928649944,
   "farm_fa": 1.3340661536924152,
   "outcome": "not held"
+ },
+ "H16": {
+  "rule": "with the large-loss shortcut on the 99% interval, recount false alarms at least 40% lower and share of losses of 5+ caught at most 0.03 lower (4000 farms)",
+  "farms": 4000,
+  "current_fa": 1.4479180962314386,
+  "strict_fa": 0.6185600966157055,
+  "current_k5_caught": 0.5754716981132075,
+  "strict_k5_caught": 0.42924528301886794,
+  "outcome": "not held"
+ },
+ "H17": {
+  "rule": "recount with the stricter shortcut meets the S4 target at one or more levels",
+  "target": {
+   "rule": "recount",
+   "interval_level": 0.9,
+   "false_alarms_per_100_surveys_max": 1.5,
+   "losses_of_5_plus_caught_within_3_surveys_min": 0.65
+  },
+  "levels": {
+   "0.68": {
+    "fa": 1.1639996706282765,
+    "k5_caught": 0.5377358490566038,
+    "meets": false
+   },
+   "0.8": {
+    "fa": 0.9495786786704361,
+    "k5_caught": 0.5094339622641509,
+    "meets": false
+   },
+   "0.9": {
+    "fa": 0.6185600966157055,
+    "k5_caught": 0.42924528301886794,
+    "meets": false
+   },
+   "0.95": {
+    "fa": 0.27601350424066096,
+    "k5_caught": 0.30660377358490565,
+    "meets": false
+   },
+   "0.99": {
+    "fa": 0.10814371586199324,
+    "k5_caught": 0.16037735849056603,
+    "meets": false
+   }
+  },
+  "outcome": "not held"
+ },
+ "H18": {
+  "rule": "history rule at some level: at most 1.5 false alarms per 100 surveys and share of losses of 5+ caught at least 0.05 above the recount rule at 90%",
+  "recount_k5_caught": 0.5754716981132075,
+  "levels": {
+   "0.68": {
+    "fa": 2.2280899184804985,
+    "k5_caught": 0.6650943396226415,
+    "meets_target": false
+   },
+   "0.8": {
+    "fa": 1.7734471495622102,
+    "k5_caught": 0.5943396226415094,
+    "meets_target": false
+   },
+   "0.9": {
+    "fa": 1.3301128098152775,
+    "k5_caught": 0.5660377358490566,
+    "meets_target": false
+   },
+   "0.95": {
+    "fa": 0.8872176323662614,
+    "k5_caught": 0.5283018867924528,
+    "meets_target": false
+   },
+   "0.99": {
+    "fa": 0.49175198309225154,
+    "k5_caught": 0.4339622641509434,
+    "meets_target": false
+   }
+  },
+  "outcome": "not held"
+ },
+ "H19": {
+  "rule": "history rule meets the S4 target at one or more levels",
+  "outcome": "not held"
  }
 }

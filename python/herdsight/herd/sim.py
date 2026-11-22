@@ -74,6 +74,7 @@ class Survey:
     hi: dict[float, float]
     dense: bool
     z: float = 0.0  # the survey's standardised error, for correlated recounts
+    partial: bool = False  # part of the camp was not seen
 
 
 @dataclass
@@ -91,7 +92,9 @@ class Farm:
     true_log: list[tuple[float, dict[str, int]]] = field(default_factory=list)
     losses: list[Loss] = field(default_factory=list)
     surveys: list[Survey] = field(default_factory=list)
-    unrecorded: list[tuple[float, str, str, int]] = field(default_factory=list)  # moves/strays
+    # unrecorded changes: (day, from camp, to camp, animals, "move" or "stray")
+    unrecorded: list[tuple[float, str, str, int, str]] = field(default_factory=list)
+    register_errors: list[tuple[float, str, int]] = field(default_factory=list)  # (day, camp, +-)
 
 
 def simulate_farm(
@@ -144,11 +147,15 @@ def simulate_farm(
                 true[c] += b
                 rec = bad(b) if rng.random() < s.register_error_share else b
                 reg.record(Event(day, Kind.BIRTH, c, rec))
+                if rec != b:
+                    farm.register_errors.append((day, c, rec - b))
             sold = rng.binomial(true[c], 0.6 * rate_day)
             if sold:
                 true[c] -= sold
                 rec = bad(sold) if rng.random() < s.register_error_share else sold
                 reg.record(Event(day, Kind.SALE, c, rec))
+                if rec != sold:
+                    farm.register_errors.append((day, c, sold - rec))
         # moves between camps (sometimes unrecorded)
         if s.camps > 1 and rng.random() < 2.0 * rate_day * s.camps:
             a, b2 = rng.choice(s.camps, 2, replace=False)
@@ -158,7 +165,7 @@ def simulate_farm(
                 true[ca] -= k
                 true[cb] += k
                 if rng.random() < s.unrecorded_move_share:
-                    farm.unrecorded.append((day, ca, cb, k))
+                    farm.unrecorded.append((day, ca, cb, k, "move"))
                 else:
                     reg.record(Event(day, Kind.MOVE, ca, k, to_camp=cb))
         # straying through fences, returning after 3-30 days
@@ -171,7 +178,7 @@ def simulate_farm(
                         true[c] -= k
                         true[to] += k
                         strays.append((day + int(rng.integers(3, 31)), c, to, k))
-                        farm.unrecorded.append((day, c, to, k))
+                        farm.unrecorded.append((day, c, to, k, "stray"))
         for r in [x for x in strays if x[0] == day]:
             _, c, to, k = r
             k = min(k, true[to])
@@ -204,7 +211,8 @@ def survey(
     dense = true >= err.dense_at
     sd = err.sd * (err.dense_sd_factor if dense else 1.0)
     count = max(0, int(round(true * (1 + err.bias + sd * z))))
-    if rng.random() < err.partial_prob:
+    partial = bool(rng.random() < err.partial_prob)
+    if partial:
         count = int(round(count * rng.uniform(*err.partial_coverage)))
     half = {lv: qq * (count + 1) for lv, qq in q.items()}
     return Survey(
@@ -216,6 +224,7 @@ def survey(
         hi={lv: count + h for lv, h in half.items()},
         dense=bool(dense),
         z=float(z),
+        partial=partial,
     )
 
 
@@ -259,3 +268,21 @@ def expected_table(farm: Farm) -> dict[str, np.ndarray]:
             out[e.camp][d:] -= e.n
             out[e.to_camp][d:] += e.n
     return out
+
+
+def measured_flight_error() -> tuple[float, float]:
+    """(bias, sd) of the relative error of flight totals after duplicate removal on the
+    owner-verified flights (results/baselines/dfine_s3.json, registration method)."""
+    import json
+
+    from herdsight.utils.config import REPO_ROOT
+
+    s3 = json.loads((REPO_ROOT / "results" / "baselines" / "dfine_s3.json").read_text())
+    rel = np.array(
+        [
+            f["relative_error"]["registration"]
+            for f in s3["flights"].values()
+            if f["truth_kind"] == "owner-verified"
+        ]
+    )
+    return float(rel.mean()), float(rel.std(ddof=1))
