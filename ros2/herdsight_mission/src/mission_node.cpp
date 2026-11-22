@@ -39,6 +39,8 @@ class SurveyMode : public px4_ros2::ModeBase {
     limits_.clearance_m = static_cast<float>(node.declare_parameter<double>("clearance_m", 30.0));
     limits_.frame_along_m =
         static_cast<float>(node.declare_parameter<double>("frame_along_m", 0.0));
+    // take survey stills in passing (false: stop at every photo point, as in the first flights)
+    limits_.pass_through = node.declare_parameter<bool>("pass_through", true);
     still_pub_ = node.create_publisher<herdsight_msgs::msg::StillCaptured>("herdsight/still", 10);
     herd_sub_ = node.create_subscription<herdsight_msgs::msg::HerdFound>(
         "herdsight/herd_found", 10, [this](const herdsight_msgs::msg::HerdFound& m) {
@@ -54,8 +56,8 @@ class SurveyMode : public px4_ros2::ModeBase {
   void onActivate() override {
     plan_ = Plan::load(plan_file_);
     logic_ = std::make_unique<SurveyLogic>(plan_, limits_, sortie_);
-    RCLCPP_INFO(node().get_logger(), "survey of %s: %d stills", plan_.camp.c_str(),
-                logic_->photosPlanned());
+    RCLCPP_INFO(node().get_logger(), "survey of %s: %d stills, %s", plan_.camp.c_str(),
+                logic_->photosPlanned(), limits_.pass_through ? "in passing" : "stopping at each");
   }
 
   void onDeactivate() override {
@@ -69,7 +71,7 @@ class SurveyMode : public px4_ros2::ModeBase {
     if (!logic_ || !local_->positionXYValid()) return;
     const Eigen::Vector3f pos = local_->positionNed();
     if (auto c = logic_->update(pos)) publishStill(*c, pos);
-    const auto t = logic_->current();
+    const auto t = logic_->flyTo(pos);
     if (!t) {
       completed(px4_ros2::Result::Success);
       return;

@@ -13,6 +13,19 @@
    "unanswered": 0,
    "complete": true
   },
+  "Derval/DJI_202308091507_014": {
+   "naive_sum": 97,
+   "candidate_unique": 35,
+   "verified_unique": 31,
+   "verified_groups_before_conflict_rule": 25,
+   "splits": 1,
+   "merges": 11,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 4,
+   "tasks": 35,
+   "unanswered": 0,
+   "complete": true
+  },
   "Jalogny/DJI_202306231103_031": {
    "naive_sum": 77,
    "candidate_unique": 61,
@@ -65,6 +78,19 @@
    "unanswered": 0,
    "complete": true
   },
+  "Jalogny/DJI_202309151045_055": {
+   "naive_sum": 208,
+   "candidate_unique": 183,
+   "verified_unique": 158,
+   "verified_groups_before_conflict_rule": 142,
+   "splits": 0,
+   "merges": 41,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 10,
+   "tasks": 112,
+   "unanswered": 0,
+   "complete": true
+  },
   "Jalogny/DJI_202309151045_056": {
    "naive_sum": 214,
    "candidate_unique": 188,
@@ -78,6 +104,19 @@
    "unanswered": 0,
    "complete": true
   },
+  "Jalogny/DJI_202309261339_058": {
+   "naive_sum": 209,
+   "candidate_unique": 140,
+   "verified_unique": 126,
+   "verified_groups_before_conflict_rule": 121,
+   "splits": 0,
+   "merges": 19,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 5,
+   "tasks": 107,
+   "unanswered": 0,
+   "complete": true
+  },
   "Jalogny/DJI_202309261339_059": {
    "naive_sum": 215,
    "candidate_unique": 163,
@@ -88,6 +127,19 @@
    "missing_labels_found": 0,
    "remaining_conflicts": 5,
    "tasks": 116,
+   "unanswered": 0,
+   "complete": true
+  },
+  "Mauron/DJI_202306051814_022": {
+   "naive_sum": 91,
+   "candidate_unique": 61,
+   "verified_unique": 53,
+   "verified_groups_before_conflict_rule": 50,
+   "splits": 0,
+   "merges": 11,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 3,
+   "tasks": 48,
    "unanswered": 0,
    "complete": true
   },
@@ -114,6 +166,84 @@
    "missing_labels_found": 0,
    "remaining_conflicts": 1,
    "tasks": 37,
+   "unanswered": 0,
+   "complete": true
+  },
+  "Mauron/DJI_202306071703_029": {
+   "naive_sum": 23,
+   "candidate_unique": 23,
+   "verified_unique": 23,
+   "verified_groups_before_conflict_rule": 23,
+   "splits": 0,
+   "merges": 0,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 0,
+   "tasks": 0,
+   "unanswered": 0,
+   "complete": true
+  },
+  "Mauron/DJI_202306071745_034": {
+   "naive_sum": 46,
+   "candidate_unique": 46,
+   "verified_unique": 46,
+   "verified_groups_before_conflict_rule": 46,
+   "splits": 0,
+   "merges": 0,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 0,
+   "tasks": 0,
+   "unanswered": 0,
+   "complete": true
+  },
+  "Mauron/DJI_202306071745_035": {
+   "naive_sum": 122,
+   "candidate_unique": 94,
+   "verified_unique": 86,
+   "verified_groups_before_conflict_rule": 82,
+   "splits": 1,
+   "merges": 13,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 3,
+   "tasks": 47,
+   "unanswered": 0,
+   "complete": true
+  },
+  "Mauron/DJI_202311071416_061": {
+   "naive_sum": 142,
+   "candidate_unique": 14,
+   "verified_unique": 30,
+   "verified_groups_before_conflict_rule": 29,
+   "splits": 16,
+   "merges": 1,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 1,
+   "tasks": 14,
+   "unanswered": 0,
+   "complete": true
+  },
+  "Mauron/DJI_202311071416_062": {
+   "naive_sum": 124,
+   "candidate_unique": 12,
+   "verified_unique": 12,
+   "verified_groups_before_conflict_rule": 12,
+   "splits": 0,
+   "merges": 0,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 0,
+   "tasks": 12,
+   "unanswered": 0,
+   "complete": true
+  },
+  "Mauron/DJI_202311071541_064": {
+   "naive_sum": 170,
+   "candidate_unique": 38,
+   "verified_unique": 30,
+   "verified_groups_before_conflict_rule": 27,
+   "splits": 0,
+   "merges": 11,
+   "missing_labels_found": 0,
+   "remaining_conflicts": 2,
+   "tasks": 38,
    "unanswered": 0,
    "complete": true
   },

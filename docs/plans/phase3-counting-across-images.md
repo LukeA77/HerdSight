@@ -1,6 +1,6 @@
 # Phase 3 plan: geolocation, duplicate removal and count intervals
 
-Status: draft for the owner (2026-11-22), self-reviewed and revised; no Phase 3 code written yet. Runs alongside Phase 2 (G2 is training on a rented GPU) and Phase 5; it uses the Phase 1 detector's out-of-fold detections now and is re-run with the Phase 2 model when that is chosen.
+Status: agreed by the owner (2026-11-22), after self-review and revision. Runs alongside Phase 2 (G2 is training on a rented GPU) and Phase 5; it uses the Phase 1 detector's out-of-fold detections now and is re-run with the Phase 2 model when that is chosen.
 
 ## Goal
 Count each animal once per flight, even when it appears in several overlapping stills, and give the count with a calibrated range, e.g. "143 (141–145 at 90%)" (D-9).
@@ -11,7 +11,7 @@ Exit (brief §12): **S3 on validation; parity tests pass.** S3 is the mean absol
 - **Method (D-27, D-30):** overlapping stills are registered from image content (a homography fitted by RANSAC to feature matches), detections are paired one-to-one in registered pixels (geotag projection as fallback), and pairs are joined greedily, shortest first, never putting two detections of one still in one animal.
 - **Result** (`results/baselines/dfine_s3.json`, Phase 1 detector, out of fold): on the 10 owner-verified flights the mean absolute relative error is 0.26 (geotag only 0.35; no duplicate removal 2.70).
 - **Where it fails:** flights with many overlapping pairs over a small herd (Mauron 20231107 flight 065: 25 animals, 460 overlapping pairs, +76%; flight 025: +21%), where small linking errors pile up, and flights with missed animals (Derval: −33%, mostly detection misses on the farm the model never saw, C1).
-- **Truth:** 10 flights verified by the owner from candidate links built on the labels (`results/data/s3_truth.json`); 10 more flights have unverified candidate counts only.
+- **Truth:** 10 flights verified by the owner from candidate links built on the labels (`results/data/s3_truth.json`); 10 more flights had unverified candidate counts only. The owner verified those 10 too on 2026-11-22 (review round 3, `scripts/make_link_review.py --round 3`), so all 20 flights now have complete verified counts; the first 10 are unchanged.
 - **C++ core:** `core/` (C++20, Eigen, GoogleTest under sanitizers, pybind11 module `herdsight._core`, parity tests) holds only the frame rotations so far.
 
 ## Approach
@@ -112,3 +112,6 @@ Self-review as a hostile senior engineer (brief §3.2):
 - Blind sample count to check the truth (finding 3).
 - Appearance as two named, compared descriptors behind H25 (finding 4).
 - Correlation clustering justified against min-cost flow; exact solver used to measure the heuristic's gap (finding 7).
+
+## Progress
+- **Step 1, error split** (`scripts/phase3_error_split.py`, `results/phase3/error_split.json`; Phase 1 method, all 20 owner-verified flights, 95% bootstrap intervals over flights). With the labels as detections, the linking alone gives a mean absolute relative flight error of 0.145 (0.093–0.206), and leans towards overcounting (mean signed error +0.069): animals seen twice are too often left as two. With the Phase 1 detector's out-of-fold detections the error is 0.285 (0.170–0.415), so detection adds 0.140 (0.002–0.298). The two parts are about equal, so neither phase can reach the 0.15 target alone. Detection's share is concentrated in a few flights: the farm the detector never trained on (Derval: missed animals, −33% and −52%), one dense single-image herd (Mauron flight 029: −70%), and two flights with heavy overlap where false detections are repeated across many images and not joined (Mauron flights 062 and 065: +108% and +76%). The last kind is partly a linking problem as well, so the same-animal model (step 4) uses detection confidence as evidence too. Linking-only errors are largest on Jalogny flights with few overlapping pairs (overcounts of 11–32%) and on Mauron flight 061 (−53%, animals wrongly joined). On the first 10 flights the figure with the detector (0.264) differs from the Phase 1 report (0.26) only by rounding; on the 10 newly verified flights it is 0.305. Public-data results, not field results.

@@ -1,0 +1,231 @@
+{
+ "flights": 20,
+ "method": "Phase 1 registration and greedy grouping (D-27, D-30)",
+ "linking_only_mare": {
+  "mean": 0.1448481890842118,
+  "ci95": [
+   0.09321221257811937,
+   0.2057790035840017
+  ]
+ },
+ "linking_only_mean_signed": 0.06929263352865626,
+ "detection_and_linking_mare": {
+  "mean": 0.28466557575379503,
+  "ci95": [
+   0.17044406372112156,
+   0.4154665418660875
+  ]
+ },
+ "detection_and_linking_mean_signed": 0.1062791157847655,
+ "added_by_detection": {
+  "mean": 0.13981738666958318,
+  "ci95": [
+   0.002494121226810929,
+   0.29846032445496823
+  ]
+ },
+ "by_farm": {
+  "Derval": {
+   "flights": 2,
+   "linking_only_mare": 0.17562724014336917,
+   "detection_and_linking_mare": 0.4247311827956989
+  },
+  "Jalogny": {
+   "flights": 8,
+   "linking_only_mare": 0.15667791520325464,
+   "detection_and_linking_mare": 0.1921200986074404
+  },
+  "Mauron": {
+   "flights": 10,
+   "linking_only_mare": 0.1292285979771461,
+   "detection_and_linking_mare": 0.33068883606249794
+  }
+ },
+ "per_flight": {
+  "Derval/DJI_202308091442_012": {
+   "fold": "fold1",
+   "truth": 27,
+   "overlapping_pairs": 121,
+   "linking_only": -0.2222222222222222,
+   "detection_and_linking": -0.3333333333333333,
+   "labels_per_image_sum": 115,
+   "detections_per_image_sum": 57
+  },
+  "Derval/DJI_202308091507_014": {
+   "fold": "fold1",
+   "truth": 31,
+   "overlapping_pairs": 54,
+   "linking_only": 0.12903225806451613,
+   "detection_and_linking": -0.5161290322580645,
+   "labels_per_image_sum": 97,
+   "detections_per_image_sum": 40
+  },
+  "Jalogny/DJI_202306231103_031": {
+   "fold": "fold0",
+   "truth": 59,
+   "overlapping_pairs": 9,
+   "linking_only": 0.03389830508474576,
+   "detection_and_linking": 0.0,
+   "labels_per_image_sum": 77,
+   "detections_per_image_sum": 75
+  },
+  "Jalogny/DJI_202306271323_032": {
+   "fold": "fold1",
+   "truth": 65,
+   "overlapping_pairs": 12,
+   "linking_only": 0.18461538461538463,
+   "detection_and_linking": 0.5230769230769231,
+   "labels_per_image_sum": 94,
+   "detections_per_image_sum": 116
+  },
+  "Jalogny/DJI_202307260838_039": {
+   "fold": "fold0",
+   "truth": 98,
+   "overlapping_pairs": 23,
+   "linking_only": 0.12244897959183673,
+   "detection_and_linking": 0.21428571428571427,
+   "labels_per_image_sum": 195,
+   "detections_per_image_sum": 204
+  },
+  "Jalogny/DJI_202308031317_042": {
+   "fold": "fold1",
+   "truth": 120,
+   "overlapping_pairs": 29,
+   "linking_only": 0.31666666666666665,
+   "detection_and_linking": 0.35833333333333334,
+   "labels_per_image_sum": 195,
+   "detections_per_image_sum": 199
+  },
+  "Jalogny/DJI_202309151045_055": {
+   "fold": "fold2",
+   "truth": 158,
+   "overlapping_pairs": 13,
+   "linking_only": 0.15822784810126583,
+   "detection_and_linking": 0.12658227848101267,
+   "labels_per_image_sum": 208,
+   "detections_per_image_sum": 201
+  },
+  "Jalogny/DJI_202309151045_056": {
+   "fold": "fold2",
+   "truth": 168,
+   "overlapping_pairs": 11,
+   "linking_only": 0.11904761904761904,
+   "detection_and_linking": 0.041666666666666664,
+   "labels_per_image_sum": 214,
+   "detections_per_image_sum": 196
+  },
+  "Jalogny/DJI_202309261339_058": {
+   "fold": "fold1",
+   "truth": 126,
+   "overlapping_pairs": 11,
+   "linking_only": 0.1111111111111111,
+   "detection_and_linking": 0.09523809523809523,
+   "labels_per_image_sum": 209,
+   "detections_per_image_sum": 205
+  },
+  "Jalogny/DJI_202309261339_059": {
+   "fold": "fold1",
+   "truth": 135,
+   "overlapping_pairs": 8,
+   "linking_only": 0.2074074074074074,
+   "detection_and_linking": 0.17777777777777778,
+   "labels_per_image_sum": 215,
+   "detections_per_image_sum": 209
+  },
+  "Mauron/DJI_202306051814_022": {
+   "fold": "fold0",
+   "truth": 53,
+   "overlapping_pairs": 2,
+   "linking_only": 0.1509433962264151,
+   "detection_and_linking": 0.05660377358490566,
+   "labels_per_image_sum": 91,
+   "detections_per_image_sum": 81
+  },
+  "Mauron/DJI_202306051839_025": {
+   "fold": "fold0",
+   "truth": 68,
+   "overlapping_pairs": 78,
+   "linking_only": 0.19117647058823528,
+   "detection_and_linking": 0.20588235294117646,
+   "labels_per_image_sum": 408,
+   "detections_per_image_sum": 336
+  },
+  "Mauron/DJI_202306071624_028": {
+   "fold": "fold2",
+   "truth": 35,
+   "overlapping_pairs": 358,
+   "linking_only": 0.05714285714285714,
+   "detection_and_linking": -0.02857142857142857,
+   "labels_per_image_sum": 357,
+   "detections_per_image_sum": 311
+  },
+  "Mauron/DJI_202306071703_029": {
+   "fold": "fold2",
+   "truth": 23,
+   "overlapping_pairs": 0,
+   "linking_only": 0.0,
+   "detection_and_linking": -0.6956521739130435,
+   "labels_per_image_sum": 23,
+   "detections_per_image_sum": 7
+  },
+  "Mauron/DJI_202306071745_034": {
+   "fold": "fold2",
+   "truth": 46,
+   "overlapping_pairs": 0,
+   "linking_only": 0.0,
+   "detection_and_linking": -0.06521739130434782,
+   "labels_per_image_sum": 46,
+   "detections_per_image_sum": 43
+  },
+  "Mauron/DJI_202306071745_035": {
+   "fold": "fold2",
+   "truth": 86,
+   "overlapping_pairs": 1,
+   "linking_only": 0.09302325581395349,
+   "detection_and_linking": -0.011627906976744186,
+   "labels_per_image_sum": 122,
+   "detections_per_image_sum": 108
+  },
+  "Mauron/DJI_202311071416_061": {
+   "fold": "fold0",
+   "truth": 30,
+   "overlapping_pairs": 66,
+   "linking_only": -0.5333333333333333,
+   "detection_and_linking": -0.13333333333333333,
+   "labels_per_image_sum": 142,
+   "detections_per_image_sum": 161
+  },
+  "Mauron/DJI_202311071416_062": {
+   "fold": "fold0",
+   "truth": 12,
+   "overlapping_pairs": 66,
+   "linking_only": 0.0,
+   "detection_and_linking": 1.0833333333333333,
+   "labels_per_image_sum": 124,
+   "detections_per_image_sum": 162
+  },
+  "Mauron/DJI_202311071541_064": {
+   "fold": "fold0",
+   "truth": 30,
+   "overlapping_pairs": 105,
+   "linking_only": 0.26666666666666666,
+   "detection_and_linking": 0.26666666666666666,
+   "labels_per_image_sum": 170,
+   "detections_per_image_sum": 170
+  },
+  "Mauron/DJI_202311071541_065": {
+   "fold": "fold0",
+   "truth": 25,
+   "overlapping_pairs": 460,
+   "linking_only": 0.0,
+   "detection_and_linking": 0.76,
+   "labels_per_image_sum": 290,
+   "detections_per_image_sum": 290
+  }
+ },
+ "bootstrap": {
+  "resamples": 5000,
+  "seed": 0,
+  "unit": "flight"
+ }
+}

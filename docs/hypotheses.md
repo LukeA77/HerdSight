@@ -32,6 +32,17 @@ Scored on the same frozen three-fold cross-validation as Phase 1. "Reference" me
 | H11 | Count intervals fitted per density band fix the undercoverage on crowded images without becoming useless. | 90% coverage on images with 20 or more animals at least 0.85, with mean width no more than 1.5 times the width the pooled method gives on those images. | Coverage and width on the 20+ band, out-of-fold | pending |
 | H12 | A larger model (D-FINE M) is more accurate than S with the same recipe. | Centre AP higher by more than the measured run-to-run spread, or by at least 0.03 where no repeat runs were made. | Paired difference over farm-date groups | pending |
 
+## Phase 3: counting across images (written 2026-11-22, after the error split and before any Phase 3 method was built)
+
+Scored on the 20 owner-verified flights (`results/data/s3_truth.json`), every learned part fitted on the other two folds, and on 200 simulated validation flights. The thresholds are also recorded in `configs/phase3.yaml`, frozen before the first run that tests any of them. Baseline: the Phase 1 method (registration, then greedy grouping; D-27, D-30), mean absolute relative flight error 0.145 with labels as detections and 0.285 with the Phase 1 detector (`results/phase3/error_split.json`). Real flights are public data, not field data; simulated flights are simulation results.
+
+| ID | Hypothesis | Prediction | How it is judged | Outcome |
+|---|---|---|---|---|
+| H23 | Grouping all detections of a flight at once (correlation clustering) beats greedy joining. | Mean absolute relative flight error lower by at least 0.05 on the verified flights, with the paired 95% interval excluding zero, and not worse on simulated validation flights (upper end of the paired interval at most +0.01). | The same detections and pair evidence, global against greedy grouping, paired over flights | pending |
+| H24 | Allowing for how far an animal can walk between two stills helps where the same ground is photographed on separate passes. | On flights with overlapping stills more than 2 minutes apart, the error is lower than with a fixed distance gate, on verified and simulated flights, with the simulated paired interval excluding zero. | Movement allowance against the Phase 1 fixed gate, paired over those flights; the real subset is small and reported as direction only | pending |
+| H25 | Appearance helps decide whether two detections are one animal. | Out-of-fold area under the ROC curve of the same-animal model at least 0.03 higher with appearance than with position, movement and size alone, the paired interval excluding zero. | Both named descriptors (`configs/phase3.yaml`) on the same out-of-fold pairs; appearance is kept only if one of them holds | pending |
+| H26 | Flight-count ranges are calibrated. | 90% ranges contain the true count on 85-95% of simulated validation flights; real-flight coverage reported beside it. | Coverage at 68, 90 and 95% on simulated and (indicative, 20 flights) real flights | pending |
+
 ## Phase 4: herd register and alerts (written 2026-11-21, before any alert rule was run)
 
 Scored on simulated farms (`configs/sim_farms.yaml`, validation seed), never on field data. "Losses" are deaths and thefts; a loss is caught if an alert fires on its camp within 3 surveys. Each prediction is judged by a rule fixed in code before the run, at the 90% interval level unless stated, under the count error model measured in Phase 1.

@@ -48,6 +48,10 @@ P=./build/px4_sitl_default/bin
 $P/px4-param set COM_RC_IN_MODE 4
 $P/px4-param set NAV_DLL_ACT 0
 $P/px4-param set NAV_RCL_ACT 0
+# PX4 caps the mission's requested speed at its cruise speed (MPC_XY_CRUISE, default 5 m/s), so
+# the cruise speed is set to the plan's survey speed
+SPEED=$(python3 -c "import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))['speed_m_s'])" "$OUT/plan.yaml")
+$P/px4-param set MPC_XY_CRUISE "$SPEED"
 
 python3 /repo/sim/bridge/herd_bridge.py --state "$OUT/herd_state.pkl" --seed "$SEED" \
   > "$OUT/herd_bridge.log" 2>&1 &

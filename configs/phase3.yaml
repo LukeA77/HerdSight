@@ -1,0 +1,70 @@
+# Phase 3 pre-registration (plan: docs/plans/phase3-counting-across-images.md, order of work step
+# 2). Written on 2026-11-22 after the error split (step 1, results/phase3/error_split.json) and
+# before any Phase 3 method was built or run, and frozen with
+# scripts/freeze.py --phase phase3_prereg before the first run that tests a hypothesis. Each value
+# says where it came from. Changing anything here after the freeze means a new, dated decision in
+# docs/decisions.md and a re-freeze; the old manifest is kept.
+
+truth:
+  value: results/data/s3_truth.json
+  placeholder: PHASE3_TRUTH
+  source: "All 20 flights verified by the owner (review rounds 1-3, the last on 2026-11-22); its hash is part of the freeze, so the truth cannot change after the rules are fixed."
+
+folds:
+  value: results/splits.json
+  placeholder: PHASE3_FOLDS
+  source: "Plan step 2: anything fitted to data (same-animal model, gates, weights, interval calibration) is fitted on two folds and applied to the third, the same farm-date folds as the detector (icaerus_v2, D-26)."
+
+primary_measure:
+  value: >-
+    Mean absolute relative error of the flight count, abs(count - truth) / truth, over all
+    owner-verified flights, each flight counted by a method fitted without its fold (S3,
+    configs/specs.yaml).
+  placeholder: PHASE3_MEASURE
+  source: "Brief section 12 (exit: S3 on validation) and plan step 2. No setting is chosen by looking at a flight's S3 score."
+
+baseline_method:
+  value: {grouping: greedy, pixel_gate_fraction: 0.5, geotag_gate_m: 3.0}
+  placeholder: PHASE3_BASELINE
+  source: "The Phase 1 method every change must beat (D-27, D-30): registered pairs matched within half the median animal length, geotag fallback within 3 m (scripts/link_animals.py), joined greedily, shortest first, one detection per still per animal. Measured: 0.145 with labels as detections, 0.285 with the Phase 1 detector (results/phase3/error_split.json)."
+
+bootstrap:
+  value: {resamples: 5000, seed: 0, unit: flight, paired: true, level: 0.95}
+  placeholder: PHASE3_BOOTSTRAP
+  source: "Plan step 2: every real-flight figure carries a bootstrap interval over flights; every claim that one method is better uses a paired comparison on the same flights. Same settings as the error split."
+
+simulated_flights:
+  value: {count: 200, seed: seed_validation}
+  placeholder: PHASE3_SIM_FLIGHTS
+  source: "Validation flights from configs/sim_worlds.yaml (seed_validation) with the fitted detection, geotag and registration error models (Phase 5). 200 flights give a standard error of about 2 percentage points on a 90% coverage (H26). The test seed runs once, in Phase 7."
+
+exact_solver:
+  value: {max_detections: 60, time_limit_s: 60}
+  placeholder: PHASE3_EXACT
+  source: "Plan step 5: a connected part of the graph is solved exactly as an integer program (HiGHS through SciPy) when it has at most this many detections and the solver proves optimality within the time limit; larger parts use the heuristic. Where both run, the heuristic's gap to the optimum is reported. Chosen before any run as a size an integer program of this kind usually solves in seconds; the share of detections in exactly solved parts is reported per flight. A part is never solved exactly on one flight and heuristically on another to favour a result: the rule is applied the same way everywhere."
+
+appearance_descriptors:
+  value:
+    colour_texture: "HSV colour histogram (16 x 4 x 4 bins) and uniform local binary pattern histogram (radius 2, 16 points) of the box crop, concatenated, chi-squared distance"
+    pretrained: "DINOv2 ViT-S/14 (facebook/dinov2-small) class-token embedding of the box crop resized to 224 px, cosine distance, on the laptop CPU"
+  placeholder: PHASE3_APPEARANCE
+  source: "Plan step 4 and review finding 4: two named descriptors compared on the same out-of-fold pairs; appearance is kept only if H25 holds."
+
+separate_pass_gap_s:
+  value: 120
+  placeholder: PHASE3_PASS_GAP
+  source: "H24: two stills of the same ground count as separate passes when taken more than 2 minutes apart; with 8 m/s lines a neighbouring line is reached in well under a minute, so 2 minutes picks out later passes and returns."
+
+interval_levels:
+  value: [0.68, 0.90, 0.95]
+  placeholder: PHASE3_LEVELS
+  source: "Plan step 6: coverage reported at each; 0.90 is the level of the count range shown to farmers (D-9) and of H26."
+
+hypotheses:
+  value:
+    H23: {mare_gain_min: 0.05, real_ci_excludes_zero: true, sim_noninferiority_margin: 0.01}
+    H24: {pass_gap_s: 120, real_and_sim_mean_difference_below_zero: true, sim_ci_excludes_zero: true}
+    H25: {auc_gain_min: 0.03, ci_excludes_zero: true}
+    H26: {coverage_90_min: 0.85, coverage_90_max: 0.95}
+  placeholder: PHASE3_HYPOTHESES
+  source: "docs/hypotheses.md, Phase 3 section, written 2026-11-22 before any Phase 3 method was built. H23 non-inferiority on simulation: the upper end of the paired 95% interval of (global - greedy) error is at most 0.01. H24 is judged on the flights with at least one pair of overlapping stills more than pass_gap_s apart; real flights with such pairs are few, so the real result is reported as direction only and the decision rests on simulation."

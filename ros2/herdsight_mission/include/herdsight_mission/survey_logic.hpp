@@ -7,6 +7,12 @@
 // the herd, descend there to the herd-mode height, move over the herd, take one still, climb
 // back to survey height, and return to where the survey stopped. The drone never descends within
 // the clearance radius of the herd and never flies below the herd-mode height (D-6).
+//
+// Survey stills are taken in passing (pass_through, the default): along a straight survey line
+// the drone is sent to the end of the line, not to each photo point, so it keeps its speed, and
+// each still is taken as the drone crosses its photo point. This is what the planner's time
+// model assumes (constant speed along lines, a fixed time per turn). With pass_through off, the
+// drone stops at every photo point, as in the first flights. Herd-mode targets always stop.
 #pragma once
 
 #include <Eigen/Core>
@@ -35,6 +41,9 @@ struct Limits {
   float clearance_m{30.0f};          // descend only this far from the herd's edge
   float reached_m{1.5f};             // a target counts as reached within this distance
   float frame_along_m{0.0f};         // survey still's along-track footprint at survey height
+  bool pass_through{true};           // take survey stills in passing (see above)
+  float capture_m{3.0f};             // in passing: largest distance off the line for a still
+  float line_cos{0.996f};            // photo points within about 5 degrees count as one line
 };
 
 enum class TargetKind { Photo, Transit, HerdPhoto };
@@ -57,6 +66,9 @@ class SurveyLogic {
 
   // The target to fly to now; empty when the sortie is finished.
   std::optional<Target> current() const;
+  // Where to send the drone now: the current target, or in passing the last photo point of the
+  // straight line it is on (so it does not slow down at each point). Empty when finished.
+  std::optional<Target> flyTo(const Eigen::Vector3f& pos_ned) const;
   // Report the position estimate; if the current target is reached, advance and return the
   // still to take there (if any).
   std::optional<Capture> update(const Eigen::Vector3f& pos_ned);
@@ -74,7 +86,9 @@ class SurveyLogic {
  private:
   Plan plan_;
   Limits limits_;
+  bool passed(const Target& t, const Eigen::Vector3f& pos_ned) const;
   std::vector<Target> queue_;  // front is current
+  std::optional<Eigen::Vector3f> last_;  // last target reached (start of the current leg)
   size_t next_ = 0;
   int photos_taken_ = 0;
   int photos_planned_ = 0;

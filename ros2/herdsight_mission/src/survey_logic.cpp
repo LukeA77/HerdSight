@@ -21,11 +21,44 @@ std::optional<Target> SurveyLogic::current() const {
   return queue_.front();
 }
 
+std::optional<Target> SurveyLogic::flyTo(const Eigen::Vector3f& pos_ned) const {
+  if (queue_.empty()) return std::nullopt;
+  const Target& first = queue_.front();
+  if (!limits_.pass_through || first.kind != TargetKind::Photo || !last_) return first;
+  // only once the drone is on the line through the last point and the current one
+  const Eigen::Vector3f leg = first.ned - *last_;
+  if (leg.norm() < 1e-3f) return first;
+  const Eigen::Vector3f dir = leg.normalized();
+  const Eigen::Vector3f off = pos_ned - *last_;
+  if ((off - off.dot(dir) * dir).norm() > limits_.capture_m) return first;
+  size_t end = 0;
+  while (end + 1 < queue_.size() && queue_[end + 1].kind == TargetKind::Photo) {
+    const Eigen::Vector3f step = queue_[end + 1].ned - queue_[end].ned;
+    if (step.norm() < 1e-3f || step.normalized().dot(dir) < limits_.line_cos) break;
+    ++end;
+  }
+  return queue_[end];
+}
+
+// In passing, a photo point counts as reached once the drone, close enough to the line, is level
+// with it or beyond; otherwise (and for every other target) within reached_m.
+bool SurveyLogic::passed(const Target& t, const Eigen::Vector3f& pos_ned) const {
+  if ((pos_ned - t.ned).norm() <= limits_.reached_m) return true;
+  if (!limits_.pass_through || t.kind != TargetKind::Photo || !last_) return false;
+  const Eigen::Vector3f leg = t.ned - *last_;
+  if (leg.norm() < 1e-3f) return false;
+  const Eigen::Vector3f dir = leg.normalized();
+  const Eigen::Vector3f off = pos_ned - t.ned;
+  const float along = off.dot(dir);
+  return along >= 0.0f && (off - along * dir).norm() <= limits_.capture_m;
+}
+
 std::optional<Capture> SurveyLogic::update(const Eigen::Vector3f& pos_ned) {
   if (queue_.empty()) return std::nullopt;
   const Target t = queue_.front();
-  if ((pos_ned - t.ned).norm() > limits_.reached_m) return std::nullopt;
+  if (!passed(t, pos_ned)) return std::nullopt;
   queue_.erase(queue_.begin());
+  last_ = t.ned;
   if (t.kind == TargetKind::Photo) {
     ++photos_taken_;
     return Capture{t.photo_id, t.kind, t.ned};

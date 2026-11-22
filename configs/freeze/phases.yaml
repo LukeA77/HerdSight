@@ -20,3 +20,12 @@ phases:
     - configs/phase2.yaml
     - configs/specs.yaml
     - configs/evaluation.yaml
+  # Phase 3 pre-registration (plan step 2): truth (all 20 verified flights), folds, measure,
+  # baseline, solver and descriptor choices and hypothesis rules, frozen before the first run
+  # that tests a Phase 3 hypothesis.
+  phase3_prereg:
+    - configs/phase3.yaml
+    - configs/specs.yaml
+    - configs/evaluation.yaml
+    - results/data/s3_truth.json
+    - results/splits.json
