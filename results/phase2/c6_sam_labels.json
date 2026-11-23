@@ -11,5 +11,46 @@
   "low_fill": 49
  },
  "no_mask": 0,
- "eye_check": "pending"
+ "eye_check": "passed",
+ "eye_check_result": {
+  "n": 100,
+  "good": 99,
+  "bad": 0,
+  "unsure": 1,
+  "accepted_share": 0.99,
+  "accept_min": 0.9,
+  "passed": true,
+  "by_stratum": {
+   "fold0_flagged": {
+    "good": 5,
+    "bad": 0,
+    "unsure": 0
+   },
+   "fold0_unflagged": {
+    "good": 38,
+    "bad": 0,
+    "unsure": 0
+   },
+   "fold1_flagged": {
+    "good": 4,
+    "bad": 0,
+    "unsure": 1
+   },
+   "fold1_unflagged": {
+    "good": 23,
+    "bad": 0,
+    "unsure": 0
+   },
+   "fold2_flagged": {
+    "good": 5,
+    "bad": 0,
+    "unsure": 0
+   },
+   "fold2_unflagged": {
+    "good": 24,
+    "bad": 0,
+    "unsure": 0
+   }
+  }
+ }
 }

@@ -36,6 +36,35 @@ def final_obb(
     return normalise_obb(ox, oy, w, h, angle)
 
 
+def review_outcome(
+    answers: dict[str, str], key: dict[str, dict[str, Any]], accept_min: float
+) -> dict[str, Any]:
+    """The eye check's result. Every label must be answered; only "good" counts as accepted."""
+    if set(answers) != set(key):
+        missing, extra = len(set(key) - set(answers)), len(set(answers) - set(key))
+        raise ValueError(f"answers do not match the sample: {missing} missing, {extra} unknown")
+    unknown = set(answers.values()) - {"good", "bad", "unsure"}
+    if unknown:
+        raise ValueError(f"unknown answers: {sorted(unknown)}")
+    n_good = sum(v == "good" for v in answers.values())
+    share = n_good / max(len(key), 1)
+    by_stratum: dict[str, dict[str, int]] = {}
+    for label, info in key.items():
+        name = f"{info['fold']}_{'flagged' if info['flagged'] else 'unflagged'}"
+        cell = by_stratum.setdefault(name, {"good": 0, "bad": 0, "unsure": 0})
+        cell[answers[label]] += 1
+    return {
+        "n": len(key),
+        "good": n_good,
+        "bad": sum(v == "bad" for v in answers.values()),
+        "unsure": sum(v == "unsure" for v in answers.values()),
+        "accepted_share": share,
+        "accept_min": accept_min,
+        "passed": share >= accept_min,
+        "by_stratum": dict(sorted(by_stratum.items())),
+    }
+
+
 def _allocate(sizes: dict[tuple[str, bool], int], n: int) -> dict[tuple[str, bool], int]:
     """Share `n` across cells in proportion to size, with a floor for each non-empty cell."""
     cells = [c for c, s in sizes.items() if s > 0]

@@ -27,3 +27,5 @@ c6-1,2026-11-23,c6,NVIDIA GeForce RTX 4090,COMMUNITY,0.34,12,0.00,failed,"host n
 c6-2,2026-11-23,c6,NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb,SECURE,0.69,78,0.89,failed,"the photo server closed the download at 96% and the job did not resume it; no labels made. The download now resumes"
 c6-3,2026-11-23,c6,NVIDIA GeForce RTX 5080,COMMUNITY,0.39,2,0.01,failed,"host reached the photo archive at 0.2 MB/s, under the minimum; stopped before labelling and the pod deleted itself"
 c6-4,2026-11-23,c6,NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb,SECURE,0.69,142,1.63,done,"SAM results for 3392 animals in 304 cross-validation images; commit 2b2c39c plus the one-line fold filter fix applied before labelling started, so no test-farm image was read"
+g11-1,2026-11-23,g11,NVIDIA GeForce RTX 4090,COMMUNITY,0.34,1,0.00,failed,"host GPU unusable (cuInit returned 999); stopped before the job and the pod deleted itself"
+g11-2,2026-11-23,g11,NVIDIA GeForce RTX 3080 Ti,COMMUNITY,0.18,1,0.00,failed,"host reached the photo archive at 0.97 MB/s, under the 1.5 MB/s minimum set for this session; stopped before predicting and the pod deleted itself"
