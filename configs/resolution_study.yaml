@@ -1,0 +1,37 @@
+# Phase 2 step G11: resolution study for calves (D-6). Written before any degraded image was
+# scored. Changing a value after the first run means a new, dated decision in docs/decisions.md.
+
+scales:
+  value: [1.0, 0.75, 0.5, 0.35, 0.25]
+  placeholder: G11_SCALES
+  source: "Linear image scale. Takes the median labelled adult (67 px, results/data/adult_size_px.json) down to about 17 px, well below the provisional 35.4 px budget. Scale 1.0 is degraded too, which separates the effect of blur, noise and compression from the effect of size"
+
+blur_sigma_px:
+  value: 0.5
+  placeholder: G11_BLUR
+  source: "Gaussian blur after downsampling, standing in for lens and motion softness; about one pixel full width at half maximum"
+
+noise_sd_8bit:
+  value: 2.0
+  placeholder: G11_NOISE
+  source: "Gaussian sensor noise on the 0-255 scale, a mild daylight level for a stills camera"
+
+jpeg_quality:
+  value: 85
+  placeholder: G11_JPEG
+  source: "JPEG quality after blur and noise, a common camera and storage setting"
+
+seed:
+  value: 11
+  placeholder: G11_SEED
+  source: "Noise seed, combined with each image's name and the scale so a re-run gives identical images"
+
+max_recall_loss:
+  value: 0.05
+  placeholder: G11_MAX_LOSS
+  source: "Phase 2 plan, G11: the smallest animal length at which recall stays within 0.05 of native resolution"
+
+reference_pixels:
+  value: 35.4
+  placeholder: G11_REF_PX
+  source: "5th percentile of labelled adult long sides (results/data/adult_size_px.json), the provisional pixels_for_smallest_animal in configs/mission.yaml. The study's answer is this length multiplied by the smallest passing scale"
