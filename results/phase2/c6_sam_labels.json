@@ -1,0 +1,15 @@
+{
+ "note": "Training labels only; never used to score a model. Public data.",
+ "images": 304,
+ "animals": 3392,
+ "sam_centre_recall": 0.6199882075471698,
+ "sam_centre_recall_min": 0.98,
+ "centres_kept_from_upright_labels": true,
+ "labels_with_a_flag_using_angle_0_fallback": 484,
+ "flag_counts": {
+  "escapes_box": 467,
+  "low_fill": 49
+ },
+ "no_mask": 0,
+ "eye_check": "pending"
+}

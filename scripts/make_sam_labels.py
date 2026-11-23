@@ -57,10 +57,11 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     cfg = load_config("sam_labels")
     sp = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"]
+    folds = {f"fold{k}" for k in range(sp["n_folds"])}  # the split file also lists test flights
     images = []
     for s, problem in iter_images(default_root(), with_metadata=False):
         fold = sp["flights"].get(f"{s.farm}/{s.flight}")
-        if fold is not None and problem is None and len(s.boxes_xyxy):
+        if fold in folds and problem is None and len(s.boxes_xyxy):
             images.append((f"{s.farm}/{s.flight}/{s.path.name}", fold, s))
     images.sort(key=lambda row: row[0])
     run_dir = storage_path("runs", "labels", args.name, create=True)
