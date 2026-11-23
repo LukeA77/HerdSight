@@ -1,0 +1,65 @@
+{
+ "note": "Simulation results, one flight per case on one world, no wind, ideal stabilised camera; not field results and not an S5 pass rate.",
+ "all_pass": true,
+ "flights": {
+  "normal": {
+   "case": "complete",
+   "passes": true,
+   "checks": {
+    "landed": true,
+    "hand_off_has_every_still": true,
+    "welfare_poses_logged": true,
+    "welfare_height_held": true,
+    "record_valid": true,
+    "record_right_camp": true,
+    "record_marked_simulated": true,
+    "coverage_filled": true,
+    "plain_wording": true,
+    "all_planned_photos_taken": true
+   },
+   "welfare_floor_m": 40.0,
+   "clearance_radius_m": 30.0,
+   "lowest_height_within_clearance_m": 82.52890238229836
+  },
+  "herd": {
+   "case": "complete",
+   "passes": true,
+   "checks": {
+    "landed": true,
+    "hand_off_has_every_still": true,
+    "welfare_poses_logged": true,
+    "welfare_height_held": true,
+    "record_valid": true,
+    "record_right_camp": true,
+    "record_marked_simulated": true,
+    "coverage_filled": true,
+    "plain_wording": true,
+    "all_planned_photos_taken": true
+   },
+   "welfare_floor_m": 40.0,
+   "clearance_radius_m": 30.0,
+   "lowest_height_within_clearance_m": 82.52003927661615
+  },
+  "crash": {
+   "case": "early",
+   "passes": true,
+   "checks": {
+    "landed": true,
+    "hand_off_has_every_still": true,
+    "welfare_poses_logged": true,
+    "welfare_height_held": true,
+    "record_valid": true,
+    "record_right_camp": true,
+    "record_marked_simulated": true,
+    "coverage_filled": true,
+    "plain_wording": true,
+    "reported_as_ended_early": true,
+    "status_unknown": true,
+    "no_alert": true
+   },
+   "welfare_floor_m": 40.0,
+   "clearance_radius_m": 30.0,
+   "lowest_height_within_clearance_m": 82.51847448571377
+  }
+ }
+}

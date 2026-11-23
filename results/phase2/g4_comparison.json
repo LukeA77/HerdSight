@@ -1,0 +1,141 @@
+{
+ "candidate": "dfine_g4m",
+ "reference": "dfine_ref",
+ "n_images": 1323,
+ "n_groups": 10,
+ "images_missing_predictions": 0,
+ "operating_thresholds": {
+  "dfine_g4m": {
+   "fold0": 0.84,
+   "fold1": 0.66,
+   "fold2": 0.84
+  },
+  "dfine_ref": {
+   "fold0": 0.8,
+   "fold1": 0.8,
+   "fold2": 0.8
+  }
+ },
+ "point": {
+  "dfine_g4m": {
+   "centre_ap": 0.5542511618957173,
+   "count_mae": 0.5789871504157218,
+   "centre_recall": 0.7399764150943396,
+   "worst_group_recall": 0.22641509433962265,
+   "derval_recall": 0.22641509433962265,
+   "empty_fp_per_image": 0.25417075564278707
+  },
+  "dfine_ref": {
+   "centre_ap": 0.5445744082542296,
+   "count_mae": 0.5714285714285714,
+   "centre_recall": 0.7284787735849056,
+   "worst_group_recall": 0.14622641509433962,
+   "derval_recall": 0.14622641509433962,
+   "empty_fp_per_image": 0.2590775269872424
+  }
+ },
+ "per_group_recall": {
+  "dfine_g4m": {
+   "Derval/20230809": 0.22641509433962265,
+   "Jalogny/20230623": 0.974025974025974,
+   "Jalogny/20230627": 0.9148936170212766,
+   "Jalogny/20230726": 0.9435897435897436,
+   "Jalogny/20230803": 0.9538461538461539,
+   "Jalogny/20230915": 0.8696682464454977,
+   "Jalogny/20230926": 0.8160377358490566,
+   "Mauron/20230605": 0.6392785571142284,
+   "Mauron/20230607": 0.6970802919708029,
+   "Mauron/20231107": 0.7121212121212122
+  },
+  "dfine_ref": {
+   "Derval/20230809": 0.14622641509433962,
+   "Jalogny/20230623": 0.961038961038961,
+   "Jalogny/20230627": 0.8936170212765957,
+   "Jalogny/20230726": 0.958974358974359,
+   "Jalogny/20230803": 0.9435897435897436,
+   "Jalogny/20230915": 0.8578199052132701,
+   "Jalogny/20230926": 0.8018867924528302,
+   "Mauron/20230605": 0.6172344689378757,
+   "Mauron/20230607": 0.6605839416058394,
+   "Mauron/20231107": 0.7424242424242424
+  }
+ },
+ "paired": {
+  "centre_ap": {
+   "difference": 0.009676753641487679,
+   "ci95": [
+    -0.007399568309678067,
+    0.02921844985394819
+   ]
+  },
+  "count_mae": {
+   "difference": 0.0075585789871503994,
+   "ci95": [
+    -0.11263207352024585,
+    0.13739154161341927
+   ]
+  },
+  "centre_recall": {
+   "difference": 0.011497641509433998,
+   "ci95": [
+    -0.006997988194566153,
+    0.031511403449266555
+   ]
+  },
+  "worst_group_recall": {
+   "difference": 0.08018867924528303,
+   "ci95": [
+    0.022044088176352727,
+    0.08018867924528303
+   ]
+  },
+  "derval_recall": {
+   "difference": 0.08018867924528303,
+   "ci95": [
+    0.08018867924528303,
+    0.08018867924528303
+   ]
+  },
+  "empty_fp_per_image": {
+   "difference": -0.00490677134445533,
+   "ci95": [
+    -0.11594452385878462,
+    0.11402582319061079
+   ]
+  }
+ },
+ "selection_rule": {
+  "better_on_centre_ap_and_count_mae": false,
+  "no_loss_on_worst_group_recall": true,
+  "replaces_reference": false,
+  "close_call_repeats_needed": true
+ },
+ "H7": {
+  "derval_recall_gain": 0.08018867924528303,
+  "pooled_centre_recall_change": 0.011497641509433998,
+  "holds": false
+ },
+ "H8": {
+  "empty_fp_ratio": 0.9810606060606062,
+  "holds": false
+ },
+ "environment": {
+  "generated_utc": "2026-11-23T13:15:11+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

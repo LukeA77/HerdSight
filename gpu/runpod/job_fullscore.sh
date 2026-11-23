@@ -89,8 +89,18 @@ s.run(None, {"images": np.zeros((1, 3, 640, 640), np.float32),
 print("ONNX Runtime is running on the GPU:", s.get_providers())
 PY
 
-curl -fL --retry 8 --retry-delay 15 -C - -o "$RAW/photos.zip" "$URL" \
-    || { echo "photo download failed"; exit 3; }
+# The server can close a long transfer part-way (session c6-2, at 96%), which curl does not retry
+# by itself; each attempt resumes from what has arrived, and the MD5 below checks the result.
+GOT=1
+for ATTEMPT in $(seq 1 12); do
+    if curl -fL --retry 3 --retry-delay 15 -C - -o "$RAW/photos.zip" "$URL"; then
+        GOT=0
+        break
+    fi
+    echo "download attempt $ATTEMPT stopped; resuming"
+    sleep 20
+done
+[ "$GOT" -eq 0 ] || { echo "photo download failed"; exit 3; }
 [ "$(md5sum "$RAW/photos.zip" | cut -d' ' -f1)" = "$ZIP_MD5" ] \
     || { echo "photo archive MD5 differs"; exit 3; }
 python -m zipfile -e "$RAW/photos.zip" "$RAW/unpacked" || { echo "unzip failed"; exit 3; }

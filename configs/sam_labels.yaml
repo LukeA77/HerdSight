@@ -1,0 +1,27 @@
+# Oriented-box labels from the Segment Anything Model (Phase 2, step C6). Settings are fixed before
+# any label is made. The acceptance thresholds are in the frozen configs/phase2.yaml.
+
+sam_model:
+  value: facebook/sam-vit-base
+  placeholder: SAM_MODEL
+  source: "Kirillov et al., Segment Anything, ICCV 2023; ViT-B, named by Phase 2 plan step C6; Apache-2.0 weights on Hugging Face"
+
+sam_revision:
+  value: 70c1a07f894ebb5b307fd9eaaee97b9dfc16068f
+  placeholder: SAM_REVISION
+  source: "Hugging Face commit of the model, read 2026-11-23"
+
+sam_crop_context:
+  value: 0.5
+  placeholder: SAM_CONTEXT
+  source: "Default of herdsight.labels.sam_obb, written before any label was made: crop padded by half the box's longer side"
+
+sam_escape_iou:
+  value: 0.6
+  placeholder: SAM_ESCAPE
+  source: "Default of herdsight.labels.sam_obb, written before any label was made: below this overlap with the upright box, the mask probably took in a neighbour or shadow"
+
+sam_min_fill:
+  value: 0.25
+  placeholder: SAM_MIN_FILL
+  source: "Default of herdsight.labels.sam_obb, written before any label was made: a mask filling less of the upright box probably missed the animal"

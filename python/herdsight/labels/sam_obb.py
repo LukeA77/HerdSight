@@ -44,6 +44,7 @@ class SamObbLabeller:
         escape_iou: float = 0.6,
         min_fill: float = 0.25,
         threads: int | None = None,
+        device: str = "cpu",
     ) -> None:
         import torch
         from transformers import SamModel, SamProcessor
@@ -52,7 +53,8 @@ class SamObbLabeller:
             torch.set_num_threads(threads)
         self._torch = torch
         self.processor = SamProcessor.from_pretrained(model_id, revision=revision)
-        self.model = SamModel.from_pretrained(model_id, revision=revision).eval()
+        self.device = device
+        self.model = SamModel.from_pretrained(model_id, revision=revision).to(device).eval()
         self.context, self.escape_iou, self.min_fill = context, escape_iou, min_fill
 
     def label(self, image: Image.Image, box_xyxy: NDArray[np.float64]) -> ObbLabel:
@@ -64,10 +66,12 @@ class SamObbLabeller:
         crop = image.crop((cx0, cy0, cx1, cy1)).convert("RGB")
         prompt = [[[x0 - cx0, y0 - cy0, x1 - cx0, y1 - cy0]]]
         with torch.inference_mode():
-            inputs = self.processor(crop, input_boxes=prompt, return_tensors="pt")
+            inputs = self.processor(crop, input_boxes=prompt, return_tensors="pt").to(self.device)
             out = self.model(**inputs, multimask_output=True)
         masks = self.processor.image_processor.post_process_masks(
-            out.pred_masks, inputs["original_sizes"], inputs["reshaped_input_sizes"]
+            out.pred_masks.cpu(),
+            inputs["original_sizes"].cpu(),
+            inputs["reshaped_input_sizes"].cpu(),
         )[0][0]  # (3, H, W) for the one box
         scores = out.iou_scores[0, 0].cpu().numpy()
         k = int(np.argmax(scores))

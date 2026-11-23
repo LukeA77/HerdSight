@@ -6,7 +6,8 @@ One line per frame: sensor, wall-clock receive time, simulation time and each la
 pixels. Frames arrive late when rendering falls behind, so their receive time must not be used to
 pair them with stills. `clock` lines (10 per second) record the simulation time at a wall-clock
 time; they convert a still's wall-clock trigger time to simulation time, and frames are then
-paired by simulation time. Simulation only.
+paired by simulation time. `pose` lines hold the true drone and camera positions and `herd`
+lines (once a second) every animal's true position, for the welfare check. Simulation only.
 """
 
 from __future__ import annotations
@@ -27,6 +28,7 @@ from gz.transport13 import Node
 
 TOPICS = {"visible": "/survey_bbox_visible", "full": "/survey_bbox_full"}
 CLOCK_PERIOD_S = 0.1
+HERD_PERIOD_S = 1.0
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -75,9 +77,26 @@ def main(argv: list[str] | None = None) -> int:
                 fh.flush()
 
         last_pose = {"wall_s": 0.0}
+        last_herd = {"wall_s": 0.0}
 
         def on_poses(msg: Pose_V) -> None:
             now = time.time()
+            sim_s = msg.header.stamp.sec + msg.header.stamp.nsec * 1e-9
+            if now - last_herd["wall_s"] >= HERD_PERIOD_S:
+                animals = [
+                    (int(p.name.split("_")[1]), p.position.x, p.position.y)
+                    for p in msg.pose
+                    if p.name.startswith("animal_")
+                ]
+                if animals:
+                    last_herd["wall_s"] = now
+                    xy = [[x, y] for _, x, y in sorted(animals)]
+                    with lock:
+                        fh.write(
+                            json.dumps({"sensor": "herd", "wall_s": now, "sim_s": sim_s, "xy": xy})
+                            + "\n"
+                        )
+                        fh.flush()
             if now - last_pose["wall_s"] < CLOCK_PERIOD_S:
                 return
             found = {
@@ -91,7 +110,7 @@ def main(argv: list[str] | None = None) -> int:
             row = {
                 "sensor": "pose",
                 "wall_s": now,
-                "sim_s": msg.header.stamp.sec + msg.header.stamp.nsec * 1e-9,
+                "sim_s": sim_s,
                 "drone": found["x500_0"],
                 "camera": found["survey_camera"],
             }

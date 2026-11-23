@@ -1,0 +1,131 @@
+{
+ "note": "Public-data results, not field results. Leave-one-farm-out models use the reference recipe and were trained on a different GPU type from the reference (D-35).",
+ "n_images": 1323,
+ "images_missing_predictions": 0,
+ "operating_thresholds_lofo": {
+  "Derval": 0.62,
+  "Jalogny": 0.45,
+  "Mauron": 0.72
+ },
+ "operating_thresholds_reference": {
+  "fold0": 0.8,
+  "fold1": 0.8,
+  "fold2": 0.8
+ },
+ "by_farm": {
+  "Derval": {
+   "images": 124,
+   "animals": 212,
+   "farm_date_groups": 1,
+   "leave_one_farm_out": {
+    "centre_ap": 0.107465731581927,
+    "count_mae": 1.0564516129032258,
+    "centre_recall": 0.20754716981132076,
+    "empty_fp_per_image": 0.0
+   },
+   "official_cross_validation": {
+    "centre_ap": 0.07684154387461516,
+    "count_mae": 1.0,
+    "centre_recall": 0.14622641509433962,
+    "empty_fp_per_image": 0.0
+   }
+  },
+  "Jalogny": {
+   "images": 476,
+   "animals": 1407,
+   "farm_date_groups": 6,
+   "leave_one_farm_out": {
+    "centre_ap": 0.5684785342004999,
+    "count_mae": 1.1134453781512605,
+    "centre_recall": 0.7235252309879175,
+    "empty_fp_per_image": 1.008595988538682
+   },
+   "official_cross_validation": {
+    "centre_ap": 0.757749139213937,
+    "count_mae": 0.45588235294117646,
+    "centre_recall": 0.8749111584932481,
+    "empty_fp_per_image": 0.32664756446991405
+   }
+  },
+  "Mauron": {
+   "images": 723,
+   "animals": 1773,
+   "farm_date_groups": 3,
+   "leave_one_farm_out": {
+    "centre_ap": 0.29352630156199083,
+    "count_mae": 1.0940525587828493,
+    "centre_recall": 0.45910885504794136,
+    "empty_fp_per_image": 0.20442930153321975
+   },
+   "official_cross_validation": {
+    "centre_ap": 0.3962171008203147,
+    "count_mae": 0.573997233748271,
+    "centre_recall": 0.6818950930626058,
+    "empty_fp_per_image": 0.2555366269165247
+   }
+  }
+ },
+ "pooled": {
+  "leave_one_farm_out": {
+   "centre_ap": 0.3973011457826834,
+   "count_mae": 1.0975056689342404,
+   "centre_recall": 0.5530660377358491,
+   "empty_fp_per_image": 0.4631992149165849
+  },
+  "official_cross_validation": {
+   "centre_ap": 0.5445744082542296,
+   "count_mae": 0.5714285714285714,
+   "centre_recall": 0.7284787735849056,
+   "empty_fp_per_image": 0.2590775269872424
+  }
+ },
+ "paired_lofo_minus_official": {
+  "centre_ap": {
+   "difference": -0.14727326247154626,
+   "ci95": [
+    -0.20446259334891886,
+    -0.08907635690661168
+   ]
+  },
+  "count_mae": {
+   "difference": 0.526077097505669,
+   "ci95": [
+    0.2783334198752065,
+    0.783170823681517
+   ]
+  },
+  "centre_recall": {
+   "difference": -0.1754127358490566,
+   "ci95": [
+    -0.24954699109595244,
+    -0.09764541259744584
+   ]
+  },
+  "empty_fp_per_image": {
+   "difference": 0.2041216879293425,
+   "ci95": [
+    -0.0017360665173071612,
+    0.5896112295276094
+   ]
+  }
+ },
+ "environment": {
+  "generated_utc": "2026-11-23T13:21:23+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

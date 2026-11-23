@@ -40,7 +40,13 @@ RENDER_DELAY_S = 0.1
 
 def read_frames(path: Path) -> dict[str, list[dict[str, Any]]]:
     """Rows of bbox.jsonl by sensor; a line cut short when the flight stopped is skipped."""
-    out: dict[str, list[dict[str, Any]]] = {"visible": [], "full": [], "clock": [], "pose": []}
+    out: dict[str, list[dict[str, Any]]] = {
+        "visible": [],
+        "full": [],
+        "clock": [],
+        "pose": [],
+        "herd": [],
+    }
     with path.open(encoding="utf-8") as fh:
         for line in fh:
             try:
