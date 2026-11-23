@@ -1,0 +1,361 @@
+{
+ "detector": "dfine_ref",
+ "splits_sha256": "c99fb03b8f02b222300f128084b4f68f28ecd6beb6e49c7baed1eca66dcc89ed",
+ "per_fold_threshold": {
+  "fold0": 0.8,
+  "fold1": 0.8,
+  "fold2": 0.8
+ },
+ "verified": {
+  "flights": 20,
+  "naive_mean_abs_relative_error": 2.4794778094841754,
+  "geotag_mean_abs_relative_error": 0.4034075289540814,
+  "registration_mean_abs_relative_error": 0.2672768227048429,
+  "h6_flights_with_overlap": 18,
+  "h6_naive_over_20pct_on_every_overlapping_flight": false,
+  "h6_naive_relative_error_min": 0.19642857142857142
+ },
+ "unverified": null,
+ "flights": {
+  "Derval/DJI_202308091442_012": {
+   "fold": "fold1",
+   "overlapping_pairs": 121,
+   "truth": 27,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 50,
+    "geotag": 15,
+    "registration": 15
+   },
+   "relative_error": {
+    "naive": 0.8518518518518519,
+    "geotag": -0.4444444444444444,
+    "registration": -0.4444444444444444
+   }
+  },
+  "Derval/DJI_202308091507_014": {
+   "fold": "fold1",
+   "overlapping_pairs": 54,
+   "truth": 31,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 42,
+    "geotag": 11,
+    "registration": 13
+   },
+   "relative_error": {
+    "naive": 0.3548387096774194,
+    "geotag": -0.6451612903225806,
+    "registration": -0.5806451612903226
+   }
+  },
+  "Jalogny/DJI_202306231103_031": {
+   "fold": "fold0",
+   "overlapping_pairs": 9,
+   "truth": 59,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 76,
+    "geotag": 62,
+    "registration": 60
+   },
+   "relative_error": {
+    "naive": 0.288135593220339,
+    "geotag": 0.05084745762711865,
+    "registration": 0.01694915254237288
+   }
+  },
+  "Jalogny/DJI_202306271323_032": {
+   "fold": "fold1",
+   "overlapping_pairs": 12,
+   "truth": 65,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 99,
+    "geotag": 79,
+    "registration": 82
+   },
+   "relative_error": {
+    "naive": 0.5230769230769231,
+    "geotag": 0.2153846153846154,
+    "registration": 0.26153846153846155
+   }
+  },
+  "Jalogny/DJI_202307260838_039": {
+   "fold": "fold0",
+   "overlapping_pairs": 23,
+   "truth": 98,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 201,
+    "geotag": 121,
+    "registration": 116
+   },
+   "relative_error": {
+    "naive": 1.0510204081632653,
+    "geotag": 0.23469387755102042,
+    "registration": 0.1836734693877551
+   }
+  },
+  "Jalogny/DJI_202308031317_042": {
+   "fold": "fold1",
+   "overlapping_pairs": 29,
+   "truth": 120,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 195,
+    "geotag": 159,
+    "registration": 159
+   },
+   "relative_error": {
+    "naive": 0.625,
+    "geotag": 0.325,
+    "registration": 0.325
+   }
+  },
+  "Jalogny/DJI_202309151045_055": {
+   "fold": "fold2",
+   "overlapping_pairs": 13,
+   "truth": 158,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 201,
+    "geotag": 164,
+    "registration": 179
+   },
+   "relative_error": {
+    "naive": 0.2721518987341772,
+    "geotag": 0.0379746835443038,
+    "registration": 0.13291139240506328
+   }
+  },
+  "Jalogny/DJI_202309151045_056": {
+   "fold": "fold2",
+   "overlapping_pairs": 11,
+   "truth": 168,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 201,
+    "geotag": 159,
+    "registration": 180
+   },
+   "relative_error": {
+    "naive": 0.19642857142857142,
+    "geotag": -0.05357142857142857,
+    "registration": 0.07142857142857142
+   }
+  },
+  "Jalogny/DJI_202309261339_058": {
+   "fold": "fold1",
+   "overlapping_pairs": 11,
+   "truth": 126,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 198,
+    "geotag": 154,
+    "registration": 136
+   },
+   "relative_error": {
+    "naive": 0.5714285714285714,
+    "geotag": 0.2222222222222222,
+    "registration": 0.07936507936507936
+   }
+  },
+  "Jalogny/DJI_202309261339_059": {
+   "fold": "fold1",
+   "overlapping_pairs": 8,
+   "truth": 135,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 203,
+    "geotag": 164,
+    "registration": 153
+   },
+   "relative_error": {
+    "naive": 0.5037037037037037,
+    "geotag": 0.21481481481481482,
+    "registration": 0.13333333333333333
+   }
+  },
+  "Mauron/DJI_202306051814_022": {
+   "fold": "fold0",
+   "overlapping_pairs": 2,
+   "truth": 53,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 69,
+    "geotag": 62,
+    "registration": 50
+   },
+   "relative_error": {
+    "naive": 0.3018867924528302,
+    "geotag": 0.16981132075471697,
+    "registration": -0.05660377358490566
+   }
+  },
+  "Mauron/DJI_202306051839_025": {
+   "fold": "fold0",
+   "overlapping_pairs": 78,
+   "truth": 68,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 329,
+    "geotag": 100,
+    "registration": 77
+   },
+   "relative_error": {
+    "naive": 3.838235294117647,
+    "geotag": 0.47058823529411764,
+    "registration": 0.1323529411764706
+   }
+  },
+  "Mauron/DJI_202306071624_028": {
+   "fold": "fold2",
+   "overlapping_pairs": 358,
+   "truth": 35,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 311,
+    "geotag": 41,
+    "registration": 34
+   },
+   "relative_error": {
+    "naive": 7.885714285714286,
+    "geotag": 0.17142857142857143,
+    "registration": -0.02857142857142857
+   }
+  },
+  "Mauron/DJI_202306071703_029": {
+   "fold": "fold2",
+   "overlapping_pairs": 0,
+   "truth": 23,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 8,
+    "geotag": 8,
+    "registration": 8
+   },
+   "relative_error": {
+    "naive": -0.6521739130434783,
+    "geotag": -0.6521739130434783,
+    "registration": -0.6521739130434783
+   }
+  },
+  "Mauron/DJI_202306071745_034": {
+   "fold": "fold2",
+   "overlapping_pairs": 0,
+   "truth": 46,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 45,
+    "geotag": 45,
+    "registration": 45
+   },
+   "relative_error": {
+    "naive": -0.021739130434782608,
+    "geotag": -0.021739130434782608,
+    "registration": -0.021739130434782608
+   }
+  },
+  "Mauron/DJI_202306071745_035": {
+   "fold": "fold2",
+   "overlapping_pairs": 1,
+   "truth": 86,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 116,
+    "geotag": 87,
+    "registration": 91
+   },
+   "relative_error": {
+    "naive": 0.3488372093023256,
+    "geotag": 0.011627906976744186,
+    "registration": 0.05813953488372093
+   }
+  },
+  "Mauron/DJI_202311071416_061": {
+   "fold": "fold0",
+   "overlapping_pairs": 66,
+   "truth": 30,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 139,
+    "geotag": 22,
+    "registration": 21
+   },
+   "relative_error": {
+    "naive": 3.6333333333333333,
+    "geotag": -0.26666666666666666,
+    "registration": -0.3
+   }
+  },
+  "Mauron/DJI_202311071416_062": {
+   "fold": "fold0",
+   "overlapping_pairs": 66,
+   "truth": 12,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 153,
+    "geotag": 42,
+    "registration": 22
+   },
+   "relative_error": {
+    "naive": 11.75,
+    "geotag": 2.5,
+    "registration": 0.8333333333333334
+   }
+  },
+  "Mauron/DJI_202311071541_064": {
+   "fold": "fold0",
+   "overlapping_pairs": 105,
+   "truth": 30,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 168,
+    "geotag": 18,
+    "registration": 37
+   },
+   "relative_error": {
+    "naive": 4.6,
+    "geotag": -0.4,
+    "registration": 0.23333333333333334
+   }
+  },
+  "Mauron/DJI_202311071541_065": {
+   "fold": "fold0",
+   "overlapping_pairs": 460,
+   "truth": 25,
+   "truth_kind": "owner-verified",
+   "estimates": {
+    "naive": 308,
+    "geotag": 49,
+    "registration": 45
+   },
+   "relative_error": {
+    "naive": 11.32,
+    "geotag": 0.96,
+    "registration": 0.8
+   }
+  }
+ },
+ "flights_skipped_missing_predictions": [],
+ "environment": {
+  "generated_utc": "2026-11-23T01:53:11+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

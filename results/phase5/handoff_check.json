@@ -1,0 +1,53 @@
+{
+ "note": "Simulation results, one flight per case on one world, no wind; not field results. No animal count: detections are a later step.",
+ "flights": {
+  "normal": {
+   "outcome": "completed",
+   "photos_planned": 44,
+   "photos_taken": 44,
+   "herd_mode_stills": 0,
+   "coverage": 1.0,
+   "coverage_enough_for_alert": true
+  },
+  "herd": {
+   "outcome": "completed",
+   "photos_planned": 44,
+   "photos_taken": 44,
+   "herd_mode_stills": 1,
+   "coverage": 1.0,
+   "coverage_enough_for_alert": true
+  },
+  "crash": {
+   "outcome": "ended_early",
+   "photos_planned": 44,
+   "photos_taken": 15,
+   "herd_mode_stills": 0,
+   "coverage": 0.6022222222222222,
+   "coverage_enough_for_alert": false
+  },
+  "gnss": {
+   "outcome": "ended_early",
+   "photos_planned": 44,
+   "photos_taken": 16,
+   "herd_mode_stills": 0,
+   "coverage": 0.6244444444444445,
+   "coverage_enough_for_alert": false
+  },
+  "link": {
+   "outcome": "ended_early",
+   "photos_planned": 44,
+   "photos_taken": 18,
+   "herd_mode_stills": 0,
+   "coverage": 0.6688888888888889,
+   "coverage_enough_for_alert": false
+  },
+  "geofence": {
+   "outcome": "ended_early",
+   "photos_planned": 44,
+   "photos_taken": 5,
+   "herd_mode_stills": 0,
+   "coverage": 0.29,
+   "coverage_enough_for_alert": false
+  }
+ }
+}

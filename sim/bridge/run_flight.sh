@@ -21,7 +21,8 @@ OUT=${OUT:-/out}
 # offboard_mission_node (D-41) or mission_node (custom mode)
 MISSION_NODE=${MISSION_NODE:-offboard_mission_node}
 # failure and herd-mode checks, after 15 stills: INJECT=herd (a herd is reported), INJECT=crash
-# (the mission node is killed) or INJECT=gnss (the GPS fix is removed); none by default
+# (the mission node is killed), INJECT=gnss (the GPS fix is removed) or INJECT=link (the ground
+# station stops); none by default. Geofence: run with PX4_PARAM_GF_ACTION and GF_MAX_HOR_DIST.
 INJECT=${INJECT:-none}
 mkdir -p "$OUT"
 
@@ -55,11 +56,28 @@ $P/px4-param set NAV_DLL_ACT 0
 $P/px4-param set NAV_RCL_ACT 0
 # if the offboard setpoints stop, PX4 returns to launch (D-41)
 $P/px4-param set COM_OBL_RC_ACT 3
+# act on a failsafe at once: the default 5 s delay is for a pilot, and no pilot is assumed here
+$P/px4-param set COM_FAIL_ACT_T 0
 # PX4 caps the mission's requested speed at its cruise speed (MPC_XY_CRUISE, default 5 m/s), so
 # the cruise speed is set to the plan's survey speed
 SPEED=$(python3 -c "import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))['speed_m_s'])" "$OUT/plan.yaml")
 $P/px4-param set MPC_XY_CRUISE "$SPEED"
 
+if [ "$INJECT" = link ]; then  # a ground station that sends heartbeats until the link is cut
+  $P/px4-param set NAV_DLL_ACT 2
+  $P/px4-param set COM_DL_LOSS_T 10
+  python3 -c "
+import time
+from pymavlink import mavutil
+m = mavutil.mavlink_connection('udpout:127.0.0.1:18570', source_system=255)
+while True:
+    m.mav.heartbeat_send(mavutil.mavlink.MAV_TYPE_GCS, mavutil.mavlink.MAV_AUTOPILOT_INVALID, 0, 0, 0)
+    time.sleep(0.5)
+" &
+  GCS_PID=$!
+  pids+=($GCS_PID)
+  sleep 3
+fi
 python3 /repo/sim/bridge/herd_bridge.py --state "$OUT/herd_state.pkl" --seed "$SEED" \
   > "$OUT/herd_bridge.log" 2>&1 &
 pids+=($!)
@@ -81,6 +99,8 @@ while [ $SECONDS -lt $end ]; do
       ros2 topic pub --once herdsight/herd_found herdsight_msgs/msg/HerdFound         "{centre: {x: 120.0, y: 0.0, z: 0.0}, extent_m: 20.0, animals_estimate: 20}" > /dev/null
     elif [ "$INJECT" = gnss ]; then
       $P/px4-param set SIM_GPS_USED 0
+    elif [ "$INJECT" = link ]; then
+      kill "$GCS_PID"
     else
       pkill -9 -f "$MISSION_NODE"
     fi

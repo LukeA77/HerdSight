@@ -1,0 +1,12 @@
+{
+ "kind": "link",
+ "note": "Simulation result, one flight on one world, no wind; not a field result.",
+ "return_started_s": 107.44,
+ "lowest_height_until_back_over_launch_m": 80.04891967773438,
+ "largest_distance_from_launch_m": 279.01751708984375,
+ "touchdown_distance_from_launch_m": 0.06310318410396576,
+ "final_height_m": -0.013001182116568089,
+ "link_lost_s": 97.428,
+ "seconds_from_link_loss_to_return": 10.012,
+ "passes": true
+}

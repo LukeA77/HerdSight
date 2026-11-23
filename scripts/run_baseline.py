@@ -5,6 +5,11 @@ Usage:
   python scripts/run_baseline.py --detector dfine --fold fold0 --onnx <fold0 last.onnx>
   python scripts/run_baseline.py --detector dfine --onboard --fold fold0 --onnx <onboard fold0>
   python scripts/run_baseline.py --detector dfine --fold fold0 --onnx <model> --name dfine_g2
+  python scripts/run_baseline.py --detector dfine --fold all --farm Derval --onnx <model> \
+      --name dfine_g6ref_Derval
+
+--farm with --fold all predicts every cross-validation image of one farm, for a leave-one-farm-out
+model that was trained without that farm (D-33).
 
 Predictions go to $HERDSIGHT_STORAGE/runs/baselines/<detector>/<fold>.jsonl, one line per image
 (boxes in full-image pixels, scores). A run that stops part-way resumes where it left off.
@@ -50,7 +55,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--name", default=None, help="runs/baselines subfolder (default: the detector's name)"
     )
+    ap.add_argument("--gpu", action="store_true", help="D-FINE on CUDA; stops if it is unavailable")
+    ap.add_argument("--farm", default=None, help="only this farm (leave-one-farm-out models)")
     args = ap.parse_args(argv)
+    if args.farm and (args.detector != "dfine" or args.fold != "all" or args.onboard):
+        ap.error("--farm applies to D-FINE tile models with --fold all")
     cfg = load_config("baselines")
     overlap = int(cfg.require("tile_overlap_px"))
     long_side = None
@@ -63,13 +72,14 @@ def main(argv: list[str] | None = None) -> int:
     sp = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"]
     folds = [f"fold{k}" for k in range(sp["n_folds"])]
     wanted = folds if args.fold == "all" else [args.fold]
-    if any(f not in folds for f in wanted) or (args.fold == "all" and args.detector != "zeroshot"):
-        ap.error(f"--fold must be one of {folds}, or 'all' for the zero-shot detector")
+    all_allowed = args.detector == "zeroshot" or args.farm
+    if any(f not in folds for f in wanted) or (args.fold == "all" and not all_allowed):
+        ap.error(f"--fold must be one of {folds}, or 'all' for the zero-shot detector or --farm")
     fold_of: dict[str, str] = {}
     images = []
     for s, problem in iter_images(default_root(), with_metadata=False):
         fold = sp["flights"].get(f"{s.farm}/{s.flight}")
-        if fold in wanted and problem is None:
+        if fold in wanted and problem is None and (not args.farm or s.farm == args.farm):
             images.append(s)
             fold_of[image_key(s)] = fold
     if args.detector == "zeroshot":
@@ -97,7 +107,9 @@ def main(argv: list[str] | None = None) -> int:
         if not args.onnx:
             ap.error("--onnx is required for the dfine detector")
         tile = int(cfg.require("dfine_tile_px"))
-        detector = DfineOnnxTileDetector(args.onnx, min_score=0.01, size=tile, threads=args.threads)
+        detector = DfineOnnxTileDetector(
+            args.onnx, min_score=0.01, size=tile, threads=args.threads, gpu=args.gpu
+        )
 
     run_dir = storage_path("runs", "baselines", run_name, create=True)
     done = set()
@@ -144,6 +156,7 @@ def main(argv: list[str] | None = None) -> int:
         "finished_utc": datetime.now(UTC).isoformat(timespec="seconds"),
         "detector": run_name,
         "fold": args.fold,
+        "farm": args.farm,
         "onboard_long_side_px": long_side,
         "n_images": len(images),
         "tile_px": tile,

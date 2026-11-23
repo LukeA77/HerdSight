@@ -31,16 +31,23 @@ class DfineOnnxTileDetector:
     """Callable tile detector: PIL tile -> (boxes in tile pixels, scores) for the cattle class."""
 
     def __init__(
-        self, onnx_path: Path | str, min_score: float, size: int = 640, threads: int = 0
+        self,
+        onnx_path: Path | str,
+        min_score: float,
+        size: int = 640,
+        threads: int = 0,
+        gpu: bool = False,
     ) -> None:
         import onnxruntime as ort
 
         opts = ort.SessionOptions()
         if threads:
             opts.intra_op_num_threads = threads
-        self.session = ort.InferenceSession(
-            str(onnx_path), sess_options=opts, providers=["CPUExecutionProvider"]
-        )
+        providers = ["CUDAExecutionProvider"] if gpu else ["CPUExecutionProvider"]
+        self.session = ort.InferenceSession(str(onnx_path), sess_options=opts, providers=providers)
+        if gpu and self.session.get_providers()[0] != "CUDAExecutionProvider":
+            # ONNX Runtime falls back to the CPU with only a warning: never do that silently
+            raise RuntimeError("GPU requested but ONNX Runtime is not using CUDA")
         self.size = size
         self.min_score = float(min_score)
 
