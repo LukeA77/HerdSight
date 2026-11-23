@@ -3,9 +3,9 @@
 `world_sdf` writes an SDF world: ground, the camp's fence, trees, fixed objects that cause false
 detections (rocks, troughs), and one model per animal. Animals are simple shapes made for this
 project (no third-party meshes): a body box and a head box sized from each animal's measured
-length, coloured from a few coat colours. Each animal carries a semantic label (cow 1, calf 2)
-for Gazebo's bounding-box camera, which tells home base in simulation which animals a still saw
-and how much of each was visible; rendered images are never scored (D-11). Coordinates: Gazebo's
+length, coloured from a few coat colours. Each animal carries its own semantic label (its index
+plus 1) for Gazebo's bounding-box camera, which tells home base in simulation which animals a still
+saw and how much of each was visible; rendered images are never scored (D-11). Coordinates: Gazebo's
 world frame is east-north-up, the same as the simulator.
 
 Animal poses are then moved during the flight by the herd model (sim/bridge), one implementation
@@ -22,7 +22,7 @@ import numpy as np
 
 from herdsight.sim.flight import World
 
-LABEL_COW, LABEL_CALF = 1, 2
+MAX_LABELLED_ANIMALS = 254  # labels are kept to 1-254, one per animal
 COATS = ((0.08, 0.07, 0.06), (0.45, 0.25, 0.12), (0.85, 0.82, 0.75), (0.30, 0.20, 0.15))
 
 
@@ -45,7 +45,7 @@ def animal_model(
     body_h = 0.45 * length
     head_l = 0.25 * length
     rgb = COATS[coat % len(COATS)]
-    label = LABEL_CALF if calf else LABEL_COW
+    label = i + 1
     return f"""    <model name="animal_{i}">
       <static>true</static>
       <pose>{x:.3f} {y:.3f} 0 0 0 {yaw:.4f}</pose>
@@ -58,6 +58,8 @@ def animal_model(
 
 
 def world_sdf(world: World, name: str = "herdsight_farm", seed: int = 0) -> str:
+    if world.herd.n > MAX_LABELLED_ANIMALS:
+        raise ValueError(f"at most {MAX_LABELLED_ANIMALS} animals can carry a label")
     rng = np.random.default_rng(seed)
     parts = []
     poly = world.camp.polygon

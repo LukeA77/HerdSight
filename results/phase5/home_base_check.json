@@ -1,0 +1,77 @@
+{
+ "note": "Simulation results, one flight per case on one world, no wind, ideal stabilised camera; not field results. Spread is over draws of the detection error model on the same flight, so it is not the error across flights or farms.",
+ "flights": {
+  "normal": {
+   "outcome": "completed",
+   "photos_planned": 44,
+   "photos_taken": 44,
+   "herd_mode_stills": 0,
+   "coverage": 1.0,
+   "true_animals": 30,
+   "draws": 50,
+   "count_median": 31.0,
+   "count_min": 27,
+   "count_max": 39,
+   "mean_absolute_relative_error": 0.082,
+   "status_counts": {
+    "ok": 50
+   },
+   "draws_with_an_alert": 0,
+   "all_records_marked_simulated": true,
+   "checks": {
+    "stills_without_a_camera_frame": 0,
+    "animals_in_view_of_a_still": 30,
+    "animals_in_world": 30,
+    "camera_to_drone_gap_median_m": 0.09641519973277902
+   }
+  },
+  "herd": {
+   "outcome": "completed",
+   "photos_planned": 44,
+   "photos_taken": 44,
+   "herd_mode_stills": 1,
+   "coverage": 1.0,
+   "true_animals": 30,
+   "draws": 50,
+   "count_median": 34.0,
+   "count_min": 28,
+   "count_max": 41,
+   "mean_absolute_relative_error": 0.15,
+   "status_counts": {
+    "ok": 50
+   },
+   "draws_with_an_alert": 0,
+   "all_records_marked_simulated": true,
+   "checks": {
+    "stills_without_a_camera_frame": 0,
+    "animals_in_view_of_a_still": 30,
+    "animals_in_world": 30,
+    "camera_to_drone_gap_median_m": 0.09024957085007985
+   }
+  },
+  "crash": {
+   "outcome": "ended_early",
+   "photos_planned": 44,
+   "photos_taken": 15,
+   "herd_mode_stills": 0,
+   "coverage": 0.5872222222222222,
+   "true_animals": 30,
+   "draws": 50,
+   "count_median": 12.5,
+   "count_min": 6,
+   "count_max": 17,
+   "mean_absolute_relative_error": 0.5833333333333334,
+   "status_counts": {
+    "unknown": 50
+   },
+   "draws_with_an_alert": 0,
+   "all_records_marked_simulated": true,
+   "checks": {
+    "stills_without_a_camera_frame": 0,
+    "animals_in_view_of_a_still": 15,
+    "animals_in_world": 30,
+    "camera_to_drone_gap_median_m": 0.08622825017042215
+   }
+  }
+ }
+}

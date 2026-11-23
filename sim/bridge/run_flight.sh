@@ -24,10 +24,17 @@ MISSION_NODE=${MISSION_NODE:-offboard_mission_node}
 # (the mission node is killed), INJECT=gnss (the GPS fix is removed) or INJECT=link (the ground
 # station stops); none by default. Geofence: run with PX4_PARAM_GF_ACTION and GF_MAX_HOR_DIST.
 INJECT=${INJECT:-none}
+# BBOX=1 adds the stabilised bounding-box camera, a separate model that follows the drone
+BBOX=${BBOX:-0}
 mkdir -p "$OUT"
 
 python3 /repo/sim/bridge/make_world.py --out "$OUT" --seed "$SEED" | tee "$OUT/world.txt"
 cp "$OUT/herdsight_farm.sdf" "$PX4_DIR/Tools/simulation/gz/worlds/herdsight_farm.sdf"
+
+if [ "$BBOX" = 1 ]; then
+  python3 /repo/sim/bridge/add_survey_camera.py --plan "$OUT/plan.yaml" \
+    --world "$PX4_DIR/Tools/simulation/gz/worlds/herdsight_farm.sdf" || exit 1
+fi
 
 MicroXRCEAgent udp4 -p 8888 > "$OUT/agent.log" 2>&1 &
 pids=($!)
@@ -77,6 +84,12 @@ while True:
   GCS_PID=$!
   pids+=($GCS_PID)
   sleep 3
+fi
+if [ "$BBOX" = 1 ]; then
+  python3 /repo/sim/bridge/camera_bridge.py --plan "$OUT/plan.yaml" > "$OUT/camera_bridge.log" 2>&1 &
+  pids+=($!)
+  python3 /repo/sim/bridge/record_bbox.py --out "$OUT/bbox.jsonl" > "$OUT/record_bbox.log" 2>&1 &
+  pids+=($!)
 fi
 python3 /repo/sim/bridge/herd_bridge.py --state "$OUT/herd_state.pkl" --seed "$SEED" \
   > "$OUT/herd_bridge.log" 2>&1 &

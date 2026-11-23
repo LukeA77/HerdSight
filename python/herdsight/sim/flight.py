@@ -384,13 +384,26 @@ def run_survey(
     herd_mode: bool = False,
 ) -> dict:
     """Fly, count at home base, and write the result record for the camp."""
-    rule = rule or Rule("recount", level=0.9)
     flight = fly(world, plan, rng, stop_after=stop_after, new_farm=new_farm, herd_mode=herd_mode)
     res = count_flight(flight, world.median_adult_m, rng)
+    record = flight_record(flight, res, world.camp.name, expected, farm_id, rule)
+    return {"record": record, "flight": flight, "count": res, "true_count": flight.true_count}
+
+
+def flight_record(
+    flight: Flight,
+    res: dict,
+    camp: str,
+    expected: int,
+    farm_id: str = "sim",
+    rule: Rule | None = None,
+) -> dict:
+    """The result record for one counted flight, with its range from real-flight calibration."""
+    rule = rule or Rule("recount", level=0.9)
     lo, hi = real_flight_intervals(res["count"], np.random.default_rng(0))
     s = Survey(
         day=0.0,
-        camp=world.camp.name,
+        camp=camp,
         true=flight.true_count,
         count=res["count"],
         lo=lo,
@@ -400,7 +413,7 @@ def run_survey(
     short = hi[rule.level] < expected
     big = short and expected - hi[rule.level] >= rule.big
     alert = {"kind": "missing", "checks": 1, "other_camp": None} if big else None
-    record = messages.survey_record(
+    return messages.survey_record(
         s,
         farm_id=farm_id,
         expected=expected,
@@ -411,4 +424,3 @@ def run_survey(
         coverage=flight.coverage,
         recount_pending=short and not big,
     )
-    return {"record": record, "flight": flight, "count": res, "true_count": flight.true_count}

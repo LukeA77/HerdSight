@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 import numpy as np
 
 from herdsight.sim.flight import build_world
-from herdsight.sim.gazebo import LABEL_CALF, LABEL_COW, world_sdf
+from herdsight.sim.gazebo import world_sdf
 from herdsight.sim.herds import Camp
 
 
@@ -17,8 +17,7 @@ def test_world_has_every_animal_labelled_and_the_fence():
     animals = [m for m in models if m.get("name").startswith("animal_")]
     assert len(animals) == world.herd.n
     labels = [int(m.find("plugin/label").text) for m in animals]
-    assert labels.count(LABEL_CALF) == int(world.calf.sum())
-    assert labels.count(LABEL_COW) == int((~world.calf).sum())
+    assert labels == list(range(1, world.herd.n + 1))  # one label per animal
     assert sum(m.get("name").startswith("fence_") for m in models) == 4
     assert sum(m.get("name").startswith("tree_") for m in models) == len(world.trees)
     for m, (x, y) in zip(animals, world.herd.pos, strict=True):

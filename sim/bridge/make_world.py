@@ -4,7 +4,8 @@ Usage: python sim/bridge/make_world.py --out DIR [--width 250] [--height 180] [-
        [--seed N] [--profile uk]
 
 Writes DIR/herdsight_farm.sdf (python/herdsight/sim/gazebo.py), DIR/herd_state.pkl (the herd the
-world was made from, for sim/bridge/herd_bridge.py) and DIR/plan.yaml (the survey plan in PX4's
+world was made from, for sim/bridge/herd_bridge.py), DIR/world_state.pkl (animal sizes and
+fixed objects, for the count at home base) and DIR/plan.yaml (the survey plan in PX4's
 frame, python/herdsight/mission/planner.py: plan_to_dict). Simulation only.
 """
 
@@ -54,6 +55,16 @@ def main(argv: list[str] | None = None) -> int:
     (args.out / "herdsight_farm.sdf").write_text(world_sdf(world, seed=args.seed), encoding="utf-8")
     with (args.out / "herd_state.pkl").open("wb") as fh:
         pickle.dump(world.herd, fh)
+    with (args.out / "world_state.pkl").open("wb") as fh:  # for the count at home base
+        pickle.dump(
+            {
+                "length_m": world.length_m,
+                "calf": world.calf,
+                "objects": world.objects,
+                "p_view": world.det.p_view,
+            },
+            fh,
+        )
     plan = plan_survey(camp, PlannerSettings.from_config(args.profile), launch=np.zeros(2))
     (args.out / "plan.yaml").write_text(yaml.safe_dump(plan_to_dict(plan)), encoding="utf-8")
     print(
