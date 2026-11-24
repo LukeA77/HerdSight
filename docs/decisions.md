@@ -341,7 +341,7 @@ Status: proposed 2026-11-23. Two simulated flights with no wind; it needs a wind
 
 ## D-48: Upright detector counts; the angle is added per counted animal  (2026-11-24)
 Options considered: ship RTMDet-R as the oriented detector; try a second oriented family (detectron2 rotated Faster R-CNN); keep upright D-FINE for counting and predict an angle for each counted animal.
-Choice: Proposed: keep upright D-FINE for counting and detection; give each counted animal an angle from a separate step. This supersedes D-8's oriented boxes as the primary output.
+Choice: Keep upright D-FINE for counting and detection; give each counted animal an angle from a separate step. This supersedes D-8's oriented boxes as the primary output.
 Evidence / reasoning: G7's rule, written before the run, says that if the best oriented model is worse than the best upright model beyond the seed spread, the upright detector counts. RTMDet-R's centre AP was 0.218 against 0.545 (-0.326, interval -0.383 to -0.279), far beyond any seed spread, and its count error was higher (`results/phase2/g7_comparison.json`). Oriented boxes remain an output requirement for herd-mode framing and later identification.
 Easy option rejected (if any) and why: Retuning RTMDet-R until it comes closer, which the rule forbids and which would use the remaining GPU budget on the weaker family.
-Status: proposed 2026-11-24. A second oriented family is allowed by the plan because the first clearly underperformed; whether to spend budget on it is the owner's decision.
+Status: adopted 2026-11-24 (owner). A second oriented family was allowed by the plan because the first clearly underperformed; it is not being tried, and the remaining GPU budget goes to the new-farm work instead.

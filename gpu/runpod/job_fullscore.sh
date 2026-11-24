@@ -5,18 +5,25 @@
 # (scripts/phase2_compare.py). The photos come from their public record (Zenodo 11048412, CC BY
 # 4.0) and are checked against its MD5. HS_MODELS_TAG names the session holding the models and
 # HS_KINDS the model name prefixes in it (for example "g2 ref", or "g4m"). HS_LOFO_TAG, if set,
-# names a session of leave-one-farm-out models (g6ref_<farm>): each predicts only its held-out
-# farm, into runs/baselines/dfine_g6ref_<farm>.
+# names a session of leave-one-farm-out models (<prefix>_<farm>, prefix HS_LOFO_PREFIX, default
+# g6ref): each predicts only its held-out farm, into runs/baselines/dfine_<prefix>_<farm>.
+# HS_LOFO_FARMS limits which farms are predicted (default all three). HS_KINDS=none skips the
+# cross-validation models entirely (only the leave-one-farm-out models are run).
 set -uo pipefail
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 export PYTHONPATH="$REPO/python"
 export HERDSIGHT_STORAGE=/root/hs_storage
 TAG="${HS_MODELS_TAG:-g2-3}"
 KINDS="${HS_KINDS:-g2 ref}"
-FIRST_KIND="${KINDS%% *}"
+[ "$KINDS" = "none" ] && KINDS=""
 LOFO_TAG="${HS_LOFO_TAG:-}"
+LOFO_PREFIX="${HS_LOFO_PREFIX:-g6ref}"
 LOFO_MODELS=/root/hs_models_lofo
-FARMS="Derval Jalogny Mauron"
+FARMS="${HS_LOFO_FARMS:-Derval Jalogny Mauron}"
+if [ -z "$KINDS" ] && [ -z "$LOFO_TAG" ]; then
+    echo "nothing to predict: HS_KINDS is none and HS_LOFO_TAG is not set"
+    exit 2
+fi
 ZIP_MD5=c18911fb11cb58741b9cfa16516ca8cd
 RAW="$HERDSIGHT_STORAGE/datasets/raw/icaerus_grazing_cows_v2"
 MODELS=/root/hs_models
@@ -49,6 +56,7 @@ export LD_LIBRARY_PATH="${LIBS}:${LD_LIBRARY_PATH:-}"
 
 USER_REF=$(kaggle datasets list --mine --csv | tail -n +2 | head -1 | cut -d/ -f1)
 [ -n "$USER_REF" ] || { echo "Kaggle account not readable"; exit 3; }
+if [ -n "$KINDS" ]; then
 kaggle datasets download "$USER_REF/herdsight-rp-$TAG" -p "$MODELS" --unzip -q \
     || { echo "model download failed"; exit 3; }
 python - "$MODELS" $KINDS <<'PY' || exit 4
@@ -62,22 +70,25 @@ for kind in sys.argv[2:]:
             sys.exit(f"model hash differs: {d}")
 print("model hashes match:", " ".join(sys.argv[2:]))
 PY
+CHECK_ONNX="$MODELS/${KINDS%% *}_fold0/last.onnx"
+fi
 if [ -n "$LOFO_TAG" ]; then
     mkdir -p "$LOFO_MODELS"
     kaggle datasets download "$USER_REF/herdsight-rp-$LOFO_TAG" -p "$LOFO_MODELS" --unzip -q \
         || { echo "leave-one-farm-out model download failed"; exit 3; }
-    python - "$LOFO_MODELS" $FARMS <<'PY' || exit 4
+    python - "$LOFO_MODELS" "$LOFO_PREFIX" $FARMS <<'PY' || exit 4
 import hashlib, json, sys
-root = sys.argv[1]
-for farm in sys.argv[2:]:
-    d = f"{root}/g6ref_{farm}"
+root, prefix = sys.argv[1], sys.argv[2]
+for farm in sys.argv[3:]:
+    d = f"{root}/{prefix}_{farm}"
     want = json.load(open(f"{d}/run.json"))["onnx_sha256"]
     if hashlib.sha256(open(f"{d}/last.onnx", "rb").read()).hexdigest() != want:
         sys.exit(f"model hash differs: {d}")
-print("leave-one-farm-out model hashes match")
+print("leave-one-farm-out model hashes match:", prefix, " ".join(sys.argv[3:]))
 PY
+    [ -n "${CHECK_ONNX:-}" ] || CHECK_ONNX="$LOFO_MODELS/${LOFO_PREFIX}_${FARMS%% *}/last.onnx"
 fi
-python - "$MODELS/${FIRST_KIND}_fold0/last.onnx" <<'PY' || { echo "ONNX Runtime cannot use the GPU"; exit 6; }
+python - "$CHECK_ONNX" <<'PY' || { echo "ONNX Runtime cannot use the GPU"; exit 6; }
 import sys
 import numpy as np
 import onnxruntime as ort
@@ -126,20 +137,20 @@ if [ -n "$LOFO_TAG" ] && [ "$RC" -eq 0 ]; then
     for FARM in $FARMS; do
         LEFT=$((BUDGET_S - (SECONDS - T0)))
         if [ "$LEFT" -le 60 ]; then
-            echo "time budget used before g6ref_$FARM"
+            echo "time budget used before ${LOFO_PREFIX}_$FARM"
             RC=7
             break
         fi
         timeout "$LEFT" python "$REPO/scripts/run_baseline.py" --detector dfine --fold all \
-            --farm "$FARM" --onnx "$LOFO_MODELS/g6ref_$FARM/last.onnx" \
-            --name "dfine_g6ref_$FARM" --gpu || { echo "failed: g6ref_$FARM"; RC=5; break; }
-        echo "g6ref_$FARM done $(date -u +%FT%TZ)"
+            --farm "$FARM" --onnx "$LOFO_MODELS/${LOFO_PREFIX}_$FARM/last.onnx" \
+            --name "dfine_${LOFO_PREFIX}_$FARM" --gpu || { echo "failed: ${LOFO_PREFIX}_$FARM"; RC=5; break; }
+        echo "${LOFO_PREFIX}_$FARM done $(date -u +%FT%TZ)"
     done
 fi
 for FARM in $FARMS; do
-    if [ -d "$HERDSIGHT_STORAGE/runs/baselines/dfine_g6ref_$FARM" ]; then
-        cp -r "$HERDSIGHT_STORAGE/runs/baselines/dfine_g6ref_$FARM" "$OUT/predictions/"
-        cp "$REPO/results/baselines/dfine_g6ref_${FARM}_all_run.json" "$OUT/predictions/" 2>/dev/null
+    if [ -d "$HERDSIGHT_STORAGE/runs/baselines/dfine_${LOFO_PREFIX}_$FARM" ]; then
+        cp -r "$HERDSIGHT_STORAGE/runs/baselines/dfine_${LOFO_PREFIX}_$FARM" "$OUT/predictions/"
+        cp "$REPO/results/baselines/dfine_${LOFO_PREFIX}_${FARM}_all_run.json" "$OUT/predictions/" 2>/dev/null
     fi
 done
 for KIND in $KINDS; do
