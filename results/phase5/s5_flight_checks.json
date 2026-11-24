@@ -60,6 +60,63 @@
    "welfare_floor_m": 40.0,
    "clearance_radius_m": 30.0,
    "lowest_height_within_clearance_m": 82.51847448571377
+  },
+  "normal_layout2": {
+   "case": "complete",
+   "passes": true,
+   "checks": {
+    "landed": true,
+    "hand_off_has_every_still": true,
+    "welfare_poses_logged": true,
+    "welfare_height_held": true,
+    "record_valid": true,
+    "record_right_camp": true,
+    "record_marked_simulated": true,
+    "coverage_filled": true,
+    "plain_wording": true,
+    "all_planned_photos_taken": true
+   },
+   "welfare_floor_m": 40.0,
+   "clearance_radius_m": 30.0,
+   "lowest_height_within_clearance_m": 82.63838855291212
+  },
+  "moving_group_layout3": {
+   "case": "complete",
+   "passes": true,
+   "checks": {
+    "landed": true,
+    "hand_off_has_every_still": true,
+    "welfare_poses_logged": true,
+    "welfare_height_held": true,
+    "record_valid": true,
+    "record_right_camp": true,
+    "record_marked_simulated": true,
+    "coverage_filled": true,
+    "plain_wording": true,
+    "all_planned_photos_taken": true
+   },
+   "welfare_floor_m": 40.0,
+   "clearance_radius_m": 30.0,
+   "lowest_height_within_clearance_m": 82.54033462310394
+  },
+  "herd_over_real_animals": {
+   "case": "complete",
+   "passes": true,
+   "checks": {
+    "landed": true,
+    "hand_off_has_every_still": true,
+    "welfare_poses_logged": true,
+    "welfare_height_held": true,
+    "record_valid": true,
+    "record_right_camp": true,
+    "record_marked_simulated": true,
+    "coverage_filled": true,
+    "plain_wording": true,
+    "all_planned_photos_taken": true
+   },
+   "welfare_floor_m": 40.0,
+   "clearance_radius_m": 30.0,
+   "lowest_height_within_clearance_m": 40.565429120459655
   }
  }
 }

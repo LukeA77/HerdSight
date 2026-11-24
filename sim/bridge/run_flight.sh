@@ -23,6 +23,8 @@ MISSION_NODE=${MISSION_NODE:-offboard_mission_node}
 # failure and herd-mode checks, after 15 stills: INJECT=herd (a herd is reported), INJECT=crash
 # (the mission node is killed), INJECT=gnss (the GPS fix is removed) or INJECT=link (the ground
 # station stops); none by default. Geofence: run with PX4_PARAM_GF_ACTION and GF_MAX_HOR_DIST.
+# HERD_X and HERD_Y (metres, ENU) place the reported herd; set them to the real herd to test the
+# welfare limit close to the animals.
 INJECT=${INJECT:-none}
 # BBOX=1 adds the stabilised bounding-box camera, a separate model that follows the drone
 BBOX=${BBOX:-0}
@@ -109,7 +111,7 @@ while [ $SECONDS -lt $end ]; do
   grep -q "Disarmed by landing" "$OUT/px4.log" && break
   if [ "$INJECT" != none ] && [ "$(grep -c . "$OUT/stills.csv")" -ge 15 ]; then
     if [ "$INJECT" = herd ]; then
-      ros2 topic pub --once herdsight/herd_found herdsight_msgs/msg/HerdFound         "{centre: {x: 120.0, y: 0.0, z: 0.0}, extent_m: 20.0, animals_estimate: 20}" > /dev/null
+      ros2 topic pub --once herdsight/herd_found herdsight_msgs/msg/HerdFound         "{centre: {x: ${HERD_X:-120.0}, y: ${HERD_Y:-0.0}, z: 0.0}, extent_m: 20.0, animals_estimate: 20}" > /dev/null
     elif [ "$INJECT" = gnss ]; then
       $P/px4-param set SIM_GPS_USED 0
     elif [ "$INJECT" = link ]; then

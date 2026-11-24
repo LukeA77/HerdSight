@@ -3,11 +3,12 @@
 `count_run` reads a run of sim/bridge/run_flight.sh with BBOX=1 and works from the stills actually
 taken. For each still it finds the bounding-box camera frame nearest in simulation time; frames can
 arrive late, so their receive time is never used for pairing. The frame says which animals were in
-view, where, and how much of each was visible. The detection error model fitted on real images
+view and how much of each was visible. Each animal's ground position is its true logged position
+at the trigger (D-45): the simulated camera moves in small jumps, so positions worked back from its
+pixels carry an error a real camera does not have. The detection error model fitted on real images
 then decides which are detected, adds position noise and adds false detections from fixed objects;
-a geotag error is drawn from real flights. A frame can be up to 0.1 s from the trigger (0.8 m at
-survey speed), which a real camera's image and geotag are not, so each frame is placed from the
-camera's own position at that frame plus PX4's estimate error at the trigger.
+a geotag error is drawn from real flights. Without a herd log, positions come from the frame, placed
+from the camera's position at that frame plus PX4's estimate error at the trigger.
 The count, range and result record come from the same code as the flight model without ROS.
 
 The camera is an ideal stabilised camera, so the tilt of the drone is not in these results.
@@ -114,6 +115,16 @@ def _view(
     )
 
 
+def _true_ground(
+    times: NDArray[np.float64], xy: NDArray[np.float64], ids: NDArray, t: float
+) -> NDArray[np.float64]:
+    """True positions of animals `ids` at time `t`, from the logged herd (T, animals, 2)."""
+    out = np.zeros((len(ids), 2))
+    for i, animal in enumerate(ids):
+        out[i] = np.interp(t, times, xy[:, animal, 0]), np.interp(t, times, xy[:, animal, 1])
+    return out
+
+
 def count_run(
     run: Path,
     expected: int | None = None,
@@ -143,6 +154,10 @@ def count_run(
     t_pose = np.array([r["sim_s"] for r in frames["pose"]])
     xy_drone = np.array([r["drone"][:2] for r in frames["pose"]], float).reshape(-1, 2)
     xy_camera = np.array([r["camera"][:2] for r in frames["pose"]], float).reshape(-1, 2)
+    t_herd = np.array([r["sim_s"] for r in frames["herd"]], float)
+    xy_herd = None
+    if len(t_herd) >= 2 and all(len(r["xy"]) == n_animals for r in frames["herd"]):
+        xy_herd = np.array([r["xy"] for r in frames["herd"]], float)
 
     def at(xy: NDArray, t: float) -> NDArray:
         return np.array([np.interp(t, t_pose, xy[:, 0]), np.interp(t, t_pose, xy[:, 1])])
@@ -179,9 +194,12 @@ def count_run(
         gsd = base_gsd * scale
         ids, share, boxes = _view(vis, _nearest(frames["full"], t_full, t_sim), n_animals)
         animals_in_view |= set(ids.tolist())
-        ground = np.array([box_to_ground(b.tolist(), centre, heading, fp) for b in boxes]).reshape(
-            -1, 2
-        )
+        if xy_herd is not None:
+            ground = _true_ground(t_herd, xy_herd, ids, t_sim)
+        else:
+            ground = np.array(
+                [box_to_ground(b.tolist(), centre, heading, fp) for b in boxes]
+            ).reshape(-1, 2)
         lengths = length_m[ids]
         if len(ids):
             dist = np.linalg.norm(ground[:, None] - ground[None], axis=2)

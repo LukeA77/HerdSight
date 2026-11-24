@@ -17,7 +17,8 @@ from pyulog import ULog
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
 
-CAMP_EAST_M, CAMP_NORTH_HALF_M = (20.0, 270.0), 90.0  # make_world.py defaults
+# make_world.py defaults since D-46; flights before it used a camp from 20 to 270 m east
+CAMP_EAST_M, CAMP_NORTH_HALF_M = (35.0, 285.0), 90.0
 
 
 def main() -> int:

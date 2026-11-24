@@ -1,0 +1,10 @@
+{
+ "kind": "geofence",
+ "note": "Simulation result, one flight on one world, no wind; not a field result.",
+ "return_started_s": 61.808,
+ "lowest_height_until_back_over_launch_m": 80.03450775146484,
+ "largest_distance_from_launch_m": 160.1826629638672,
+ "touchdown_distance_from_launch_m": 0.024447457864880562,
+ "final_height_m": -0.013001905754208565,
+ "passes": true
+}

@@ -1,0 +1,12 @@
+{
+ "note": "Sorted by file name, date and GPS only. No image is used until the owner has screened it.",
+ "source": "ICAERUS raw cattle images, Zenodo 10.5281/zenodo.8234156, CC BY 4.0",
+ "exclusion_radius_km": 2.0,
+ "images": 884,
+ "outcomes": {
+  "already_labelled": 815,
+  "same_group": 69
+ },
+ "new_places_or_days_needing_screening": 0,
+ "new_days_by_farm": {}
+}

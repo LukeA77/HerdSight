@@ -29,6 +29,7 @@ from gz.transport13 import Node
 TOPICS = {"visible": "/survey_bbox_visible", "full": "/survey_bbox_full"}
 CLOCK_PERIOD_S = 0.1
 HERD_PERIOD_S = 1.0
+POSE_PERIOD_S = 0.02  # the camera moves about 0.16 m between samples at survey speed
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -97,7 +98,7 @@ def main(argv: list[str] | None = None) -> int:
                             + "\n"
                         )
                         fh.flush()
-            if now - last_pose["wall_s"] < CLOCK_PERIOD_S:
+            if now - last_pose["wall_s"] < POSE_PERIOD_S:
                 return
             found = {
                 p.name: [p.position.x, p.position.y, p.position.z]

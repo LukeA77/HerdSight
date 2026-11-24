@@ -317,3 +317,31 @@ Choice: The G2 recipe under leave-one-farm-out, 72 epochs per held-out farm, wit
 Evidence / reasoning: G6 showed that the largest accuracy loss is on an unseen farm (recall 0.553 against 0.728). G2 was built for changes in appearance but was only scored under the official cross-validation, where most farms are partly seen, so its effect on a new farm is unmeasured. The G3 hard negatives were mined by models trained on farms that would now be held out, so using them here would leak information about the held-out farm.
 Easy option rejected (if any) and why: Reusing the hard negatives to match G2 exactly, which would make the unseen-farm result look better than it is.
 Status: proposed 2026-11-23. The selection rule in `configs/phase2.yaml` is unchanged; this run does not by itself replace the reference model.
+
+## D-45: Use each animal's true logged position when counting Gazebo flights  (2026-11-23)
+Options considered: keep working positions back from the bounding-box pixels and the camera pose; log the camera pose more often; retune the frame delay; use each animal's true logged position, keeping the sensor's record of which animals were visible and the measured detection, position and geotag error models.
+Choice: The true logged position at the trigger (`python/herdsight/sim/home_base.py`). Visibility still comes from the Gazebo sensor.
+Evidence / reasoning: The simulated camera moves in steps of up to about 0.5 m, so the same animal landed about 0.8 m apart between photos against a matching limit of about 1 m, and was counted twice. Logging the pose five times as often did not remove this, and the best frame delay still left many split animals. Real position error is already added by the error models, so the camera's stepping was an extra error of the test harness.
+Easy option rejected (if any) and why: Tuning the frame delay on the flights being checked, which would fit the harness to the answer.
+Status: adopted 2026-11-23. Gazebo counts before this date are superseded. A flight in which part of the herd walks about 105 m still overcounts (median 50 for 30 animals), because moving animals are seen twice; this is a real limitation and is not corrected.
+
+## D-46: Take off at least the clearance radius outside the camp fence  (2026-11-23)
+Options considered: check animal positions before take-off; ask the pilot to confirm the area is clear; require a launch point at least the clearance radius (30 m) outside the fence.
+Choice: The launch point must be at least 30 m from the camp fence (`python/herdsight/mission/launch.py`). The simulated world now places the fence 35 m from take-off, and `sim/bridge/make_world.py` refuses a closer launch.
+Evidence / reasoning: With the fence 20 m from take-off, one simulated flight climbed with an animal 27.7 m away, breaking the rule that the drone only climbs or descends with no animal within 30 m. Animals move, so a check at take-off would not hold for the landing. The same layout re-flown with the new rule passed; the nearest animal to the take-off point was 41 m at the start and 49 m at the end.
+Easy option rejected (if any) and why: Reducing the clearance radius so the flight passes, which would weaken the welfare limit to fit the result.
+Status: adopted 2026-11-23. The rule relies on the fence holding the animals. Other recorded flights used the earlier 20 m layout and passed the welfare check; the geofence and GPS-loss measurements also used it and need repeating on the new layout.
+
+## D-47: Trigger the geofence return 5 m before the 150 m fence  (2026-11-23)
+Options considered: raise the 165 m limit; use PX4's experimental predictive geofence; trigger the return at 145 m, keeping the 165 m limit unchanged.
+Choice: Proposed: set `GF_MAX_HOR_DIST` to 145 m.
+Evidence / reasoning: With the trigger at 150 m the drone reached 165.37 m on the current layout, 0.37 m past the limit (`results/phase5/geofence_check_new_layout.json`). With the trigger at 145 m it reached 160.11 m and 160.18 m on two farm layouts and returned safely (`results/phase5/geofence_check_trigger_145m.json`, `geofence_check_trigger_145m_layout2.json`).
+Easy option rejected (if any) and why: Raising the limit to 166 m, which would change the test to fit the result.
+Status: proposed 2026-11-23. Two simulated flights with no wind; it needs a wind test before adoption.
+
+## D-48: Upright detector counts; the angle is added per counted animal  (2026-11-24)
+Options considered: ship RTMDet-R as the oriented detector; try a second oriented family (detectron2 rotated Faster R-CNN); keep upright D-FINE for counting and predict an angle for each counted animal.
+Choice: Proposed: keep upright D-FINE for counting and detection; give each counted animal an angle from a separate step. This supersedes D-8's oriented boxes as the primary output.
+Evidence / reasoning: G7's rule, written before the run, says that if the best oriented model is worse than the best upright model beyond the seed spread, the upright detector counts. RTMDet-R's centre AP was 0.218 against 0.545 (-0.326, interval -0.383 to -0.279), far beyond any seed spread, and its count error was higher (`results/phase2/g7_comparison.json`). Oriented boxes remain an output requirement for herd-mode framing and later identification.
+Easy option rejected (if any) and why: Retuning RTMDet-R until it comes closer, which the rule forbids and which would use the remaining GPU budget on the weaker family.
+Status: proposed 2026-11-24. A second oriented family is allowed by the plan because the first clearly underperformed; whether to spend budget on it is the owner's decision.

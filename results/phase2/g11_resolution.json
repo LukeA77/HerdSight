@@ -1,0 +1,78 @@
+{
+ "note": "Adult cattle, public data, simulated degradation. A lower bound for calves, which are not in the data. Not a field result.",
+ "model": "dfine_g2",
+ "n_images": 1323,
+ "n_groups": 10,
+ "native": {
+  "centre_recall": 0.714622641509434,
+  "count_mae": 0.5328798185941043,
+  "empty_fp_per_image": 0.23846908734052993
+ },
+ "max_recall_loss": 0.05,
+ "by_scale": [
+  {
+   "scale": 1.0,
+   "reference_animal_px": 35.4,
+   "centre_recall": 0.7081367924528302,
+   "count_mae": 0.5366591080876795,
+   "empty_fp_per_image": 0.21884200196270853,
+   "recall_change": -0.006485849056603765,
+   "recall_change_ci95": [
+    -0.01407631050172978,
+    0.00288128525189564
+   ]
+  },
+  {
+   "scale": 0.75,
+   "reference_animal_px": 26.549999999999997,
+   "centre_recall": 0.6468160377358491,
+   "count_mae": 0.6288737717309146,
+   "empty_fp_per_image": 0.15014720314033367,
+   "recall_change": -0.06780660377358494,
+   "recall_change_ci95": [
+    -0.11562262775486061,
+    -0.014472379336541436
+   ]
+  },
+  {
+   "scale": 0.5,
+   "reference_animal_px": 17.7,
+   "centre_recall": 0.4805424528301887,
+   "count_mae": 0.9720332577475435,
+   "empty_fp_per_image": 0.08635917566241413,
+   "recall_change": -0.2340801886792453,
+   "recall_change_ci95": [
+    -0.36553028129211773,
+    -0.09800387580445234
+   ]
+  },
+  {
+   "scale": 0.35,
+   "reference_animal_px": 12.389999999999999,
+   "centre_recall": 0.3007075471698113,
+   "count_mae": 1.4761904761904763,
+   "empty_fp_per_image": 0.06771344455348381,
+   "recall_change": -0.4139150943396227,
+   "recall_change_ci95": [
+    -0.5468153514477044,
+    -0.2656344644356672
+   ]
+  },
+  {
+   "scale": 0.25,
+   "reference_animal_px": 8.85,
+   "centre_recall": 0.13590801886792453,
+   "count_mae": 1.9803476946334089,
+   "empty_fp_per_image": 0.03729146221786065,
+   "recall_change": -0.5787146226415094,
+   "recall_change_ci95": [
+    -0.6807030548068285,
+    -0.46444765732287907
+   ]
+  }
+ ],
+ "smallest_passing_scale": 1.0,
+ "smallest_passing_px": 35.4,
+ "smallest_passing_scale_interval_rule": 1.0,
+ "smallest_passing_px_interval_rule": 35.4
+}

@@ -9,10 +9,10 @@
    "coverage": 1.0,
    "true_animals": 30,
    "draws": 50,
-   "count_median": 31.0,
-   "count_min": 27,
-   "count_max": 39,
-   "mean_absolute_relative_error": 0.082,
+   "count_median": 28.0,
+   "count_min": 24,
+   "count_max": 30,
+   "mean_absolute_relative_error": 0.07933333333333333,
    "status_counts": {
     "ok": 50
    },
@@ -22,7 +22,7 @@
     "stills_without_a_camera_frame": 0,
     "animals_in_view_of_a_still": 30,
     "animals_in_world": 30,
-    "camera_to_drone_gap_median_m": 0.09641519973277902
+    "camera_to_drone_gap_median_m": 0.09799369408689193
    }
   },
   "herd": {
@@ -33,10 +33,10 @@
    "coverage": 1.0,
    "true_animals": 30,
    "draws": 50,
-   "count_median": 34.0,
-   "count_min": 28,
-   "count_max": 41,
-   "mean_absolute_relative_error": 0.15,
+   "count_median": 28.0,
+   "count_min": 24,
+   "count_max": 31,
+   "mean_absolute_relative_error": 0.07933333333333333,
    "status_counts": {
     "ok": 50
    },
@@ -46,7 +46,7 @@
     "stills_without_a_camera_frame": 0,
     "animals_in_view_of_a_still": 30,
     "animals_in_world": 30,
-    "camera_to_drone_gap_median_m": 0.09024957085007985
+    "camera_to_drone_gap_median_m": 0.08035894238772734
    }
   },
   "crash": {
@@ -57,10 +57,10 @@
    "coverage": 0.5872222222222222,
    "true_animals": 30,
    "draws": 50,
-   "count_median": 12.5,
-   "count_min": 6,
-   "count_max": 17,
-   "mean_absolute_relative_error": 0.5833333333333334,
+   "count_median": 12.0,
+   "count_min": 8,
+   "count_max": 16,
+   "mean_absolute_relative_error": 0.5946666666666667,
    "status_counts": {
     "unknown": 50
    },
@@ -68,9 +68,81 @@
    "all_records_marked_simulated": true,
    "checks": {
     "stills_without_a_camera_frame": 0,
-    "animals_in_view_of_a_still": 15,
+    "animals_in_view_of_a_still": 14,
     "animals_in_world": 30,
-    "camera_to_drone_gap_median_m": 0.08622825017042215
+    "camera_to_drone_gap_median_m": 0.06825036536956536
+   }
+  },
+  "normal_layout2": {
+   "outcome": "completed",
+   "photos_planned": 44,
+   "photos_taken": 44,
+   "herd_mode_stills": 0,
+   "coverage": 1.0,
+   "true_animals": 30,
+   "draws": 50,
+   "count_median": 33.0,
+   "count_min": 27,
+   "count_max": 34,
+   "mean_absolute_relative_error": 0.08466666666666667,
+   "status_counts": {
+    "ok": 50
+   },
+   "draws_with_an_alert": 0,
+   "all_records_marked_simulated": true,
+   "checks": {
+    "stills_without_a_camera_frame": 0,
+    "animals_in_view_of_a_still": 30,
+    "animals_in_world": 30,
+    "camera_to_drone_gap_median_m": 0.09620506053992432
+   }
+  },
+  "moving_group_layout3": {
+   "outcome": "completed",
+   "photos_planned": 44,
+   "photos_taken": 44,
+   "herd_mode_stills": 0,
+   "coverage": 1.0,
+   "true_animals": 30,
+   "draws": 50,
+   "count_median": 50.0,
+   "count_min": 36,
+   "count_max": 58,
+   "mean_absolute_relative_error": 0.6226666666666667,
+   "status_counts": {
+    "ok": 50
+   },
+   "draws_with_an_alert": 0,
+   "all_records_marked_simulated": true,
+   "checks": {
+    "stills_without_a_camera_frame": 0,
+    "animals_in_view_of_a_still": 30,
+    "animals_in_world": 30,
+    "camera_to_drone_gap_median_m": 0.1655585617510975
+   }
+  },
+  "herd_over_real_animals": {
+   "outcome": "completed",
+   "photos_planned": 44,
+   "photos_taken": 44,
+   "herd_mode_stills": 1,
+   "coverage": 1.0,
+   "true_animals": 30,
+   "draws": 50,
+   "count_median": 28.0,
+   "count_min": 21,
+   "count_max": 31,
+   "mean_absolute_relative_error": 0.092,
+   "status_counts": {
+    "ok": 50
+   },
+   "draws_with_an_alert": 0,
+   "all_records_marked_simulated": true,
+   "checks": {
+    "stills_without_a_camera_frame": 0,
+    "animals_in_view_of_a_still": 30,
+    "animals_in_world": 30,
+    "camera_to_drone_gap_median_m": 0.07623063100846297
    }
   }
  }

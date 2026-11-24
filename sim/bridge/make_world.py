@@ -21,10 +21,12 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
 
+from herdsight.mission.launch import require_launch_clearance  # noqa: E402
 from herdsight.mission.planner import PlannerSettings, plan_survey, plan_to_dict  # noqa: E402
 from herdsight.sim.flight import build_world  # noqa: E402
 from herdsight.sim.gazebo import world_sdf  # noqa: E402
 from herdsight.sim.herds import Camp  # noqa: E402
+from herdsight.utils.config import load_config  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -35,22 +37,32 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--animals", type=int, default=30)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--profile", default="uk")
+    ap.add_argument("--launch-offset", type=float, default=35.0, help="metres to the camp fence")
+    ap.add_argument(
+        "--allow-close-launch",
+        action="store_true",
+        help="only to reproduce flights made before D-46, with --launch-offset 20",
+    )
     args = ap.parse_args(argv)
     args.out.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(args.seed)
-    # the camp starts beside the take-off point at the origin
+    # the take-off point is at the origin, further from the fence than the clearance radius (D-46)
+    east = args.launch_offset
     camp = Camp(
         np.array(
             [
-                [20, -args.height / 2],
-                [20 + args.width, -args.height / 2],
-                [20 + args.width, args.height / 2],
-                [20, args.height / 2],
+                [east, -args.height / 2],
+                [east + args.width, -args.height / 2],
+                [east + args.width, args.height / 2],
+                [east, args.height / 2],
             ],
             float,
         ),
         "Sim camp",
     )
+    if not args.allow_close_launch:
+        clearance = float(load_config("mission").require("animal_clearance_radius_m"))
+        require_launch_clearance(camp, np.zeros(2), clearance)
     world = build_world(camp, args.animals, rng)
     (args.out / "herdsight_farm.sdf").write_text(world_sdf(world, seed=args.seed), encoding="utf-8")
     with (args.out / "herd_state.pkl").open("wb") as fh:

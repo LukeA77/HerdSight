@@ -11,7 +11,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 from herdsight.herd import messages
 from herdsight.sim.herds import Camp
-from herdsight.sim.home_base import IMAGE_PX, box_to_ground, count_run, read_frames
+from herdsight.sim.home_base import IMAGE_PX, _true_ground, box_to_ground, count_run, read_frames
 
 VALIDATOR = Draft202012Validator(
     json.loads(messages.SCHEMA.read_text(encoding="utf-8")), format_checker=FormatChecker()
@@ -112,3 +112,10 @@ def test_interrupted_flight_cannot_raise_an_alert(tmp_path):
     out = count_run(_run(tmp_path, taken=(0,)), expected=40)
     assert out["bundle"]["outcome"] == "ended_early"
     assert out["record"]["status"] == "unknown" and out["record"]["alerts"] == []
+
+
+def test_true_ground_interpolates_each_animal_between_log_times():
+    times = np.array([0.0, 2.0])
+    xy = np.array([[[0.0, 0.0], [10.0, 10.0]], [[2.0, 4.0], [10.0, 10.0]]])
+    out = _true_ground(times, xy, np.array([1, 0]), 1.0)
+    assert out == pytest.approx(np.array([[10.0, 10.0], [1.0, 2.0]]))
