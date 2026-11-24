@@ -1,6 +1,8 @@
 """Phase 2 step G6: how the reference recipe does on a farm its model never saw (D-33).
 
 Usage: python scripts/phase2_lofo.py --prefix dfine_g6ref --reference dfine_ref --out <json>
+       python scripts/phase2_lofo.py --prefix dfine_g6g2 --reference dfine_g6ref --reference-lofo
+           --out <json>
 
 Each farm's images are predicted by a model trained only on the other two farms
 (runs/baselines/<prefix>_<farm>/). Its operating threshold is the count-error minimiser on the
@@ -8,6 +10,9 @@ other two farms' leave-one-farm-out predictions, so nothing from the held-out fa
 reference column is the same recipe under the official cross-validation, where a farm's other
 survey days can be in training (Derval has only one day, so it is unseen in both). The drop from
 the reference to leave-one-farm-out shows how much the official figure depends on knowing the farm.
+With --reference-lofo the reference is instead another set of leave-one-farm-out models
+(<reference>_<farm>), with its thresholds set the same way, so two recipes are compared on farms
+neither model saw (step 3 of the selection rule).
 Differences carry 95% intervals from paired resampling of farm-date groups. Public-data results,
 not field results.
 """
@@ -33,13 +38,18 @@ from phase2_compare import measures, stats  # noqa: E402
 from score_baseline import best_threshold, cross_fit, load_preds  # noqa: E402
 
 FARMS = ("Derval", "Jalogny", "Mauron")
-REPORTED = ("centre_ap", "count_mae", "centre_recall", "empty_fp_per_image")
+REPORTED = ("centre_ap", "count_mae", "centre_recall", "worst_group_recall", "empty_fp_per_image")
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--prefix", default="dfine_g6ref")
     ap.add_argument("--reference", default="dfine_ref")
+    ap.add_argument(
+        "--reference-lofo",
+        action="store_true",
+        help="the reference is a set of leave-one-farm-out models (<reference>_<farm>)",
+    )
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args(argv)
     chk = subprocess.run(
@@ -68,28 +78,51 @@ def main(argv: list[str] | None = None) -> int:
             truth[k], fold_of[k], farm_of[k] = s.boxes_xyxy, fold, s.farm
             group_of[k] = FlightStats(s.farm, s.flight, 0, 0).group
     runs = storage_path("runs", "baselines")
-    lofo: dict = {}
-    for farm in FARMS:
-        for f in folds:
-            part = load_preds(runs / f"{args.prefix}_{farm}" / f"{f}.jsonl")
-            wrong = [k for k in part if farm_of.get(k, farm) != farm]
-            if wrong:
-                raise SystemExit(f"{farm}: predictions for another farm, e.g. {wrong[0]}")
-            lofo |= part
+
+    def load_lofo(prefix: str) -> dict:
+        out: dict = {}
+        for farm in FARMS:
+            for f in folds:
+                part = load_preds(runs / f"{prefix}_{farm}" / f"{f}.jsonl")
+                wrong = [k for k in part if farm_of.get(k, farm) != farm]
+                if wrong:
+                    raise SystemExit(f"{farm}: predictions for another farm, e.g. {wrong[0]}")
+                out |= part
+        return out
+
+    lofo = load_lofo(args.prefix)
     reference: dict = {}
-    for f in folds:
-        reference |= load_preds(runs / args.reference / f"{f}.jsonl")
+    if args.reference_lofo:
+        reference = load_lofo(args.reference)
+    else:
+        for f in folds:
+            reference |= load_preds(runs / args.reference / f"{f}.jsonl")
     keys = sorted(k for k in truth if k in lofo and k in reference)
     missing = len(truth) - len(keys)
     start, stop, step = ev.require("operating_threshold_grid")
     grid = np.round(np.arange(start, stop + 1e-9, step), 4)
-    fits_lofo = {}
-    for farm in FARMS:
-        other = [k for k in keys if farm_of[k] != farm]
-        fits_lofo[farm] = {"threshold": float(best_threshold(other, lofo, truth, grid)[0])}
+
+    def fit_lofo(preds: dict) -> dict:
+        fits = {}
+        for farm in FARMS:
+            other = [k for k in keys if farm_of[k] != farm]
+            fits[farm] = {"threshold": float(best_threshold(other, preds, truth, grid)[0])}
+        return fits
+
+    fits_lofo = fit_lofo(lofo)
     m_lofo = measures(keys, lofo, truth, farm_of, fits_lofo, kappa, sim)
-    fits_ref = cross_fit(keys, fold_of, reference, truth, grid)
-    m_ref = measures(keys, reference, truth, fold_of, fits_ref, kappa, sim)
+    if args.reference_lofo:
+        fits_ref = fit_lofo(reference)
+        m_ref = measures(keys, reference, truth, farm_of, fits_ref, kappa, sim)
+    else:
+        fits_ref = cross_fit(keys, fold_of, reference, truth, grid)
+        m_ref = measures(keys, reference, truth, fold_of, fits_ref, kappa, sim)
+    ref_name = (
+        "reference_leave_one_farm_out" if args.reference_lofo else "official_cross_validation"
+    )
+    paired_name = (
+        "paired_candidate_minus_reference" if args.reference_lofo else "paired_lofo_minus_official"
+    )
     groups = np.array([group_of[k] for k in keys])
     derval = np.array([farm_of[k] == "Derval" for k in keys])
     empty = np.array([truth[k].shape[0] == 0 for k in keys])
@@ -106,7 +139,7 @@ def main(argv: list[str] | None = None) -> int:
             "animals": int(sum(truth[k].shape[0] for k in keys if farm_of[k] == farm)),
             "farm_date_groups": int(len(np.unique(groups[farms == farm]))),
             "leave_one_farm_out": row(m_lofo, np.flatnonzero(farms == farm)),
-            "official_cross_validation": row(m_ref, np.flatnonzero(farms == farm)),
+            ref_name: row(m_ref, np.flatnonzero(farms == farm)),
         }
         for farm in FARMS
     }
@@ -128,22 +161,31 @@ def main(argv: list[str] | None = None) -> int:
             "difference": pooled_lofo[n] - pooled_ref[n],
             "ci95": [float(np.percentile(v, 2.5)), float(np.percentile(v, 97.5))],
         }
+    note = (
+        "Public-data results, not field results. Leave-one-farm-out models use the reference "
+        "recipe and were trained on a different GPU type from the reference (D-35)."
+    )
+    if args.reference_lofo:
+        note = (
+            "Public-data results, not field results. Both columns are leave-one-farm-out: each "
+            "farm is predicted by a model that never saw it, and each threshold is set on the "
+            "other two farms."
+        )
     result = {
-        "note": (
-            "Public-data results, not field results. Leave-one-farm-out models use the reference "
-            "recipe and were trained on a different GPU type from the reference (D-35)."
-        ),
+        "note": note,
+        "candidate": args.prefix,
+        "reference": args.reference,
         "n_images": len(keys),
         "images_missing_predictions": missing,
         "operating_thresholds_lofo": {f: v["threshold"] for f, v in fits_lofo.items()},
         "operating_thresholds_reference": {f: v["threshold"] for f, v in fits_ref.items()},
         "by_farm": by_farm,
-        "pooled": {"leave_one_farm_out": pooled_lofo, "official_cross_validation": pooled_ref},
-        "paired_lofo_minus_official": paired,
+        "pooled": {"leave_one_farm_out": pooled_lofo, ref_name: pooled_ref},
+        paired_name: paired,
         "environment": env_report(),
     }
     args.out.write_text(json.dumps(result, indent=1) + "\n", encoding="utf-8")
-    print(json.dumps({k: result[k] for k in ("by_farm", "pooled", "paired_lofo_minus_official")}))
+    print(json.dumps({k: result[k] for k in ("by_farm", "pooled", paired_name)}))
     return 0
 
 

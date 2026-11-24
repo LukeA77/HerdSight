@@ -1,0 +1,69 @@
+{
+ "note": "Simulation results, one flight per case on one world, steady wind with an assumed drag area of 0.06 m^2 (sim/bridge/add_wind.py); not field results.",
+ "trigger_m": 145,
+ "limit_m": 165,
+ "cases": {
+  "no_wind": {
+   "run": "s5_geofence145_launch35",
+   "wind_east_mps": 0.0,
+   "wind_north_mps": 0.0,
+   "wind_speed_mps": 0.0,
+   "return_started_s": 61.74,
+   "lowest_height_until_back_over_launch_m": 80.02030944824219,
+   "largest_distance_from_launch_m": 160.1060791015625,
+   "touchdown_distance_from_launch_m": 0.06452985852956772,
+   "final_height_m": -0.013000364415347576,
+   "passes": true,
+   "median_lean_holding_deg": 0.26540815830230713
+  },
+  "A_5mps_east": {
+   "run": "geofence145_wind5_east",
+   "wind_east_mps": 5.0,
+   "wind_north_mps": 0.0,
+   "wind_speed_mps": 5.0,
+   "return_started_s": 62.132,
+   "lowest_height_until_back_over_launch_m": 80.00303649902344,
+   "largest_distance_from_launch_m": 159.61253356933594,
+   "touchdown_distance_from_launch_m": 0.037938449531793594,
+   "final_height_m": -0.013000193983316422,
+   "passes": true,
+   "median_lean_holding_deg": 3.477782964706421,
+   "expected_lean_deg": 2.5976392802397643,
+   "wind_acted": true,
+   "counts_and_passes": true
+  },
+  "B_10mps_east": {
+   "run": "geofence145_wind10_east",
+   "wind_east_mps": 10.0,
+   "wind_north_mps": 0.0,
+   "wind_speed_mps": 10.0,
+   "return_started_s": 61.588,
+   "lowest_height_until_back_over_launch_m": 80.0496597290039,
+   "largest_distance_from_launch_m": 159.80770874023438,
+   "touchdown_distance_from_launch_m": 0.07117273658514023,
+   "final_height_m": -0.013000226579606533,
+   "passes": true,
+   "median_lean_holding_deg": 6.995057106018066,
+   "expected_lean_deg": 10.285744447820479,
+   "wind_acted": true,
+   "counts_and_passes": true
+  },
+  "C_10mps_outward_116deg": {
+   "run": "geofence145_wind10_outward",
+   "wind_east_mps": 8.988,
+   "wind_north_mps": -4.384,
+   "wind_speed_mps": 10.0,
+   "return_started_s": 61.608,
+   "lowest_height_until_back_over_launch_m": 80.0321273803711,
+   "largest_distance_from_launch_m": 158.9830780029297,
+   "touchdown_distance_from_launch_m": 0.06390872597694397,
+   "final_height_m": -0.013000326231122017,
+   "passes": true,
+   "median_lean_holding_deg": 6.884343147277832,
+   "expected_lean_deg": 10.285744447820479,
+   "wind_acted": true,
+   "counts_and_passes": true
+  }
+ },
+ "d47_adopted_by_rule": true
+}

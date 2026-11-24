@@ -58,6 +58,61 @@ def fit_count_conformal(
     return {float(lv): conformal_quantile(scores, lv) for lv in levels}
 
 
+def predicted_band(pred: ArrayLike, edges: Sequence[float]) -> np.ndarray:
+    """Index of the count band each predicted count falls in. `edges` are the lower edges (for
+    example 0, 1, 5, 20: bands 0, 1-4, 5-19 and 20+). Bands use the predicted count, because the
+    true count is unknown when an interval is given."""
+    p = np.asarray(pred, float).reshape(-1)
+    e = np.asarray(edges, float)
+    if e.size == 0 or e[0] > 0 or np.any(np.diff(e) <= 0):
+        raise ValueError("edges must rise and start at or below 0")
+    return np.searchsorted(e, np.maximum(p, 0.0), side="right") - 1
+
+
+def fit_band_conformal(
+    pred: ArrayLike,
+    true: ArrayLike,
+    edges: Sequence[float],
+    levels: Sequence[float] = DEFAULT_LEVELS,
+) -> dict[str, object]:
+    """Band-wise ("Mondrian") conformal quantiles: one q_p per band of the predicted count, so
+    coverage holds within each band rather than only on average. A band with too few calibration
+    images for a level has q = inf (an unbounded interval), which is reported, not hidden."""
+    p = np.asarray(pred, float).reshape(-1)
+    t = np.asarray(true, float).reshape(-1)
+    if p.shape != t.shape or p.size == 0:
+        raise ValueError("need matching, non-empty calibration counts")
+    band = predicted_band(p, edges)
+    scores = np.abs(t - p) / _scale(p)
+    bands = []
+    for b in range(len(edges)):
+        m = band == b
+        bands.append(
+            {
+                "n": int(m.sum()),
+                "q": {
+                    float(lv): (conformal_quantile(scores[m], lv) if m.any() else math.inf)
+                    for lv in levels
+                },
+            }
+        )
+    return {"edges": [float(x) for x in edges], "bands": bands}
+
+
+def band_interval(
+    pred: ArrayLike, model: dict[str, object], level: float
+) -> tuple[np.ndarray, np.ndarray]:
+    """Whole-animal interval [lo, hi] using each prediction's own band quantile."""
+    p = np.asarray(pred, float).reshape(-1)
+    band = predicted_band(p, model["edges"])  # type: ignore[arg-type]
+    lo, hi = np.zeros_like(p), np.full_like(p, np.inf)
+    for b, row in enumerate(model["bands"]):  # type: ignore[arg-type]
+        m = band == b
+        if m.any():
+            lo[m], hi[m] = count_interval(p[m], row["q"][float(level)])
+    return lo, hi
+
+
 def count_interval(pred: ArrayLike, q: float) -> tuple[np.ndarray, np.ndarray]:
     """Whole-animal interval [lo, hi] around predicted counts for quantile q (inf -> unbounded)."""
     p = np.asarray(pred, float).reshape(-1)

@@ -37,6 +37,17 @@ if [ "$BBOX" = 1 ]; then
   python3 /repo/sim/bridge/add_survey_camera.py --plan "$OUT/plan.yaml" \
     --world "$PX4_DIR/Tools/simulation/gz/worlds/herdsight_farm.sdf" || exit 1
 fi
+# WIND_E and WIND_N (m/s, where the air moves to) add a steady wind that pushes the drone body;
+# WIND_CDA sets the assumed drag area (sim/bridge/add_wind.py). No wind by default.
+WIND_E=${WIND_E:-0}
+WIND_N=${WIND_N:-0}
+if [ "$WIND_E" != 0 ] || [ "$WIND_N" != 0 ]; then
+  python3 /repo/sim/bridge/add_wind.py \
+    --world "$PX4_DIR/Tools/simulation/gz/worlds/herdsight_farm.sdf" \
+    --model "$PX4_DIR/Tools/simulation/gz/models/x500_base/model.sdf" \
+    --east "$WIND_E" --north "$WIND_N" ${WIND_CDA:+--cda "$WIND_CDA"} | tee "$OUT/wind.txt" \
+    || exit 1
+fi
 
 MicroXRCEAgent udp4 -p 8888 > "$OUT/agent.log" 2>&1 &
 pids=($!)

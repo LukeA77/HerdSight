@@ -21,6 +21,13 @@ from pyulog import ULog
 NAV_RTL = 5
 
 
+def wind_note(run: str) -> str:
+    """The result's note, naming the wind if the flight had one (run_flight.sh writes wind.txt)."""
+    w = Path(run) / "wind.txt"
+    wind = w.read_text().strip() if w.exists() else "no wind"
+    return f"Simulation result, one flight on one world, {wind}; not a field result."
+
+
 def main() -> int:
     kind, run, dest = sys.argv[1:4]
     log = ULog(sorted(glob.glob(f"{run}/px4_ulog/*/*.ulg"))[-1])
@@ -43,7 +50,7 @@ def main() -> int:
     landed = float(dist[-1]) <= 30 and float(h[-1]) < 1
     out = {
         "kind": kind,
-        "note": "Simulation result, one flight on one world, no wind; not a field result.",
+        "note": wind_note(run),
         "return_started_s": rtl_t,
         "lowest_height_until_back_over_launch_m": lowest,
         "largest_distance_from_launch_m": float(dist.max()),

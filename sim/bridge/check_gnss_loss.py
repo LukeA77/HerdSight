@@ -21,6 +21,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
 CAMP_EAST_M, CAMP_NORTH_HALF_M = (35.0, 285.0), 90.0
 
 
+def wind_note(run: str) -> str:
+    """The result's note, naming the wind if the flight had one (run_flight.sh writes wind.txt)."""
+    w = Path(run) / "wind.txt"
+    wind = w.read_text().strip() if w.exists() else "no wind"
+    return f"Simulation result, one flight on one world, {wind}; not a field result."
+
+
 def main() -> int:
     run, dest = sys.argv[1:3]
     log = ULog(sorted(glob.glob(f"{run}/px4_ulog/*/*.ulg"))[-1])
@@ -51,7 +58,7 @@ def main() -> int:
         0.0,
     )
     out = {
-        "note": "Simulation result, one flight on one world, no wind; not a field result.",
+        "note": wind_note(run),
         "seconds_from_gnss_loss_to_px4_failsafe": blind_t - lost_t,
         "px4_action": "blind descent (no position estimate)",
         "seconds_from_gnss_loss_to_touchdown": float(t[-1] - lost_t),

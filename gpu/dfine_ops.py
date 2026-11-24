@@ -16,8 +16,17 @@ mostly dark cattle, often in tree shade and packed together; nadir images have n
   HsCopyPaste       paste 2-6 labelled animals from another training tile as a touching group
   HsScaleJitter     mild scale change (0.8-1.25) at the same tile size
 Photometric ops change pixel values only; geometric ops move boxes with the pixels.
+
+Dark-coat, tight-group and outline training (after G2 failed on unseen farms, D-49) adds two ops
+that use each training animal's oval (gpu/tile_ovals.py, copied beside this file as hs_ovals.py;
+the per-tile file comes from gpu/make_tile_ovals.py). They run first, before any op moves pixels:
+  HsCoatDarken      darken and part-desaturate some animals' coats inside their ovals only
+  HsOutlinePaste    paste 2-6 animals cut along their ovals (no background patch) as a touching
+                    group, some with darkened coats
 """
 
+import json
+import os
 import random
 
 import numpy as np
@@ -29,6 +38,7 @@ import torch.nn as nn
 
 from ...core import register
 from .._misc import convert_to_tv_tensor
+from .hs_ovals import darken_coats, oval_alpha, oval_box
 
 
 def _split(inputs):
@@ -316,4 +326,145 @@ class HsScaleJitter(nn.Module):
             target = _update(target, boxes, w, h, keep=keep)
             if "area" in target and len(boxes):
                 target["area"] = torch.tensor([(b[2] - b[0]) * (b[3] - b[1]) for b in boxes])
+        return (out, target, *rest)
+
+
+_OVAL_FILES = {}
+
+
+def _ovals_file(path):
+    if path not in _OVAL_FILES:
+        with open(path) as f:
+            _OVAL_FILES[path] = json.load(f)
+    return _OVAL_FILES[path]
+
+
+def _tile_name(dataset, target):
+    """The tile's file name relative to the image folder, the key of the oval file."""
+    path = target.get("image_path") if isinstance(target, dict) else None
+    folder = getattr(dataset, "img_folder", None)
+    if not path or not folder:
+        return None
+    return os.path.relpath(path, folder).replace(os.sep, "/")
+
+
+@register()
+class HsCoatDarken(nn.Module):
+    """Darken the coats of some animals inside their ovals; the background is untouched, so the
+    model learns dark animals rather than dark photos (unlike HsDarkenShade)."""
+
+    def __init__(self, ovals_file, p=0.5, animal_p=0.7, factor=(0.25, 0.6), desaturate=(0.3, 0.8)):
+        super().__init__()
+        self.ovals_file, self.p, self.animal_p = ovals_file, p, animal_p
+        self.factor, self.desaturate = tuple(factor), tuple(desaturate)
+
+    def forward(self, *inputs):
+        img, target, rest = _split(inputs)
+        dataset = rest[0] if rest else None
+        if random.random() >= self.p or dataset is None:
+            return (img, target, *rest)
+        ovals = _ovals_file(self.ovals_file).get(_tile_name(dataset, target))
+        pick = [o for o in (ovals or []) if random.random() < self.animal_p]
+        if not pick:
+            return (img, target, *rest)
+        arr = darken_coats(
+            np.asarray(img.convert("RGB")),
+            pick,
+            random.uniform(*self.factor),
+            random.uniform(*self.desaturate),
+        )
+        return (PIL.Image.fromarray(arr), target, *rest)
+
+
+@register()
+class HsOutlinePaste(nn.Module):
+    """Paste 2-6 animals from another training tile, cut along their ovals, as a touching group.
+
+    Unlike HsCopyPaste no background patch comes with them (G2's soft-edged box cut-outs carried
+    grass and shadow, a likely source of its extra false animals on empty photos, D-49). Each
+    pasted animal's box is its oval's box. Steps between neighbours are a fraction of the body
+    size, so the group touches as a packed herd. A paste is skipped if it would cover more than
+    max_cover of an animal already there. Donors come from the same training set only.
+    """
+
+    def __init__(
+        self,
+        ovals_file,
+        p=0.5,
+        animals=(2, 6),
+        spacing=(0.45, 0.8),
+        max_cover=0.3,
+        tries=10,
+        dark_p=0.5,
+        factor=(0.25, 0.6),
+        desaturate=(0.3, 0.8),
+    ):
+        super().__init__()
+        self.ovals_file, self.p, self.animals, self.spacing = (
+            ovals_file,
+            p,
+            tuple(animals),
+            tuple(spacing),
+        )
+        self.max_cover, self.tries, self.dark_p = max_cover, tries, dark_p
+        self.factor, self.desaturate = tuple(factor), tuple(desaturate)
+
+    def forward(self, *inputs):
+        img, target, rest = _split(inputs)
+        dataset = rest[0] if rest else None
+        if random.random() >= self.p or not hasattr(dataset, "load_item"):
+            return (img, target, *rest)
+        table = _ovals_file(self.ovals_file)
+        donor = None
+        for _ in range(self.tries):
+            dimg, dt = dataset.load_item(random.randrange(len(dataset)))
+            dovals = table.get(_tile_name(dataset, dt))
+            if dovals:
+                donor = (np.asarray(dimg.convert("RGB")), dovals, int(dt["labels"][0]))
+                break
+        if donor is None:
+            return (img, target, *rest)
+        darr, dovals, label = donor
+        if random.random() < self.dark_p:
+            darr = darken_coats(
+                darr, dovals, random.uniform(*self.factor), random.uniform(*self.desaturate)
+            )
+        dh, dw = darr.shape[:2]
+        base = np.asarray(img.convert("RGB")).astype(np.float32)
+        h, w = base.shape[:2]
+        boxes = _boxes_list(target)
+        pick = random.sample(range(len(dovals)), min(len(dovals), random.randint(*self.animals)))
+        x, y = random.uniform(0.2, 0.8) * w, random.uniform(0.2, 0.8) * h
+        added = 0
+        for i in pick:
+            oval = dovals[i]
+            bx0, by0, bx1, by1 = oval_box(oval)
+            bw, bh = bx1 - bx0, by1 - by0
+            if bw < 4 or bh < 4 or bx0 < 0 or by0 < 0 or bx1 > dw or by1 > dh:
+                continue  # only whole animals are pasted
+            dx, dy = x - oval[0], y - oval[1]  # move the oval centre to (x, y)
+            nb = [bx0 + dx, by0 + dy, bx1 + dx, by1 + dy]
+            step = (bw + bh) / 2 * random.uniform(*self.spacing)
+            ang = random.uniform(0, 2 * np.pi)
+            x, y = x + step * np.cos(ang), y + step * np.sin(ang)
+            if nb[0] < 0 or nb[1] < 0 or nb[2] > w or nb[3] > h:
+                continue
+            if any(_cover(nb, b) > self.max_cover for b in boxes):
+                continue
+            sx0, sy0 = int(np.floor(bx0)), int(np.floor(by0))
+            sx1, sy1 = int(np.ceil(bx1)), int(np.ceil(by1))
+            tx0, ty0 = sx0 + int(round(dx)), sy0 + int(round(dy))
+            if tx0 < 0 or ty0 < 0 or tx0 + (sx1 - sx0) > w or ty0 + (sy1 - sy0) > h:
+                continue
+            local = [oval[0] - sx0, oval[1] - sy0, oval[2], oval[3], oval[4]]
+            a = oval_alpha(sx1 - sx0, sy1 - sy0, local)[..., None]
+            patch = darr[sy0:sy1, sx0:sx1].astype(np.float32)
+            region = base[ty0 : ty0 + (sy1 - sy0), tx0 : tx0 + (sx1 - sx0)]
+            region[:] = region * (1 - a) + patch * a
+            boxes.append([float(v) for v in nb])
+            added += 1
+        if not added:
+            return (img, target, *rest)
+        out = PIL.Image.fromarray(np.clip(base, 0, 255).astype(np.uint8))
+        target = _update(target, boxes, w, h, extra_labels=[label] * added)
         return (out, target, *rest)

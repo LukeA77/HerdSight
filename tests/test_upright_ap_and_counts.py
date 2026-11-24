@@ -6,11 +6,14 @@ import numpy as np
 import pytest
 
 from herdsight.evaluate.counts import (
+    band_interval,
     count_errors,
     count_interval,
     coverage,
     coverage_by_band,
+    fit_band_conformal,
     fit_count_conformal,
+    predicted_band,
 )
 from herdsight.evaluate.upright_ap import ImageBoxes, obb_to_upright, upright_ap
 
@@ -92,3 +95,42 @@ def test_iou_matrix_and_matching():
     np.testing.assert_allclose(m[:, 0], [1.0, 50 / 150])
     assert match_iou([[0, 0, 10, 10], [5, 0, 15, 10]], [[0, 0, 10, 10]]) == 1
     assert match_iou(np.zeros((0, 4)), [[0, 0, 1, 1]]) == 0
+
+
+def test_predicted_band_uses_lower_edges():
+    b = predicted_band([0, 0.4, 1, 4.9, 5, 19, 20, 300, -1], (0, 1, 5, 20))
+    assert b.tolist() == [0, 0, 1, 1, 2, 2, 3, 3, 0]
+    with pytest.raises(ValueError):
+        predicted_band([1], (1, 5))  # must cover zero
+    with pytest.raises(ValueError):
+        predicted_band([1], (0, 5, 5))
+
+
+def test_band_conformal_covers_each_band_where_pooled_does_not():
+    # synthetic: large herds are miscounted far more (in sqrt(c + 1) units) than small ones
+    rng = np.random.default_rng(3)
+
+    def make(n):
+        c = np.concatenate([rng.integers(0, 5, n), rng.integers(20, 60, n // 4)]).astype(float)
+        spread = np.where(c >= 20, 3.0, 0.4) * np.sqrt(c + 1)
+        return c, np.maximum(np.round(c + spread * rng.normal(size=c.size)), 0)
+
+    edges = (0, 1, 5, 20)
+    c_cal, t_cal = make(4000)
+    c_new, t_new = make(4000)
+    model = fit_band_conformal(c_cal, t_cal, edges, (0.9,))
+    big = c_new >= 20
+    lo, hi = band_interval(c_new, model, 0.9)
+    inside = (t_new >= lo) & (t_new <= hi)
+    assert inside[big].mean() >= 0.87 and inside[~big].mean() >= 0.87
+    q = fit_count_conformal(c_cal, t_cal, (0.9,))[0.9]
+    plo, phi = count_interval(c_new, q)
+    assert ((t_new >= plo) & (t_new <= phi))[big].mean() < 0.8  # pooled under-covers big herds
+
+
+def test_band_conformal_reports_unbounded_when_a_band_is_too_small():
+    model = fit_band_conformal([0.0, 0.0, 3.0], [0.0, 1.0, 3.0], (0, 1, 5, 20), (0.9,))
+    assert [b["n"] for b in model["bands"]] == [2, 1, 0, 0]
+    assert all(math.isinf(b["q"][0.9]) for b in model["bands"])
+    lo, hi = band_interval([25.0], model, 0.9)
+    assert lo[0] == 0 and math.isinf(hi[0])

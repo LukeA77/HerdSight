@@ -11,6 +11,10 @@ that Phase 2 needs, each an option:
   --recipe phase1|g2      g2 adds the ops in gpu/dfine_ops.py (copy-paste groups, mild scale
                           jitter, dark/shade, shadow, greyscale, blur, 90-degree turns,
                           vertical flip) to Phase 1's augmentation (G2)
+                 |g12     g12 adds coat darkening inside each animal's oval and pasting animals
+                          cut along their ovals as touching groups (gpu/dfine_ops.py), then mild
+                          whole-scene darkening, to Phase 1's augmentation (D-49 follow-up)
+  --ovals FILE            per-tile animal ovals for g12 (gpu/make_tile_ovals.py)
   --oversample-touching K repeat each training tile with touching animals K times in total (G2)
   --exclude FILE          JSON list of source images ("farm/flight/image.JPG") left out of
                           training, e.g. images with unlabelled cattle (C4, D-32)
@@ -69,6 +73,19 @@ G2_OPS = [
     {"type": "HsRandomGrayscale", "p": 0.1},
     {"type": "HsRandomBlur", "p": 0.2},
 ]
+
+
+def g12_ops(ovals_file: str) -> tuple[list[dict], list[dict]]:
+    """Dark-coat, tight-group and outline training: ops before and after Phase 1's. The front
+    ops run before anything moves pixels, so the ovals still fit the tile."""
+    front = [
+        {"type": "HsOutlinePaste", "ovals_file": ovals_file, "p": 0.5},
+        {"type": "HsCoatDarken", "ovals_file": ovals_file, "p": 0.5},
+    ]
+    back = [{"type": "HsDarkenShade", "p": 0.3}]
+    return front, back
+
+
 TAIL_OPS = [
     {"type": "Resize", "size": [RES, RES]},
     {"type": "SanitizeBoundingBoxes", "min_size": 1},
@@ -228,7 +245,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--fold", required=True)
     ap.add_argument("--size", default="s", choices=sorted(AUTHORS_BATCH))
     ap.add_argument("--epochs", type=int, default=72)
-    ap.add_argument("--recipe", default="phase1", choices=("phase1", "g2"))
+    ap.add_argument("--recipe", default="phase1", choices=("phase1", "g2", "g12"))
+    ap.add_argument("--ovals", type=Path, default=None)
     ap.add_argument("--oversample-touching", type=int, default=1)
     ap.add_argument("--exclude", type=Path, default=None)
     ap.add_argument("--holdout-group", default=None)
@@ -248,6 +266,10 @@ def main(argv: list[str] | None = None) -> int:
     args.work, args.package, args.dfine = (
         p.resolve() for p in (args.work, args.package, args.dfine)
     )
+    if (args.recipe == "g12") != (args.ovals is not None):
+        raise SystemExit("--ovals is needed with --recipe g12, and only with it")
+    if args.ovals:
+        args.ovals = args.ovals.resolve()
     t0 = time.time()
     # augmentation stops for the last epochs: the authors' 220/200, Phase 1's 72/66
     aug_off = {220: 200, 72: 66}.get(args.epochs, max(1, args.epochs - round(args.epochs / 11)))
@@ -273,6 +295,7 @@ def main(argv: list[str] | None = None) -> int:
         (repo / ".hs_deps").touch()
     # register the Phase 2 augmentations inside D-FINE (idempotent)
     tdir = repo / "src" / "data" / "transforms"
+    shutil.copy2(HERE / "tile_ovals.py", tdir / "hs_ovals.py")  # imported by hs_ops
     shutil.copy2(HERE / "dfine_ops.py", tdir / "hs_ops.py")
     init = tdir / "__init__.py"
     if "hs_ops" not in init.read_text():
@@ -308,10 +331,13 @@ def main(argv: list[str] | None = None) -> int:
     base_cfg = repo / f"configs/dfine/custom/dfine_hgnetv2_{args.size}_custom.yml"
     lr_scale = BATCH / AUTHORS_BATCH[args.size]
     g2 = args.recipe == "g2"
-    ops = (G2_FRONT_OPS if g2 else []) + PHASE1_OPS + (G2_OPS if g2 else []) + TAIL_OPS
-    stop_ops = ["RandomPhotometricDistort", "RandomZoomOut", "RandomIoUCrop"] + (
-        [o["type"] for o in G2_FRONT_OPS + G2_OPS] if g2 else []
-    )
+    front, back = (G2_FRONT_OPS, G2_OPS) if g2 else ([], [])
+    if args.recipe == "g12":
+        front, back = g12_ops(args.ovals.as_posix())
+    ops = front + PHASE1_OPS + back + TAIL_OPS
+    stop_ops = ["RandomPhotometricDistort", "RandomZoomOut", "RandomIoUCrop"] + [
+        o["type"] for o in front + back
+    ]
     img_folder = (args.package / "images").as_posix()
     cfg = {
         "__include__": [base_cfg.as_posix()],
@@ -385,6 +411,7 @@ def main(argv: list[str] | None = None) -> int:
         "eval_annotations": eval_ann.name,
         "eval_annotations_sha256": sha256(eval_ann),
         "recipe": args.recipe,
+        "ovals_sha256": sha256(args.ovals) if args.ovals else None,
         "ops": ops,
         "oversample_touching": args.oversample_touching,
         "excluded_images": sorted(json.loads(args.exclude.read_text())) if args.exclude else [],

@@ -316,7 +316,7 @@ Options considered: pseudo-labelling unlabelled images; ground-sample-distance n
 Choice: The G2 recipe under leave-one-farm-out, 72 epochs per held-out farm, without hard negatives (`gpu/runpod/job_g6g2.sh`). It is compared with the reference recipe's leave-one-farm-out result (`results/phase2/g6_lofo.json`).
 Evidence / reasoning: G6 showed that the largest accuracy loss is on an unseen farm (recall 0.553 against 0.728). G2 was built for changes in appearance but was only scored under the official cross-validation, where most farms are partly seen, so its effect on a new farm is unmeasured. The G3 hard negatives were mined by models trained on farms that would now be held out, so using them here would leak information about the held-out farm.
 Easy option rejected (if any) and why: Reusing the hard negatives to match G2 exactly, which would make the unseen-farm result look better than it is.
-Status: proposed 2026-11-23. The selection rule in `configs/phase2.yaml` is unchanged; this run does not by itself replace the reference model.
+Status: done 2026-11-24. The G2 recipe did not replace the reference under leave-one-farm-out (D-49).
 
 ## D-45: Use each animal's true logged position when counting Gazebo flights  (2026-11-23)
 Options considered: keep working positions back from the bounding-box pixels and the camera pose; log the camera pose more often; retune the frame delay; use each animal's true logged position, keeping the sensor's record of which animals were visible and the measured detection, position and geotag error models.
@@ -334,10 +334,10 @@ Status: adopted 2026-11-23. The rule relies on the fence holding the animals. Ot
 
 ## D-47: Trigger the geofence return 5 m before the 150 m fence  (2026-11-23)
 Options considered: raise the 165 m limit; use PX4's experimental predictive geofence; trigger the return at 145 m, keeping the 165 m limit unchanged.
-Choice: Proposed: set `GF_MAX_HOR_DIST` to 145 m.
+Choice: Set `GF_MAX_HOR_DIST` to 145 m.
 Evidence / reasoning: With the trigger at 150 m the drone reached 165.37 m on the current layout, 0.37 m past the limit (`results/phase5/geofence_check_new_layout.json`). With the trigger at 145 m it reached 160.11 m and 160.18 m on two farm layouts and returned safely (`results/phase5/geofence_check_trigger_145m.json`, `geofence_check_trigger_145m_layout2.json`).
 Easy option rejected (if any) and why: Raising the limit to 166 m, which would change the test to fit the result.
-Status: proposed 2026-11-23. Two simulated flights with no wind; it needs a wind test before adoption.
+Status: adopted 2026-11-24, by the rule written before the wind flights. With a steady wind of 5 m/s and 10 m/s blowing the way the drone crosses the trigger, and 10 m/s blowing straight outward, the drone reached at most 159.6, 159.8 and 159.0 m, stayed at least 80.0 m up until back over launch and landed within 0.07 m of launch (`results/phase5/geofence_wind_check.json`). The wind acted: the drone leaned 3.5, 7.0 and 6.9 degrees while holding for a still, against 0.27 with no wind. The position controller absorbs a steady wind, so the overshoot comes from braking at 8 m/s, as without wind. Limits: one flight per case on one world, a steady wind without gusts, and an assumed drag area (`sim/bridge/add_wind.py`); a gust test remains for real flights.
 
 ## D-48: Upright detector counts; the angle is added per counted animal  (2026-11-24)
 Options considered: ship RTMDet-R as the oriented detector; try a second oriented family (detectron2 rotated Faster R-CNN); keep upright D-FINE for counting and predict an angle for each counted animal.
@@ -345,3 +345,10 @@ Choice: Keep upright D-FINE for counting and detection; give each counted animal
 Evidence / reasoning: G7's rule, written before the run, says that if the best oriented model is worse than the best upright model beyond the seed spread, the upright detector counts. RTMDet-R's centre AP was 0.218 against 0.545 (-0.326, interval -0.383 to -0.279), far beyond any seed spread, and its count error was higher (`results/phase2/g7_comparison.json`). Oriented boxes remain an output requirement for herd-mode framing and later identification.
 Easy option rejected (if any) and why: Retuning RTMDet-R until it comes closer, which the rule forbids and which would use the remaining GPU budget on the weaker family.
 Status: adopted 2026-11-24 (owner). A second oriented family was allowed by the plan because the first clearly underperformed; it is not being tried, and the remaining GPU budget goes to the new-farm work instead.
+
+## D-49: The G2 recipe does not replace the reference on unseen farms; G5 is the next new-farm experiment  (2026-11-24)
+Options considered: adopt the G2 recipe because it found more cattle on Jalogny; keep the reference recipe; repeat the G2 leave-one-farm-out runs with more seeds before deciding.
+Choice: Keep the reference recipe as the current best. The next new-farm experiment is resolution normalisation (G5), as planned for this outcome.
+Evidence / reasoning: Both columns are leave-one-farm-out, so each farm is predicted by a model that never saw it and each threshold is set on the other two farms (`results/phase2/g6g2_vs_g6ref_lofo.json`, 1,323 images). Against the reference, the G2 recipe shows no difference in centre AP (-0.009, interval -0.048 to 0.028), a higher count error (+0.33 animals per image, interval 0.08 to 0.80) and more false animals on empty images (+0.28, interval 0.04 to 0.78). It found more cattle on Jalogny (recall 0.77 against 0.72) but fewer on Derval and Mauron. The selection rule in `configs/phase2.yaml` requires a candidate to be better on centre AP and count error and not to lose under leave-one-farm-out; G2 meets neither, and the count-error loss is outside the close-call zone, so repeats are not needed. Under the official cross-validation G2 had already tied the reference (`results/phase2/g2_comparison.json`). Jalogny and Mauron were predicted on a rented A40 (session g6g2-score-2); the predictions agree with a partial home-base CPU run within one animal on 10 of 368 images.
+Easy option rejected (if any) and why: Adopting G2 for its Jalogny gain, which would pick the one farm that favours it and ignore the higher count error that the rule weighs.
+Status: adopted 2026-11-24, by the fixed rule.
