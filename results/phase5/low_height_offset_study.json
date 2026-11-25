@@ -1,0 +1,37 @@
+{
+ "note": "Simulation, development study: teach and repeat rendered over the textured world with detail patches, sun moved; not a test and not a field result.",
+ "by_height": {
+  "8": {
+   "frames": 40,
+   "fixed_share": 0.675,
+   "median_m": 0.021775086810789174,
+   "p90_m": 0.05020382402011249
+  },
+  "15": {
+   "frames": 40,
+   "fixed_share": 0.7,
+   "median_m": 0.051187399394574604,
+   "p90_m": 0.07272233077956354
+  },
+  "25": {
+   "frames": 40,
+   "fixed_share": 0.7,
+   "median_m": 0.09971864998531563,
+   "p90_m": 0.13602793165102076
+  }
+ },
+ "fixed_share_by_height_and_offset": {
+  "15m_0-25pct": 1.0,
+  "15m_25-50pct": 1.0,
+  "15m_50-75pct": 1.0,
+  "15m_75-100pct": 0.14,
+  "25m_0-25pct": 1.0,
+  "25m_25-50pct": 1.0,
+  "25m_50-75pct": 0.83,
+  "25m_75-100pct": 0.09,
+  "8m_0-25pct": 1.0,
+  "8m_25-50pct": 1.0,
+  "8m_50-75pct": 0.75,
+  "8m_75-100pct": 0.08
+ }
+}

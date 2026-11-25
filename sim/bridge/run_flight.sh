@@ -28,6 +28,20 @@ MISSION_NODE=${MISSION_NODE:-offboard_mission_node}
 INJECT=${INJECT:-none}
 # BBOX=1 adds the stabilised bounding-box camera, a separate model that follows the drone
 BBOX=${BBOX:-0}
+# VISION=1 adds a downward picture camera fixed to the drone's body (sim/bridge/add_body_camera.py)
+# and the camera return home after GPS loss (sim/bridge/camera_return.py): keyframes during the
+# survey, camera fixes fused by PX4 (EKF2 external vision, horizontal position only) and a return
+# to launch once GPS is lost. VALIDATE=1 also logs fixes tried while GPS is good. Use with
+# GROUND_TEXTURE, since plain ground has nothing to match.
+VISION=${VISION:-0}
+# RECORD=1 keeps every camera frame with PX4's state in $OUT/frames for offline studies.
+# LAG_S: how much older the camera picture is than its stamp (seconds), default 0.
+VALIDATE=${VALIDATE:-0}
+# TEACH_SQUARE_M (half-side, metres) flies a square at TEACH_HEIGHT_M (default 12 m) around the
+# launch point after take-off, so the camera return has reference frames near the ground; off
+# by default.
+TEACH_SQUARE_M=$(printf '%.1f' "${TEACH_SQUARE_M:-0}")  # ROS wants a decimal for these
+TEACH_HEIGHT_M=$(printf '%.1f' "${TEACH_HEIGHT_M:-12}")
 mkdir -p "$OUT"
 
 python3 /repo/sim/bridge/make_world.py --out "$OUT" --seed "$SEED" | tee "$OUT/world.txt"
@@ -36,6 +50,11 @@ cp "$OUT/herdsight_farm.sdf" "$PX4_DIR/Tools/simulation/gz/worlds/herdsight_farm
 if [ "$BBOX" = 1 ]; then
   python3 /repo/sim/bridge/add_survey_camera.py --plan "$OUT/plan.yaml" \
     --world "$PX4_DIR/Tools/simulation/gz/worlds/herdsight_farm.sdf" || exit 1
+fi
+if [ "$VISION" = 1 ]; then
+  python3 /repo/sim/bridge/add_body_camera.py --plan "$OUT/plan.yaml" \
+    --model "$PX4_DIR/Tools/simulation/gz/models/x500_base/model.sdf" | tee "$OUT/body_camera.txt" \
+    || exit 1
 fi
 # WIND_E and WIND_N (m/s, where the air moves to) add a steady wind that pushes the drone body;
 # WIND_CDA sets the assumed drag area (sim/bridge/add_wind.py). No wind by default.
@@ -47,6 +66,19 @@ if [ "$WIND_E" != 0 ] || [ "$WIND_N" != 0 ]; then
     --model "$PX4_DIR/Tools/simulation/gz/models/x500_base/model.sdf" \
     --east "$WIND_E" --north "$WIND_N" ${WIND_CDA:+--cda "$WIND_CDA"} | tee "$OUT/wind.txt" \
     || exit 1
+fi
+# GROUND_TEXTURE (an image path inside the container, e.g. a mounted IGN orthophoto from
+# scripts/fetch_ground_texture.py) and GROUND_TEXTURE_M (its width in metres) drape real aerial
+# imagery over the ground (sim/bridge/add_ground_texture.py). Plain ground by default.
+# GROUND_DETAIL (and GROUND_DETAIL_M, default 120) adds the fine-detail patch at take-off.
+# GROUND_FINE (and GROUND_FINE_M, default 24) adds a small fine-grain patch on top, at take-off.
+if [ -n "${GROUND_TEXTURE:-}" ]; then
+  python3 /repo/sim/bridge/add_ground_texture.py \
+    --world "$PX4_DIR/Tools/simulation/gz/worlds/herdsight_farm.sdf" \
+    --texture "$GROUND_TEXTURE" --size-m "${GROUND_TEXTURE_M:?set GROUND_TEXTURE_M}" \
+    ${GROUND_DETAIL:+--detail "$GROUND_DETAIL" --detail-m "${GROUND_DETAIL_M:-120}"} \
+    ${GROUND_FINE:+--fine "$GROUND_FINE" --fine-m "${GROUND_FINE_M:-24}"} \
+    | tee "$OUT/ground_texture.txt" || exit 1
 fi
 
 MicroXRCEAgent udp4 -p 8888 > "$OUT/agent.log" 2>&1 &
@@ -82,6 +114,10 @@ $P/px4-param set COM_FAIL_ACT_T 0
 # the cruise speed is set to the plan's survey speed
 SPEED=$(python3 -c "import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))['speed_m_s'])" "$OUT/plan.yaml")
 $P/px4-param set MPC_XY_CRUISE "$SPEED"
+if [ "$VISION" = 1 ]; then  # fuse the camera fixes as horizontal position (bit 0)
+  $P/px4-param set EKF2_EV_CTRL 1
+  $P/px4-param set EKF2_EV_DELAY 0
+fi
 
 if [ "$INJECT" = link ]; then  # a ground station that sends heartbeats until the link is cut
   $P/px4-param set NAV_DLL_ACT 2
@@ -104,12 +140,21 @@ if [ "$BBOX" = 1 ]; then
   python3 /repo/sim/bridge/record_bbox.py --out "$OUT/bbox.jsonl" > "$OUT/record_bbox.log" 2>&1 &
   pids+=($!)
 fi
+if [ "$VISION" = 1 ]; then
+  python3 /repo/sim/bridge/camera_return.py --plan "$OUT/plan.yaml" --log "$OUT/camera_return.csv" \
+    $([ "$VALIDATE" = 1 ] && echo --validate) \
+    --lag-s "${LAG_S:-0}" \
+    $([ "${RECORD:-0}" = 1 ] && echo --record "$OUT/frames") \
+    > "$OUT/camera_return.log" 2>&1 &
+  pids+=($!)
+fi
 python3 /repo/sim/bridge/herd_bridge.py --state "$OUT/herd_state.pkl" --seed "$SEED" \
   > "$OUT/herd_bridge.log" 2>&1 &
 pids+=($!)
 FRAME_ALONG=$(python3 -c "import sys, yaml; print(float(yaml.safe_load(open(sys.argv[1]))['footprint_m'][1]))" "$OUT/plan.yaml")
 ros2 run herdsight_mission "$MISSION_NODE" --ros-args -p plan_file:="$OUT/plan.yaml" \
-  -p autostart:=true -p frame_along_m:="$FRAME_ALONG" > "$OUT/mission.log" 2>&1 &
+  -p autostart:=true -p frame_along_m:="$FRAME_ALONG" -p teach_square_m:="$TEACH_SQUARE_M" \
+  -p teach_height_m:="$TEACH_HEIGHT_M" > "$OUT/mission.log" 2>&1 &
 pids+=($!)
 ros2 topic echo --csv herdsight/still herdsight_msgs/msg/StillCaptured > "$OUT/stills.csv" 2>&1 &
 pids+=($!)
@@ -124,7 +169,17 @@ while [ $SECONDS -lt $end ]; do
     if [ "$INJECT" = herd ]; then
       ros2 topic pub --once herdsight/herd_found herdsight_msgs/msg/HerdFound         "{centre: {x: ${HERD_X:-120.0}, y: ${HERD_Y:-0.0}, z: 0.0}, extent_m: 20.0, animals_estimate: 20}" > /dev/null
     elif [ "$INJECT" = gnss ]; then
-      $P/px4-param set SIM_GPS_USED 0
+      # PX4's simulator bridge occasionally misses the change; confirm the fix is gone, else resend
+      for attempt in 1 2 3 4 5; do
+        $P/px4-param set SIM_GPS_USED 0
+        sleep 3
+        if $P/px4-listener sensor_gps -n 1 | grep -q "fix_type: 0"; then
+          echo "GPS fix removed (attempt $attempt)"
+          break
+        fi
+        $P/px4-param set SIM_GPS_USED 10
+        sleep 1
+      done
     elif [ "$INJECT" = link ]; then
       kill "$GCS_PID"
     else

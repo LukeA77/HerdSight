@@ -1,0 +1,625 @@
+{
+ "note": "Simulation: Gazebo thermal camera over box-shaped animals with set temperatures, with added ground patches, blur and noise; not a field result.",
+ "rows": [
+  {
+   "seed": 30,
+   "height": 40.0,
+   "true": 12,
+   "counted": 15
+  },
+  {
+   "seed": 30,
+   "height": 40.0,
+   "true": 9,
+   "counted": 9
+  },
+  {
+   "seed": 30,
+   "height": 40.0,
+   "true": 3,
+   "counted": 4
+  },
+  {
+   "seed": 30,
+   "height": 40.0,
+   "true": 14,
+   "counted": 15
+  },
+  {
+   "seed": 30,
+   "height": 40.0,
+   "true": 2,
+   "counted": 3
+  },
+  {
+   "seed": 30,
+   "height": 83.0,
+   "true": 23,
+   "counted": 24
+  },
+  {
+   "seed": 30,
+   "height": 83.0,
+   "true": 21,
+   "counted": 24
+  },
+  {
+   "seed": 30,
+   "height": 83.0,
+   "true": 21,
+   "counted": 24
+  },
+  {
+   "seed": 30,
+   "height": 83.0,
+   "true": 23,
+   "counted": 25
+  },
+  {
+   "seed": 30,
+   "height": 83.0,
+   "true": 15,
+   "counted": 17
+  },
+  {
+   "seed": 31,
+   "height": 40.0,
+   "true": 1,
+   "counted": 1
+  },
+  {
+   "seed": 31,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 31,
+   "height": 40.0,
+   "true": 1,
+   "counted": 1
+  },
+  {
+   "seed": 31,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 31,
+   "height": 40.0,
+   "true": 3,
+   "counted": 4
+  },
+  {
+   "seed": 31,
+   "height": 83.0,
+   "true": 9,
+   "counted": 11
+  },
+  {
+   "seed": 31,
+   "height": 83.0,
+   "true": 8,
+   "counted": 12
+  },
+  {
+   "seed": 31,
+   "height": 83.0,
+   "true": 5,
+   "counted": 8
+  },
+  {
+   "seed": 31,
+   "height": 83.0,
+   "true": 13,
+   "counted": 18
+  },
+  {
+   "seed": 31,
+   "height": 83.0,
+   "true": 14,
+   "counted": 18
+  },
+  {
+   "seed": 32,
+   "height": 40.0,
+   "true": 5,
+   "counted": 5
+  },
+  {
+   "seed": 32,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 32,
+   "height": 40.0,
+   "true": 10,
+   "counted": 12
+  },
+  {
+   "seed": 32,
+   "height": 40.0,
+   "true": 10,
+   "counted": 12
+  },
+  {
+   "seed": 32,
+   "height": 40.0,
+   "true": 1,
+   "counted": 2
+  },
+  {
+   "seed": 32,
+   "height": 83.0,
+   "true": 24,
+   "counted": 24
+  },
+  {
+   "seed": 32,
+   "height": 83.0,
+   "true": 17,
+   "counted": 21
+  },
+  {
+   "seed": 32,
+   "height": 83.0,
+   "true": 24,
+   "counted": 25
+  },
+  {
+   "seed": 32,
+   "height": 83.0,
+   "true": 24,
+   "counted": 26
+  },
+  {
+   "seed": 32,
+   "height": 83.0,
+   "true": 15,
+   "counted": 16
+  },
+  {
+   "seed": 33,
+   "height": 40.0,
+   "true": 4,
+   "counted": 4
+  },
+  {
+   "seed": 33,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 33,
+   "height": 40.0,
+   "true": 9,
+   "counted": 9
+  },
+  {
+   "seed": 33,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 33,
+   "height": 40.0,
+   "true": 8,
+   "counted": 9
+  },
+  {
+   "seed": 33,
+   "height": 83.0,
+   "true": 19,
+   "counted": 21
+  },
+  {
+   "seed": 33,
+   "height": 83.0,
+   "true": 16,
+   "counted": 18
+  },
+  {
+   "seed": 33,
+   "height": 83.0,
+   "true": 21,
+   "counted": 23
+  },
+  {
+   "seed": 33,
+   "height": 83.0,
+   "true": 11,
+   "counted": 12
+  },
+  {
+   "seed": 33,
+   "height": 83.0,
+   "true": 21,
+   "counted": 22
+  },
+  {
+   "seed": 34,
+   "height": 40.0,
+   "true": 17,
+   "counted": 18
+  },
+  {
+   "seed": 34,
+   "height": 40.0,
+   "true": 11,
+   "counted": 12
+  },
+  {
+   "seed": 34,
+   "height": 40.0,
+   "true": 8,
+   "counted": 9
+  },
+  {
+   "seed": 34,
+   "height": 40.0,
+   "true": 9,
+   "counted": 10
+  },
+  {
+   "seed": 34,
+   "height": 40.0,
+   "true": 12,
+   "counted": 12
+  },
+  {
+   "seed": 34,
+   "height": 83.0,
+   "true": 30,
+   "counted": 34
+  },
+  {
+   "seed": 34,
+   "height": 83.0,
+   "true": 24,
+   "counted": 27
+  },
+  {
+   "seed": 34,
+   "height": 83.0,
+   "true": 26,
+   "counted": 29
+  },
+  {
+   "seed": 34,
+   "height": 83.0,
+   "true": 30,
+   "counted": 35
+  },
+  {
+   "seed": 34,
+   "height": 83.0,
+   "true": 29,
+   "counted": 33
+  },
+  {
+   "seed": 35,
+   "height": 40.0,
+   "true": 12,
+   "counted": 11
+  },
+  {
+   "seed": 35,
+   "height": 40.0,
+   "true": 7,
+   "counted": 7
+  },
+  {
+   "seed": 35,
+   "height": 40.0,
+   "true": 8,
+   "counted": 10
+  },
+  {
+   "seed": 35,
+   "height": 40.0,
+   "true": 10,
+   "counted": 8
+  },
+  {
+   "seed": 35,
+   "height": 40.0,
+   "true": 7,
+   "counted": 7
+  },
+  {
+   "seed": 35,
+   "height": 83.0,
+   "true": 26,
+   "counted": 25
+  },
+  {
+   "seed": 35,
+   "height": 83.0,
+   "true": 25,
+   "counted": 24
+  },
+  {
+   "seed": 35,
+   "height": 83.0,
+   "true": 22,
+   "counted": 19
+  },
+  {
+   "seed": 35,
+   "height": 83.0,
+   "true": 24,
+   "counted": 23
+  },
+  {
+   "seed": 35,
+   "height": 83.0,
+   "true": 27,
+   "counted": 26
+  },
+  {
+   "seed": 36,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 83.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 83.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 83.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 83.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 36,
+   "height": 83.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 37,
+   "height": 40.0,
+   "true": 11,
+   "counted": 11
+  },
+  {
+   "seed": 37,
+   "height": 40.0,
+   "true": 5,
+   "counted": 5
+  },
+  {
+   "seed": 37,
+   "height": 40.0,
+   "true": 8,
+   "counted": 8
+  },
+  {
+   "seed": 37,
+   "height": 40.0,
+   "true": 1,
+   "counted": 1
+  },
+  {
+   "seed": 37,
+   "height": 40.0,
+   "true": 15,
+   "counted": 15
+  },
+  {
+   "seed": 37,
+   "height": 83.0,
+   "true": 24,
+   "counted": 25
+  },
+  {
+   "seed": 37,
+   "height": 83.0,
+   "true": 23,
+   "counted": 26
+  },
+  {
+   "seed": 37,
+   "height": 83.0,
+   "true": 22,
+   "counted": 23
+  },
+  {
+   "seed": 37,
+   "height": 83.0,
+   "true": 24,
+   "counted": 25
+  },
+  {
+   "seed": 37,
+   "height": 83.0,
+   "true": 22,
+   "counted": 21
+  },
+  {
+   "seed": 38,
+   "height": 40.0,
+   "true": 16,
+   "counted": 15
+  },
+  {
+   "seed": 38,
+   "height": 40.0,
+   "true": 12,
+   "counted": 11
+  },
+  {
+   "seed": 38,
+   "height": 40.0,
+   "true": 5,
+   "counted": 5
+  },
+  {
+   "seed": 38,
+   "height": 40.0,
+   "true": 12,
+   "counted": 12
+  },
+  {
+   "seed": 38,
+   "height": 40.0,
+   "true": 9,
+   "counted": 8
+  },
+  {
+   "seed": 38,
+   "height": 83.0,
+   "true": 30,
+   "counted": 30
+  },
+  {
+   "seed": 38,
+   "height": 83.0,
+   "true": 24,
+   "counted": 22
+  },
+  {
+   "seed": 38,
+   "height": 83.0,
+   "true": 27,
+   "counted": 27
+  },
+  {
+   "seed": 38,
+   "height": 83.0,
+   "true": 28,
+   "counted": 27
+  },
+  {
+   "seed": 38,
+   "height": 83.0,
+   "true": 29,
+   "counted": 29
+  },
+  {
+   "seed": 39,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 39,
+   "height": 40.0,
+   "true": 1,
+   "counted": 1
+  },
+  {
+   "seed": 39,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 39,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 39,
+   "height": 40.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 39,
+   "height": 83.0,
+   "true": 1,
+   "counted": 1
+  },
+  {
+   "seed": 39,
+   "height": 83.0,
+   "true": 4,
+   "counted": 4
+  },
+  {
+   "seed": 39,
+   "height": 83.0,
+   "true": 0,
+   "counted": 0
+  },
+  {
+   "seed": 39,
+   "height": 83.0,
+   "true": 1,
+   "counted": 1
+  },
+  {
+   "seed": 39,
+   "height": 83.0,
+   "true": 1,
+   "counted": 1
+  }
+ ],
+ "h40": {
+  "frames": 50,
+  "true": 288,
+  "counted": 301,
+  "mae": 0.5,
+  "ratio": 1.0451388888888888
+ },
+ "h83": {
+  "frames": 50,
+  "true": 867,
+  "counted": 926,
+  "mae": 1.62,
+  "ratio": 1.0680507497116494
+ },
+ "passes": true,
+ "counter_version": 3,
+ "seeds": [
+  30,
+  39
+ ]
+}

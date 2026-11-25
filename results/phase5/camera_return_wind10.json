@@ -1,0 +1,18 @@
+{
+ "note": "Simulation result, one flight on one world, wind 10.0 m/s (east +10.0, north +0.0); k 0.1837; force while holding position 3.67 N (CdA 0.06 m^2, assumed); not a field result. Camera return home (VISION=1).",
+ "keyframes": 23,
+ "px4_modes_after_gnss_loss": [
+  "loiter",
+  "offboard",
+  "return to launch",
+  "blind descent"
+ ],
+ "blind_descent": true,
+ "touchdown_distance_from_launch_m": 80.54203796386719,
+ "frames_after_loss_above_5m": 179,
+ "fixed_share": 0.7821229050279329,
+ "fix_error_median_m": 0.20478573533742817,
+ "fix_error_max_m": 7.2301106492224765,
+ "seconds_from_gnss_loss_to_touchdown": 98.904,
+ "passes": false
+}

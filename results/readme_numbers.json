@@ -1,0 +1,20 @@
+{
+ "note": "Public-data and simulation results; none is a field result.",
+ "detector_recall_known_farms": 0.728,
+ "detector_recall_unseen_farms": 0.553,
+ "flight_count_error_current": 0.267,
+ "flight_count_error_perfect_detector": 0.145,
+ "flight_count_error_add_up": 2.479,
+ "gps_loss_blind_landing_m": [
+  198.6,
+  906.5
+ ],
+ "gps_loss_camera_return_landing_m": [
+  0.19,
+  7.02
+ ],
+ "gps_loss_blind_wind10": "left the simulated ground",
+ "camera_return_keyframes_calm": 28,
+ "thermal_40m_ratio": 1.045,
+ "thermal_40m_mae": 0.5
+}

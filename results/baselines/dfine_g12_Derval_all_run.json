@@ -1,0 +1,37 @@
+{
+ "finished_utc": "2026-11-24T23:42:57+00:00",
+ "detector": "dfine_g12_Derval",
+ "fold": "all",
+ "farm": "Derval",
+ "onboard_long_side_px": null,
+ "n_images": 124,
+ "tile_px": 640,
+ "overlap_px": 192,
+ "onnx": "/root/hs_models_lofo/g12_Derval/last.onnx",
+ "predictions": [
+  "/root/hs_storage/runs/baselines/dfine_g12_Derval/fold0.jsonl",
+  "/root/hs_storage/runs/baselines/dfine_g12_Derval/fold1.jsonl",
+  "/root/hs_storage/runs/baselines/dfine_g12_Derval/fold2.jsonl"
+ ],
+ "environment": {
+  "generated_utc": "2026-11-24T23:42:57+00:00",
+  "cpu_model": "Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz",
+  "logical_cores": 96,
+  "memory_gb": 503.51,
+  "gpus": [
+   "NVIDIA A40, 46068 MiB"
+  ],
+  "os": "Linux-6.8.0-149-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "packages": {
+   "numpy": "2.1.2",
+   "scipy": null,
+   "pyyaml": "6.0.3",
+   "torch": "2.8.0+cu128",
+   "onnxruntime": null,
+   "opencv-python-headless": null,
+   "pytest": null,
+   "ruff": null
+  }
+ }
+}

@@ -23,6 +23,8 @@
 #include <px4_msgs/msg/vehicle_local_position.hpp>
 #include <px4_msgs/msg/vehicle_status.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <utility>
+#include <vector>
 
 #include "herdsight_mission/survey_logic.hpp"
 
@@ -72,6 +74,11 @@ class OffboardMission : public rclcpp::Node {
     limits.clearance_m = static_cast<float>(declare_parameter<double>("clearance_m", 30.0));
     limits.frame_along_m = static_cast<float>(declare_parameter<double>("frame_along_m", 0.0));
     limits.pass_through = declare_parameter<bool>("pass_through", true);
+    // teach square: after take-off, fly a square of this half-side at teach_height_m around the
+    // launch point before climbing, so the camera return has reference frames near the ground
+    // around home (0 = straight climb)
+    teach_half_m_ = static_cast<float>(declare_parameter<double>("teach_square_m", 0.0));
+    teach_height_m_ = static_cast<float>(declare_parameter<double>("teach_height_m", 12.0));
     plan_ = Plan::load(plan_file);
     logic_ = std::make_unique<SurveyLogic>(plan_, limits, sortie);
     RCLCPP_INFO(get_logger(), "survey of %s: %d stills, offboard", plan_.camp.c_str(),
@@ -141,7 +148,20 @@ class OffboardMission : public rclcpp::Node {
     step(
         "TakeOff",
         [this] {
-          climb_target_ = Eigen::Vector3f(pos_.x(), pos_.y(), -plan_.height_agl_m);
+          climb_path_.clear();
+          const float x = pos_.x(), y = pos_.y();
+          if (teach_half_m_ > 0.0f) {
+            const float h = -teach_height_m_, d = teach_half_m_;
+            const std::pair<float, float> corners[] = {{0.0f, 0.0f}, {d, d},   {d, -d},     {-d, -d},
+                                                       {-d, d},     {d, d},   {0.0f, 0.0f}};
+            for (const auto& [dx, dy] : corners) {
+              climb_path_.emplace_back(x + dx, y + dy, h);
+            }
+            RCLCPP_INFO(get_logger(), "teach square: +/-%.0f m at %.0f m", d, teach_height_m_);
+          }
+          climb_path_.emplace_back(x, y, -plan_.height_agl_m);
+          climb_step_ = 0;
+          climb_target_ = climb_path_.front();
           phase_ = Phase::Climb;
         },
         [this] {
@@ -149,7 +169,11 @@ class OffboardMission : public rclcpp::Node {
             phase_ = Phase::Px4;  // PX4 has taken over: stop streaming
             return BT::NodeStatus::FAILURE;
           }
-          if (std::abs(pos_.z() - climb_target_.z()) > kClimbDoneM) return BT::NodeStatus::RUNNING;
+          if ((pos_ - climb_target_).norm() > kClimbDoneM) return BT::NodeStatus::RUNNING;
+          if (++climb_step_ < climb_path_.size()) {
+            climb_target_ = climb_path_[climb_step_];
+            return BT::NodeStatus::RUNNING;
+          }
           return BT::NodeStatus::SUCCESS;
         });
     step(
@@ -262,6 +286,10 @@ class OffboardMission : public rclcpp::Node {
   Eigen::Vector3f pos_ = Eigen::Vector3f::Zero();
   Eigen::Vector3f carrot_ = Eigen::Vector3f::Zero();
   Eigen::Vector3f climb_target_ = Eigen::Vector3f::Zero();
+  std::vector<Eigen::Vector3f> climb_path_;
+  size_t climb_step_ = 0;
+  float teach_half_m_ = 0.0f;
+  float teach_height_m_ = 12.0f;
   bool carrot_set_ = false;
   bool pos_ok_ = false;
   bool armed_ = false;

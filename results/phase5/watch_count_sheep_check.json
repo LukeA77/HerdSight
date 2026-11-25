@@ -1,0 +1,498 @@
+{
+ "note": "Public data (ICAERUS passing-sheep video, Zenodo 12094356, CC BY 4.0), true boxes degraded as a detector fails; sheep walking through a corridor, not grazing cattle, and not the cattle detector. Not a field result.",
+ "degradation": {
+  "miss": 0.15,
+  "miss_touching": 0.3,
+  "merge_touching_pair": 0.2,
+  "false_per_frame": 0.05,
+  "jitter_px": 4.0
+ },
+ "tracker": {
+  "dt_s": 0.1111111111111111,
+  "gate_m": 0.5
+ },
+ "pixels_per_metre": {
+  "crop_23.11.23-8": 160.0,
+  "crop_23.11.23-10": 160.0,
+  "crop_23.11.23-12": 160.0,
+  "crop_23.11.23-13": 320.0
+ },
+ "scale": "guessed from flight height (the rule as fixed)",
+ "pairs": 40,
+ "watched_mae": 5.55,
+ "single_photo_mae": 20.75,
+ "true_in_watched_range_share": 0.775,
+ "passes": false,
+ "by_clip": {
+  "crop_23.11.23-8": {
+   "true_count": 47,
+   "watched_mean": 41.8,
+   "watched_mae": 5.2,
+   "single_photo_mae": 13.8,
+   "true_in_range_share": 1.0
+  },
+  "crop_23.11.23-10": {
+   "true_count": 45,
+   "watched_mean": 47.3,
+   "watched_mae": 2.5,
+   "single_photo_mae": 27.2,
+   "true_in_range_share": 1.0
+  },
+  "crop_23.11.23-12": {
+   "true_count": 47,
+   "watched_mean": 48.0,
+   "watched_mae": 1.8,
+   "single_photo_mae": 26.3,
+   "true_in_range_share": 1.0
+  },
+  "crop_23.11.23-13": {
+   "true_count": 47,
+   "watched_mean": 34.3,
+   "watched_mae": 12.7,
+   "single_photo_mae": 15.7,
+   "true_in_range_share": 0.1
+  }
+ },
+ "rows": [
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 0,
+   "true_count": 47,
+   "watched": 43,
+   "low": 32,
+   "high": 67,
+   "single_photo_best": 32,
+   "true_in_range": true,
+   "switches_merged": 24
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 1,
+   "true_count": 47,
+   "watched": 38,
+   "low": 34,
+   "high": 62,
+   "single_photo_best": 34,
+   "true_in_range": true,
+   "switches_merged": 24
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 2,
+   "true_count": 47,
+   "watched": 47,
+   "low": 31,
+   "high": 72,
+   "single_photo_best": 31,
+   "true_in_range": true,
+   "switches_merged": 25
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 3,
+   "true_count": 47,
+   "watched": 40,
+   "low": 31,
+   "high": 60,
+   "single_photo_best": 31,
+   "true_in_range": true,
+   "switches_merged": 20
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 4,
+   "true_count": 47,
+   "watched": 42,
+   "low": 32,
+   "high": 62,
+   "single_photo_best": 34,
+   "true_in_range": true,
+   "switches_merged": 20
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 5,
+   "true_count": 47,
+   "watched": 40,
+   "low": 30,
+   "high": 67,
+   "single_photo_best": 31,
+   "true_in_range": true,
+   "switches_merged": 27
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 6,
+   "true_count": 47,
+   "watched": 42,
+   "low": 35,
+   "high": 62,
+   "single_photo_best": 35,
+   "true_in_range": true,
+   "switches_merged": 20
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 7,
+   "true_count": 47,
+   "watched": 43,
+   "low": 33,
+   "high": 66,
+   "single_photo_best": 35,
+   "true_in_range": true,
+   "switches_merged": 23
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 8,
+   "true_count": 47,
+   "watched": 45,
+   "low": 35,
+   "high": 66,
+   "single_photo_best": 35,
+   "true_in_range": true,
+   "switches_merged": 21
+  },
+  {
+   "clip": "crop_23.11.23-8",
+   "seed": 9,
+   "true_count": 47,
+   "watched": 38,
+   "low": 34,
+   "high": 53,
+   "single_photo_best": 34,
+   "true_in_range": true,
+   "switches_merged": 15
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 0,
+   "true_count": 45,
+   "watched": 45,
+   "low": 17,
+   "high": 71,
+   "single_photo_best": 17,
+   "true_in_range": true,
+   "switches_merged": 26
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 1,
+   "true_count": 45,
+   "watched": 48,
+   "low": 17,
+   "high": 71,
+   "single_photo_best": 17,
+   "true_in_range": true,
+   "switches_merged": 23
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 2,
+   "true_count": 45,
+   "watched": 49,
+   "low": 18,
+   "high": 63,
+   "single_photo_best": 18,
+   "true_in_range": true,
+   "switches_merged": 14
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 3,
+   "true_count": 45,
+   "watched": 46,
+   "low": 19,
+   "high": 69,
+   "single_photo_best": 19,
+   "true_in_range": true,
+   "switches_merged": 23
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 4,
+   "true_count": 45,
+   "watched": 47,
+   "low": 19,
+   "high": 65,
+   "single_photo_best": 19,
+   "true_in_range": true,
+   "switches_merged": 18
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 5,
+   "true_count": 45,
+   "watched": 48,
+   "low": 17,
+   "high": 69,
+   "single_photo_best": 17,
+   "true_in_range": true,
+   "switches_merged": 21
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 6,
+   "true_count": 45,
+   "watched": 52,
+   "low": 18,
+   "high": 67,
+   "single_photo_best": 18,
+   "true_in_range": true,
+   "switches_merged": 15
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 7,
+   "true_count": 45,
+   "watched": 44,
+   "low": 17,
+   "high": 72,
+   "single_photo_best": 18,
+   "true_in_range": true,
+   "switches_merged": 28
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 8,
+   "true_count": 45,
+   "watched": 47,
+   "low": 17,
+   "high": 63,
+   "single_photo_best": 17,
+   "true_in_range": true,
+   "switches_merged": 16
+  },
+  {
+   "clip": "crop_23.11.23-10",
+   "seed": 9,
+   "true_count": 45,
+   "watched": 47,
+   "low": 17,
+   "high": 65,
+   "single_photo_best": 18,
+   "true_in_range": true,
+   "switches_merged": 18
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 0,
+   "true_count": 47,
+   "watched": 48,
+   "low": 20,
+   "high": 70,
+   "single_photo_best": 20,
+   "true_in_range": true,
+   "switches_merged": 22
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 1,
+   "true_count": 47,
+   "watched": 48,
+   "low": 20,
+   "high": 78,
+   "single_photo_best": 20,
+   "true_in_range": true,
+   "switches_merged": 30
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 2,
+   "true_count": 47,
+   "watched": 50,
+   "low": 20,
+   "high": 65,
+   "single_photo_best": 21,
+   "true_in_range": true,
+   "switches_merged": 15
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 3,
+   "true_count": 47,
+   "watched": 48,
+   "low": 20,
+   "high": 76,
+   "single_photo_best": 21,
+   "true_in_range": true,
+   "switches_merged": 28
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 4,
+   "true_count": 47,
+   "watched": 47,
+   "low": 18,
+   "high": 66,
+   "single_photo_best": 21,
+   "true_in_range": true,
+   "switches_merged": 19
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 5,
+   "true_count": 47,
+   "watched": 46,
+   "low": 19,
+   "high": 67,
+   "single_photo_best": 19,
+   "true_in_range": true,
+   "switches_merged": 21
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 6,
+   "true_count": 47,
+   "watched": 46,
+   "low": 20,
+   "high": 65,
+   "single_photo_best": 22,
+   "true_in_range": true,
+   "switches_merged": 19
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 7,
+   "true_count": 47,
+   "watched": 52,
+   "low": 20,
+   "high": 67,
+   "single_photo_best": 20,
+   "true_in_range": true,
+   "switches_merged": 15
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 8,
+   "true_count": 47,
+   "watched": 45,
+   "low": 21,
+   "high": 69,
+   "single_photo_best": 22,
+   "true_in_range": true,
+   "switches_merged": 24
+  },
+  {
+   "clip": "crop_23.11.23-12",
+   "seed": 9,
+   "true_count": 47,
+   "watched": 50,
+   "low": 20,
+   "high": 66,
+   "single_photo_best": 21,
+   "true_in_range": true,
+   "switches_merged": 16
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 0,
+   "true_count": 47,
+   "watched": 36,
+   "low": 33,
+   "high": 43,
+   "single_photo_best": 33,
+   "true_in_range": false,
+   "switches_merged": 7
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 1,
+   "true_count": 47,
+   "watched": 34,
+   "low": 30,
+   "high": 49,
+   "single_photo_best": 31,
+   "true_in_range": true,
+   "switches_merged": 15
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 2,
+   "true_count": 47,
+   "watched": 33,
+   "low": 31,
+   "high": 42,
+   "single_photo_best": 31,
+   "true_in_range": false,
+   "switches_merged": 9
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 3,
+   "true_count": 47,
+   "watched": 34,
+   "low": 30,
+   "high": 42,
+   "single_photo_best": 31,
+   "true_in_range": false,
+   "switches_merged": 8
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 4,
+   "true_count": 47,
+   "watched": 34,
+   "low": 31,
+   "high": 41,
+   "single_photo_best": 31,
+   "true_in_range": false,
+   "switches_merged": 7
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 5,
+   "true_count": 47,
+   "watched": 34,
+   "low": 30,
+   "high": 41,
+   "single_photo_best": 30,
+   "true_in_range": false,
+   "switches_merged": 7
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 6,
+   "true_count": 47,
+   "watched": 37,
+   "low": 31,
+   "high": 45,
+   "single_photo_best": 31,
+   "true_in_range": false,
+   "switches_merged": 8
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 7,
+   "true_count": 47,
+   "watched": 33,
+   "low": 30,
+   "high": 42,
+   "single_photo_best": 30,
+   "true_in_range": false,
+   "switches_merged": 9
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 8,
+   "true_count": 47,
+   "watched": 35,
+   "low": 33,
+   "high": 43,
+   "single_photo_best": 33,
+   "true_in_range": false,
+   "switches_merged": 8
+  },
+  {
+   "clip": "crop_23.11.23-13",
+   "seed": 9,
+   "true_count": 47,
+   "watched": 33,
+   "low": 32,
+   "high": 41,
+   "single_photo_best": 32,
+   "true_in_range": false,
+   "switches_merged": 8
+  }
+ ]
+}

@@ -10,7 +10,9 @@ commanded, and a camera fixed to the body looks about 10 degrees off vertical at
 
 Two sensors report the visible part of each labelled animal and its whole box, so the visible
 share can be computed. The field of view comes from the plan's footprint and height. The image has
-fewer pixels than the design camera and the same aspect ratio to within 0.2%. Simulation only.
+fewer pixels than the design camera and the same aspect ratio to within 0.2%. --rgb adds an
+ordinary picture camera (topic survey_rgb, 2 frames per second, same view) for the camera position
+fix after GPS loss (sim/bridge/camera_return.py). Simulation only.
 """
 
 from __future__ import annotations
@@ -24,6 +26,8 @@ import yaml
 
 WIDTH_PX, HEIGHT_PX = 660, 495
 RATE_HZ = 5
+RGB_RATE_HZ = 2
+RGB_TOPIC = "survey_rgb"
 MODEL_NAME = "survey_camera"
 
 
@@ -49,12 +53,30 @@ def sensor(name: str, box_type: str, fov: float) -> str:
 """
 
 
-def add_camera(sdf: str, across_m: float, height_m: float, heading_rad: float) -> str:
+def rgb_sensor(fov: float) -> str:
+    return f"""<sensor name="{RGB_TOPIC}" type="camera">
+          <topic>{RGB_TOPIC}</topic>
+          <update_rate>{RGB_RATE_HZ}</update_rate>
+          <always_on>1</always_on>
+          <camera>
+            <horizontal_fov>{fov:.6f}</horizontal_fov>
+            <image><width>{WIDTH_PX}</width><height>{HEIGHT_PX}</height></image>
+            <clip><near>1</near><far>500</far></clip>
+          </camera>
+        </sensor>
+"""
+
+
+def add_camera(
+    sdf: str, across_m: float, height_m: float, heading_rad: float, rgb: bool = False
+) -> str:
     fov = 2 * math.atan(across_m / 2 / height_m)
     marker = "</world>"
     if sdf.count(marker) != 1:
         raise ValueError("world end not found")
     sensors = sensor("survey_bbox_visible", "2d", fov) + sensor("survey_bbox_full", "full_2d", fov)
+    if rgb:
+        sensors += rgb_sensor(fov)
     model = f"""<model name="{MODEL_NAME}">
       <pose>0 0 {height_m:.3f} 0 {math.pi / 2:.6f} {heading_rad:.6f}</pose>
       <link name="link">
@@ -70,6 +92,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan", type=Path, required=True)
     ap.add_argument("--world", type=Path, required=True)
+    ap.add_argument("--rgb", action="store_true", help="also add the picture camera")
     args = ap.parse_args(argv)
     plan = yaml.safe_load(args.plan.read_text(encoding="utf-8"))
     text = add_camera(
@@ -77,6 +100,7 @@ def main(argv: list[str] | None = None) -> int:
         float(plan["footprint_m"][0]),
         float(plan["height_agl_m"]),
         float(plan["heading_enu_rad"]),
+        args.rgb,
     )
     args.world.write_text(text, encoding="utf-8")
     return 0

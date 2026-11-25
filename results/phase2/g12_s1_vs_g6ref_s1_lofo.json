@@ -1,0 +1,148 @@
+{
+ "note": "Public-data results, not field results. Both columns are leave-one-farm-out: each farm is predicted by a model that never saw it, and each threshold is set on the other two farms.",
+ "candidate": "dfine_g12_s1",
+ "reference": "dfine_g6ref_s1",
+ "n_images": 1323,
+ "images_missing_predictions": 0,
+ "operating_thresholds_lofo": {
+  "Derval": 0.75,
+  "Jalogny": 0.66,
+  "Mauron": 0.81
+ },
+ "operating_thresholds_reference": {
+  "Derval": 0.64,
+  "Jalogny": 0.38,
+  "Mauron": 0.69
+ },
+ "by_farm": {
+  "Derval": {
+   "images": 124,
+   "animals": 212,
+   "farm_date_groups": 1,
+   "leave_one_farm_out": {
+    "centre_ap": 0.07310023877308532,
+    "count_mae": 0.8870967741935484,
+    "centre_recall": 0.18396226415094338,
+    "worst_group_recall": 0.18396226415094338,
+    "empty_fp_per_image": 0.0
+   },
+   "reference_leave_one_farm_out": {
+    "centre_ap": 0.11796153363217583,
+    "count_mae": 0.8870967741935484,
+    "centre_recall": 0.25,
+    "worst_group_recall": 0.25,
+    "empty_fp_per_image": 0.0
+   }
+  },
+  "Jalogny": {
+   "images": 476,
+   "animals": 1407,
+   "farm_date_groups": 6,
+   "leave_one_farm_out": {
+    "centre_ap": 0.5774724818300848,
+    "count_mae": 1.3235294117647058,
+    "centre_recall": 0.7711442786069652,
+    "worst_group_recall": 0.6415094339622641,
+    "empty_fp_per_image": 1.2693409742120343
+   },
+   "reference_leave_one_farm_out": {
+    "centre_ap": 0.5892425616577931,
+    "count_mae": 1.4705882352941178,
+    "centre_recall": 0.7590618336886994,
+    "worst_group_recall": 0.5849056603773585,
+    "empty_fp_per_image": 1.4212034383954155
+   }
+  },
+  "Mauron": {
+   "images": 723,
+   "animals": 1773,
+   "farm_date_groups": 3,
+   "leave_one_farm_out": {
+    "centre_ap": 0.2765798678272145,
+    "count_mae": 1.1424619640387275,
+    "centre_recall": 0.4365482233502538,
+    "worst_group_recall": 0.32116788321167883,
+    "empty_fp_per_image": 0.2282793867120954
+   },
+   "reference_leave_one_farm_out": {
+    "centre_ap": 0.29304190093441085,
+    "count_mae": 1.1590594744121716,
+    "centre_recall": 0.45403271291596164,
+    "worst_group_recall": 0.26277372262773724,
+    "empty_fp_per_image": 0.2231686541737649
+   }
+  }
+ },
+ "pooled": {
+  "leave_one_farm_out": {
+   "centre_ap": 0.3840478594125201,
+   "count_mae": 1.183673469387755,
+   "centre_recall": 0.5595518867924528,
+   "worst_group_recall": 0.18396226415094338,
+   "empty_fp_per_image": 0.5662414131501472
+  },
+  "reference_leave_one_farm_out": {
+   "centre_ap": 0.4006109059016129,
+   "count_mae": 1.2456538170823885,
+   "centre_recall": 0.5678066037735849,
+   "worst_group_recall": 0.25,
+   "empty_fp_per_image": 0.6153091265947007
+  }
+ },
+ "paired_candidate_minus_reference": {
+  "centre_ap": {
+   "difference": -0.016563046489092792,
+   "ci95": [
+    -0.02910129215848511,
+    -0.007817109818961578
+   ]
+  },
+  "count_mae": {
+   "difference": -0.06198034769463345,
+   "ci95": [
+    -0.24602217936354875,
+    0.12669344095680504
+   ]
+  },
+  "centre_recall": {
+   "difference": -0.008254716981132115,
+   "ci95": [
+    -0.042729413422500806,
+    0.0235406917382796
+   ]
+  },
+  "worst_group_recall": {
+   "difference": -0.06603773584905662,
+   "ci95": [
+    -0.06603773584905662,
+    0.05839416058394159
+   ]
+  },
+  "empty_fp_per_image": {
+   "difference": -0.04906771344455352,
+   "ci95": [
+    -0.2910431415496539,
+    0.11921165455244352
+   ]
+  }
+ },
+ "environment": {
+  "generated_utc": "2026-11-25T09:54:30+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

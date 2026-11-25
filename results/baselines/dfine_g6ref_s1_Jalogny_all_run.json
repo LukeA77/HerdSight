@@ -1,0 +1,37 @@
+{
+ "finished_utc": "2026-11-24T23:09:05+00:00",
+ "detector": "dfine_g6ref_s1_Jalogny",
+ "fold": "all",
+ "farm": "Jalogny",
+ "onboard_long_side_px": null,
+ "n_images": 476,
+ "tile_px": 640,
+ "overlap_px": 192,
+ "onnx": "/root/hs_models_lofo/g6ref_s1_Jalogny/last.onnx",
+ "predictions": [
+  "/root/hs_storage/runs/baselines/dfine_g6ref_s1_Jalogny/fold0.jsonl",
+  "/root/hs_storage/runs/baselines/dfine_g6ref_s1_Jalogny/fold1.jsonl",
+  "/root/hs_storage/runs/baselines/dfine_g6ref_s1_Jalogny/fold2.jsonl"
+ ],
+ "environment": {
+  "generated_utc": "2026-11-24T23:09:05+00:00",
+  "cpu_model": "AMD EPYC 7702 64-Core Processor",
+  "logical_cores": 128,
+  "memory_gb": 503.53,
+  "gpus": [
+   "NVIDIA RTX 4000 Ada Generation, 20475 MiB"
+  ],
+  "os": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "packages": {
+   "numpy": "2.1.2",
+   "scipy": null,
+   "pyyaml": "6.0.3",
+   "torch": "2.8.0+cu128",
+   "onnxruntime": null,
+   "opencv-python-headless": null,
+   "pytest": null,
+   "ruff": null
+  }
+ }
+}

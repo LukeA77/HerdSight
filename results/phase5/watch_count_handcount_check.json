@@ -1,0 +1,74 @@
+{
+ "note": "Public sheep video (Zenodo 18889878, CC BY 4.0), hand counts; OWLv2 zero-shot detections; sheep, not cattle. Not a field result.",
+ "threshold_f1_on_annotated": {
+  "0.05": 0.415101958409045,
+  "0.1": 0.6403927694711002,
+  "0.15": 0.7868381825208414,
+  "0.2": 0.8668499847234953,
+  "0.25": 0.9034589571502323,
+  "0.3": 0.9129674468657519,
+  "0.35": 0.9106063763284018,
+  "0.4": 0.8991626708652402,
+  "0.45": 0.8715050565139798,
+  "0.5": 0.8083651399491094
+ },
+ "threshold": 0.3,
+ "watched_mae": 16.0,
+ "single_frame_mae": 18.75,
+ "clips_in_range": 1,
+ "passes": false,
+ "rows": [
+  {
+   "clip": "crop_23.11.23-2_15fps",
+   "hand_count": 46.5,
+   "watched": 66,
+   "low": 57,
+   "high": 71,
+   "single_frame_best": 73,
+   "in_range": false,
+   "px_per_m": 53.91666666666666,
+   "tentative_dropped": 147,
+   "frames": 20,
+   "dt_s": 0.2
+  },
+  {
+   "clip": "crop_23.11.23-4_15fps",
+   "hand_count": 47.0,
+   "watched": 35,
+   "low": 26,
+   "high": 40,
+   "single_frame_best": 30,
+   "in_range": false,
+   "px_per_m": 258.4166666666667,
+   "tentative_dropped": 25,
+   "frames": 46,
+   "dt_s": 0.2
+  },
+  {
+   "clip": "crop_23.11.23-9_15fps",
+   "hand_count": 47.0,
+   "watched": 44,
+   "low": 36,
+   "high": 54,
+   "single_frame_best": 43,
+   "in_range": true,
+   "px_per_m": 128.6666666666667,
+   "tentative_dropped": 60,
+   "frames": 71,
+   "dt_s": 0.2
+  },
+  {
+   "clip": "crop_23.11.23-11_15fps",
+   "hand_count": 46.5,
+   "watched": 17,
+   "low": 14,
+   "high": 20,
+   "single_frame_best": 19,
+   "in_range": false,
+   "px_per_m": 186.66666666666669,
+   "tentative_dropped": 92,
+   "frames": 71,
+   "dt_s": 0.2
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "note": "Simulation result, one flight on one world, wind 10.0 m/s (east +10.0, north +0.0); k 0.1837; force while holding position 3.67 N (CdA 0.06 m^2, assumed); not a field result. Camera return home (VISION=1).",
+ "keyframes": 27,
+ "px4_modes_after_gnss_loss": [
+  "loiter",
+  "offboard",
+  "return to launch",
+  "land"
+ ],
+ "blind_descent": false,
+ "touchdown_distance_from_launch_m": 289.02117919921875,
+ "frames_after_loss_above_5m": 256,
+ "fixed_share": 0.7734375,
+ "fix_error_median_m": 3.690770054960202,
+ "fix_error_max_m": 14.026193353864763,
+ "seconds_from_gnss_loss_to_touchdown": 537.172,
+ "position_sent_error_median_m": 198.2711570047444,
+ "position_sent_error_p90_m": 265.949794559085,
+ "passes": false,
+ "first_ground_contact_from_launch_m": 8.6,
+ "warning": "The drone first touched the ground 206 s into the log, 8.6 m from launch, but PX4 did not detect the landing until about 610 s; with motors running it was dragged about 200 m downwind across the ground. The touchdown field is the end position. Fails the rule as written; it also shows that landing detection in strong wind needs a fix."
+}
