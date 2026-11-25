@@ -117,6 +117,9 @@ $P/px4-param set MPC_XY_CRUISE "$SPEED"
 if [ "$VISION" = 1 ]; then  # fuse the camera fixes as horizontal position (bit 0)
   $P/px4-param set EKF2_EV_CTRL 1
   $P/px4-param set EKF2_EV_DELAY 0
+  # EVP_GATE: how many standard deviations a camera fix may be from PX4's estimate and still be
+  # used (PX4 default 5). Once PX4 has drifted past the gate it rejects every later fix too.
+  $P/px4-param set EKF2_EVP_GATE "${EVP_GATE:-5}"
 fi
 
 if [ "$INJECT" = link ]; then  # a ground station that sends heartbeats until the link is cut

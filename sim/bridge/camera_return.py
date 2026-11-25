@@ -12,7 +12,7 @@ the image centre is the drone's position plus the height times the tilt of the o
 Teach: while GPS is good, a frame becomes a keyframe, with the map position of its centre and its
 heading, whenever the drone is 40% of a footprint from every kept keyframe at a similar height,
 including during the climb over the take-off point so that the descent home can be matched too.
-Repeat: once GPS is lost (no 3D fix for 1.5 s of PX4 time), each new frame is matched to keyframes
+Repeat: once GPS is lost (no 3D fix for 3 s of PX4 time), each new frame is matched to keyframes
 taken at a similar height near the last position (herdsight.geo.visual_fix.locate, with the 75 m
 jump limit of the third camera test); the drone's position is the matched image centre minus the
 tilt offset. EKF2 only starts vision fusion when samples arrive at least every 0.2 s, so the camera
@@ -66,7 +66,8 @@ from add_body_camera import HEIGHT_PX, TOPIC, WIDTH_PX  # noqa: E402
 
 from herdsight.geo.visual_fix import Keyframe, locate, register  # noqa: E402
 
-GPS_TIMEOUT_S = 1.5
+# GPS arrives up to 1 s apart in the simulator; one dropped message must not count as loss
+GPS_TIMEOUT_S = 3.0
 NEW_KEYFRAME_SHARE = 0.4  # of the footprint width
 SAME_HEIGHT_SHARE = 0.15
 MIN_KEYFRAME_HEIGHT_M = 4.0
