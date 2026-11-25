@@ -2,7 +2,7 @@
 
 **Drone-based cattle counting that tells a farmer when animals may be missing.**
 
-HerdSight flies a survey over each camp (paddock), counts the cattle without counting the same animal twice, compares the count with the farm's herd records, and raises an alert only when animals are likely to be missing. The aim is to help farmers detect stock theft and straying early, in South Africa and the UK.
+HerdSight flies a survey over each camp (paddock), counts the cattle without counting the same animal twice, compares the count with the farm's herd records, and raises an alert only when animals are likely to be missing. The aim is to help farmers detect stock theft and straying early.
 
 > **Status: work in progress (about 55% of planned tasks complete).**
 > Nothing here has been flown on a real farm yet. Every result below comes from **public drone data** or **simulation** and is labelled as such. None is a field result.
