@@ -1,0 +1,51 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='720' height='400' viewBox='0 0 720 400' font-family='Helvetica, Arial, sans-serif'>
+<rect width='720' height='400' fill='white'/>
+<text x='70.0' y='30.0' font-size='17' fill='#1f2933' text-anchor='start' font-weight='bold'>Held-back test farm, scored once</text>
+<text x='70.0' y='50.0' font-size='12' fill='#616e7c' text-anchor='start' font-weight='normal'>62 photos, 1,355 cattle, never used in training or tuning. Public data, not a field result.</text>
+<line x1='70' x2='690' y1='320.0' y2='320.0' stroke='#d9dee3'/>
+<text x='62.0' y='324.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>0%</text>
+<line x1='70' x2='690' y1='270.0' y2='270.0' stroke='#d9dee3'/>
+<text x='62.0' y='274.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>20%</text>
+<line x1='70' x2='690' y1='220.0' y2='220.0' stroke='#d9dee3'/>
+<text x='62.0' y='224.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>40%</text>
+<line x1='70' x2='690' y1='170.0' y2='170.0' stroke='#d9dee3'/>
+<text x='62.0' y='174.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>60%</text>
+<line x1='70' x2='690' y1='120.0' y2='120.0' stroke='#d9dee3'/>
+<text x='62.0' y='124.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>80%</text>
+<line x1='70' x2='690' y1='70.0' y2='70.0' stroke='#d9dee3'/>
+<text x='62.0' y='74.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>100%</text>
+<rect x='85.5' y='147.5' width='32.2' height='172.5' fill='#2f6fb0' rx='2'/>
+<text x='101.6' y='141.5' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>69%</text>
+<rect x='121.7' y='120.0' width='32.2' height='200.0' fill='#616e7c' rx='2'/>
+<text x='137.8' y='114.0' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>80%</text>
+<text x='121.7' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Cattle found</text>
+<rect x='188.8' y='134.0' width='32.2' height='186.0' fill='#2f6fb0' rx='2'/>
+<text x='204.9' y='128.0' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>74%</text>
+<rect x='225.0' y='120.0' width='32.2' height='200.0' fill='#616e7c' rx='2'/>
+<text x='241.1' y='114.0' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>80%</text>
+<text x='225.0' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Marks correct</text>
+<rect x='292.2' y='169.7' width='32.2' height='150.3' fill='#2f6fb0' rx='2'/>
+<text x='308.2' y='163.7' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>60%</text>
+<rect x='328.3' y='165.0' width='32.2' height='155.0' fill='#616e7c' rx='2'/>
+<text x='344.4' y='159.0' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>62%</text>
+<text x='328.3' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Centre AP</text>
+<rect x='395.5' y='122.4' width='32.2' height='197.6' fill='#2f6fb0' rx='2'/>
+<text x='411.6' y='116.4' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>79%</text>
+<rect x='431.7' y='107.5' width='32.2' height='212.5' fill='#616e7c' rx='2'/>
+<text x='447.8' y='101.5' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>85%</text>
+<text x='431.7' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Count range held</text>
+<rect x='498.8' y='189.9' width='32.2' height='130.1' fill='#2f6fb0' rx='2'/>
+<text x='514.9' y='183.9' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>52%</text>
+<rect x='535.0' y='82.5' width='32.2' height='237.5' fill='#616e7c' rx='2'/>
+<text x='551.1' y='76.5' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>95%</text>
+<text x='535.0' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Herds found</text>
+<rect x='602.2' y='213.8' width='32.2' height='106.2' fill='#2f6fb0' rx='2'/>
+<text x='618.2' y='207.8' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>42%</text>
+<rect x='638.3' y='107.5' width='32.2' height='212.5' fill='#616e7c' rx='2'/>
+<text x='654.4' y='101.5' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>85%</text>
+<text x='638.3' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Herds grouped</text>
+<rect x='70' y='370' width='12' height='12' fill='#2f6fb0' rx='2'/>
+<text x='88.0' y='380.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>Result</text>
+<rect x='145.0' y='370' width='12' height='12' fill='#616e7c' rx='2'/>
+<text x='163.0' y='380.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>Target</text>
+</svg>

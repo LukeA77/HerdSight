@@ -1,0 +1,409 @@
+{
+ "note": "Held-back test farm (ICAERUS Other_farms), scored once. Public data, not a field result. Thresholds and count ranges fitted on cross-validation only.",
+ "started_utc": "2026-11-26T20:34:46+00:00",
+ "finished_utc": "2026-11-26T22:42:57+00:00",
+ "test_farm": "Other_farms",
+ "n_photos": 62,
+ "n_groups": 3,
+ "n_animals": 1355,
+ "models": {
+  "home_base": {
+   "onnx": "runs/phase7/models/final_s/last.onnx",
+   "sha256": "4039da9fd29c2ae2d4c985f6b52630ec0acff188b162e410b3d5b569825fb29a",
+   "calibration_run": "dfine_ref",
+   "path": "D:\\HerdSight-storage\\runs\\phase7\\models\\final_s\\last.onnx"
+  },
+  "onboard": {
+   "onnx": "runs/phase7/models/final_n1920/last.onnx",
+   "sha256": "97ebf2c8b38da151638696c5395d9c78fc798f13e221dd20ce7035d74a17f8ae",
+   "long_side_px": "1920",
+   "calibration_run": "dfine_onboard_1920",
+   "path": "D:\\HerdSight-storage\\runs\\phase7\\models\\final_n1920\\last.onnx"
+  }
+ },
+ "calibration": {
+  "home_base": {
+   "calibration_run": "dfine_ref",
+   "threshold": 0.8,
+   "fit_mae": 0.5714285714285714,
+   "fit_images": 1323,
+   "q": {
+    "0.68": 0.0,
+    "0.90": 0.7276068751089989,
+    "0.95": 1.3416407864998738
+   }
+  },
+  "onboard": {
+   "calibration_run": "dfine_onboard_1920",
+   "threshold": 0.64,
+   "fit_mae": 0.7180650037792895,
+   "fit_images": 1323,
+   "q": {
+    "0.68": 0.0,
+    "0.90": 1.0,
+    "0.95": 1.5
+   }
+  }
+ },
+ "s1_s2": {
+  "n_images": 62,
+  "n_groups": 3,
+  "n_true": 1355,
+  "counts": {
+   "mae": 2.225806451612903,
+   "rmse": 3.232895436481948,
+   "mean_signed_error": -1.5806451612903225,
+   "exact_share": 0.20967741935483872,
+   "n": 62,
+   "mae_ci95": [
+    1.3777777777777778,
+    6.4
+   ]
+  },
+  "recall": 0.8420664206642067,
+  "recall_ci95": [
+   0.4,
+   0.9094615284974089
+  ],
+  "precision": 0.9077167859984089,
+  "precision_ci95": [
+   0.7364864864864865,
+   0.9696641386782232
+  ],
+  "upright_ap": {
+   "ap50": 0.9234194401199177,
+   "ap50_95": 0.7464316602732086,
+   "n_true": 1355,
+   "max_dets": 1000,
+   "ap50_ci95": [
+    0.6564228394668294,
+    0.9801833784880294
+   ]
+  },
+  "by_band": [
+   {
+    "band": [
+     0,
+     1
+    ],
+    "n": 0
+   },
+   {
+    "band": [
+     1,
+     5
+    ],
+    "n": 7,
+    "relative_mae": 0.36904761904761907,
+    "relative_mae_ci95": null
+   },
+   {
+    "band": [
+     5,
+     20
+    ],
+    "n": 43,
+    "relative_mae": 0.21734370280881912,
+    "relative_mae_ci95": [
+     0.1857911825017088,
+     0.45714285714285713
+    ]
+   },
+   {
+    "band": [
+     20,
+     null
+    ],
+    "n": 12,
+    "relative_mae": 0.04528317387764857,
+    "relative_mae_ci95": null
+   }
+  ],
+  "intervals": {
+   "0.68": {
+    "coverage": 0.20967741935483872,
+    "coverage_ci95": [
+     0.0,
+     0.24444444444444444
+    ],
+    "mean_width": 0.0,
+    "coverage_by_band": [
+     {
+      "band": [
+       0,
+       1
+      ],
+      "n": 0,
+      "coverage": null
+     },
+     {
+      "band": [
+       1,
+       5
+      ],
+      "n": 7,
+      "coverage": 0.42857142857142855
+     },
+     {
+      "band": [
+       5,
+       20
+      ],
+      "n": 43,
+      "coverage": 0.18604651162790697
+     },
+     {
+      "band": [
+       20,
+       null
+      ],
+      "n": 12,
+      "coverage": 0.16666666666666666
+     }
+    ]
+   },
+   "0.90": {
+    "coverage": 0.7903225806451613,
+    "coverage_ci95": [
+     0.0,
+     0.8627450980392157
+    ],
+    "mean_width": 6.645161290322581,
+    "coverage_by_band": [
+     {
+      "band": [
+       0,
+       1
+      ],
+      "n": 0,
+      "coverage": null
+     },
+     {
+      "band": [
+       1,
+       5
+      ],
+      "n": 7,
+      "coverage": 1.0
+     },
+     {
+      "band": [
+       5,
+       20
+      ],
+      "n": 43,
+      "coverage": 0.7441860465116279
+     },
+     {
+      "band": [
+       20,
+       null
+      ],
+      "n": 12,
+      "coverage": 0.8333333333333334
+     }
+    ]
+   },
+   "0.95": {
+    "coverage": 0.967741935483871,
+    "coverage_ci95": [
+     0.6,
+     1.0
+    ],
+    "mean_width": 11.451612903225806,
+    "coverage_by_band": [
+     {
+      "band": [
+       0,
+       1
+      ],
+      "n": 0,
+      "coverage": null
+     },
+     {
+      "band": [
+       1,
+       5
+      ],
+      "n": 7,
+      "coverage": 1.0
+     },
+     {
+      "band": [
+       5,
+       20
+      ],
+      "n": 43,
+      "coverage": 0.9534883720930233
+     },
+     {
+      "band": [
+       20,
+       null
+      ],
+      "n": 12,
+      "coverage": 1.0
+     }
+    ]
+   }
+  },
+  "recall_by_altitude": {
+   "90m": {
+    "n_images": 4,
+    "n_true": 29,
+    "recall": 0.5172413793103449,
+    "recall_ci95": null
+   },
+   "100m": {
+    "n_images": 58,
+    "n_true": 1326,
+    "recall": 0.8491704374057315,
+    "recall_ci95": [
+     0.4,
+     0.927461139896373
+    ]
+   }
+  },
+  "centre_ap": {
+   "thresholds": [
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95
+   ],
+   "ap": [
+    0.7010015351687213,
+    0.687819497880506,
+    0.6771563119198764,
+    0.658614478282756,
+    0.6435171433766554,
+    0.6133891801168017,
+    0.5842861667011744,
+    0.5503425750339621,
+    0.4927064580871669,
+    0.4032704444108598
+   ],
+   "ap_mean": 0.601210379097848,
+   "n_true": 1355,
+   "n_pred": 38276,
+   "ap_mean_ci95": [
+    0.2825560081873562,
+    0.6245956578107112
+   ]
+  },
+  "centre_matched": {
+   "similarity_threshold": 0.5,
+   "recall": 0.6900369003690037,
+   "recall_ci95": [
+    0.2714285714285714,
+    0.7430051813471502
+   ],
+   "precision": 0.7438345266507558,
+   "precision_ci95": [
+    0.5,
+    0.7768147345612134
+   ]
+  }
+ },
+ "s7": {
+  "n_images_scored": 62,
+  "true_herds": 73,
+  "herd_recall_found": 0.5205479452054794,
+  "herd_recall_found_ci95": [
+   0.0,
+   1.0
+  ],
+  "herd_recall_grouped": 0.4246575342465753,
+  "herd_recall_grouped_ci95": [
+   0.0,
+   0.8466709346991023
+  ],
+  "false_triggers_per_image": 0.0,
+  "latency": "not measured: requires a Raspberry Pi 5 (D-10, D-29)"
+ },
+ "targets": {
+  "S1 centre-matched recall": {
+   "result": 0.6900369003690037,
+   "target": 0.8,
+   "rule": ">=",
+   "met": false
+  },
+  "S1 centre-matched precision": {
+   "result": 0.7438345266507558,
+   "target": 0.8,
+   "rule": ">=",
+   "met": false
+  },
+  "S1 centre AP": {
+   "result": 0.601210379097848,
+   "target": 0.62,
+   "rule": ">=",
+   "met": false
+  },
+  "S2 count MAE per photo": {
+   "result": 2.225806451612903,
+   "target": 0.45,
+   "rule": "<=",
+   "met": false
+  },
+  "S2 90% range coverage": {
+   "result": 0.7903225806451613,
+   "target": [
+    0.85,
+    0.95
+   ],
+   "rule": "in",
+   "met": false
+  },
+  "S2 90% range coverage, 20+ animals": {
+   "result": 0.8333333333333334,
+   "target": 0.85,
+   "rule": ">=",
+   "met": false
+  },
+  "S7 herds found": {
+   "result": 0.5205479452054794,
+   "target": 0.95,
+   "rule": ">=",
+   "met": false
+  },
+  "S7 herds found as a group": {
+   "result": 0.4246575342465753,
+   "target": 0.85,
+   "rule": ">=",
+   "met": false
+  },
+  "S7 false herd alarms per photo": {
+   "result": 0.0,
+   "target": 0.05,
+   "rule": "<=",
+   "met": true
+  }
+ },
+ "evaluation_config_hash": "b5d419b1c487",
+ "environment": {
+  "generated_utc": "2026-11-26T22:42:57+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}

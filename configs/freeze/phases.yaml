@@ -29,3 +29,22 @@ phases:
     - configs/evaluation.yaml
     - results/data/s3_truth.json
     - results/splits.json
+  # Phase 7 test run (scripts/phase7_test.py): the final models' hashes and calibration runs, the
+  # targets, the evaluation settings, the splits, and the code that predicts and scores. Frozen
+  # once the final models exist, before the test farm is read.
+  phase7:
+    - configs/phase7.yaml
+    - configs/specs.yaml
+    - configs/evaluation.yaml
+    - configs/baselines.yaml
+    - results/splits.json
+    - scripts/phase7_test.py
+    - scripts/score_baseline.py
+    - python/herdsight/detect/dfine_onnx.py
+    - python/herdsight/detect/run_tiled.py
+    - python/herdsight/detect/tiling.py
+    - python/herdsight/evaluate/centre_match.py
+    - python/herdsight/evaluate/counts.py
+    - python/herdsight/evaluate/herds.py
+    - python/herdsight/evaluate/stats.py
+    - python/herdsight/evaluate/upright_ap.py

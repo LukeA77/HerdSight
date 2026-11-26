@@ -206,6 +206,55 @@ def onboarding_figure(nums: dict) -> None:
     )
 
 
+def test_farm_figure(nums: dict) -> None:
+    """Phase 7: the final models scored once on the held-back farm, against the frozen targets."""
+    path = RES / "phase7" / "test_farm.json"
+    if not path.exists():
+        print("no phase7/test_farm.json; test farm figure skipped")
+        return
+    d = json.loads(path.read_text(encoding="utf-8"))
+    t = d["targets"]
+    rows = [
+        ("S1 centre-matched recall", "Cattle found"),
+        ("S1 centre-matched precision", "Marks correct"),
+        ("S1 centre AP", "Centre AP"),
+        ("S2 90% range coverage", "Count range held"),
+        ("S7 herds found", "Herds found"),
+        ("S7 herds found as a group", "Herds grouped"),
+    ]
+    result = [t[k]["result"] for k, _ in rows]
+    target = [
+        min(t[k]["target"]) if isinstance(t[k]["target"], list) else t[k]["target"] for k, _ in rows
+    ]
+    s2 = d["s1_s2"]
+    nums["test_photos"] = d["n_photos"]
+    nums["test_animals"] = d["n_animals"]
+    nums["test_found"] = round(t["S1 centre-matched recall"]["result"], 3)
+    nums["test_correct"] = round(t["S1 centre-matched precision"]["result"], 3)
+    nums["test_centre_ap"] = round(t["S1 centre AP"]["result"], 3)
+    nums["test_count_mae_per_photo"] = round(s2["counts"]["mae"], 2)
+    nums["test_mean_animals_per_photo"] = round(d["n_animals"] / d["n_photos"], 1)
+    nums["test_count_mean_signed_error"] = round(s2["counts"]["mean_signed_error"], 2)
+    nums["test_relative_error_20plus"] = round(s2["by_band"][3]["relative_mae"], 3)
+    nums["test_range_90_coverage"] = round(t["S2 90% range coverage"]["result"], 3)
+    nums["test_herds_found"] = round(t["S7 herds found"]["result"], 3)
+    nums["test_herds_grouped"] = round(t["S7 herds found as a group"]["result"], 3)
+    nums["test_false_herd_alarms_per_photo"] = t["S7 false herd alarms per photo"]["result"]
+    nums["test_targets_met"] = sum(bool(v["met"]) for v in t.values())
+    nums["test_targets_total"] = len(t)
+    bars(
+        "Held-back test farm, scored once",
+        f"{d['n_photos']} photos, {d['n_animals']:,} cattle, never used in training or tuning. "
+        "Public data, not a field result.",
+        [label for _, label in rows],
+        {"Result": result, "Target": target},
+        [BLUE, MUTED],
+        1.0,
+        lambda v: f"{v:.0%}",
+        "test_farm.svg",
+    )
+
+
 def gps_loss_figure(nums: dict) -> None:
     blind = [load(f"phase5/{p}.json") for p in ("gnss_loss_check", "gnss_loss_check_wind5")]
     cam = [load(f"phase5/camera_return_test2_wind{w}.json") for w in (0, 5)]
@@ -357,6 +406,7 @@ def main(argv: list[str] | None = None) -> int:
     detector_figure(nums)
     count_figure(nums)
     onboarding_figure(nums)
+    test_farm_figure(nums)
     gps_loss_figure(nums)
     flight_path_figure(args.storage, nums)
     thermal_figure(args.storage, nums)

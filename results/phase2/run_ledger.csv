@@ -53,3 +53,4 @@ g13-jalogny,2026-11-26,g13,Kaggle GPU (free),KAGGLE,0.00,641,0.00,done,"farm onb
 g13-mauron,2026-11-26,g13,Kaggle GPU (free),KAGGLE,0.00,598,0.00,done,"farm onboarding curve for Mauron: models trained with 50 and 200 of its 447 pool photos, scored on its later survey day (another season)"
 g13b-1,2026-11-26,g13b,NVIDIA GeForce RTX 4080 SUPER,COMMUNITY,0.28,9,0.05,failed,"setup error (the code snapshot was already unpacked; job looked for a zip); deleted, no training done"
 g13b-2,2026-11-26,g13b,NVIDIA GeForce RTX 4080 SUPER,COMMUNITY,0.28,131,0.59,done,"farm onboarding, Mauron with all 447 pool photos, scored on the same later-day tiles as g13-mauron (billed amount)"
+final-1,2026-11-26,final,NVIDIA GeForce RTX 3090,COMMUNITY,0.22,295,1.12,done,"Phase 7 final models (D-FINE S home base and D-FINE N at 1,920 px) trained once on all three folds; cost is the drop in account balance over the session"

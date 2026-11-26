@@ -1,0 +1,26 @@
+{
+ "frozen_utc": "2026-11-26T20:34:31+00:00",
+ "phase": "phase7",
+ "git_commit": "2f6bb07",
+ "uncommitted_changes_to_frozen_files": [
+  "?? configs/phase7.yaml",
+  "?? scripts/phase7_test.py"
+ ],
+ "files": {
+  "configs/phase7.yaml": "2884d0aee281c8b6f29e6b47e65251eb059f95e9a19884fd2e2bec9930b30021",
+  "configs/specs.yaml": "dd4889e562affa69ce1c7e25da35d23c573da63dc4e8f4bb076200438833b9d5",
+  "configs/evaluation.yaml": "4bf12773c36e9242858075488dae7c85d474e56f42d331b74e77b3cec0df2e82",
+  "configs/baselines.yaml": "911239c9453936f897479bde3d20b71f120cb9b98158c38962593747969de007",
+  "results/splits.json": "57da76a152c040541f09b32061b010d1392490f1b04700e0f0dfbc2ee23d9257",
+  "scripts/phase7_test.py": "dc3741d5539a1073189aa21f18379a18167fa5cf726ec2072fecbb1d359e8c69",
+  "scripts/score_baseline.py": "00ab052e3ea3348eae6c63164b60a32db18ba513dad14331ddc57b9cdb1f92d2",
+  "python/herdsight/detect/dfine_onnx.py": "480b0527ea19ec4e60a2bf485115a0670d93ef6c4a170b7c0ecebbc31e3f7a43",
+  "python/herdsight/detect/run_tiled.py": "29daf0ca5fedd7a5f975b9714cfb80001b4c13916309c82dff711c468ca910bb",
+  "python/herdsight/detect/tiling.py": "6b8c2e891b07c90a946b3be4459b35f99b925437d840452149881d1b5856fa2a",
+  "python/herdsight/evaluate/centre_match.py": "7ebf4f2b6c0625e5635e30c5fd028a8bbc78cb8ea1324c0b091461cefda7bab0",
+  "python/herdsight/evaluate/counts.py": "69330d6737b1bfca2f3af40752af577a0375475a93b5ee1390221a9a5cd0407c",
+  "python/herdsight/evaluate/herds.py": "e0620bf39304a3028f8791516c8d5fd96b126f074b3af5d0d86baf738df6925a",
+  "python/herdsight/evaluate/stats.py": "3565f8a2bc402783140b207dd3739edf16b04c00d08a71bf4c54e406bb600052",
+  "python/herdsight/evaluate/upright_ap.py": "bc40f4e3d6f72ab413b96ad0bbe330779964daa632c8aab191ae1bb2899c4d8e"
+ }
+}

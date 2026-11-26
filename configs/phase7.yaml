@@ -1,0 +1,21 @@
+# Phase 7: the final models scored once on the held-back test farm (scripts/phase7_test.py).
+# Frozen with the script, the targets and the evaluation settings (configs/freeze/phases.yaml,
+# phase7) before the test run. Model files live in the storage folder (HERDSIGHT_STORAGE); the
+# test run refuses a file whose SHA-256 differs from the value here.
+
+home_base:
+  value:
+    onnx: runs/phase7/models/final_s/last.onnx
+    sha256: 4039da9fd29c2ae2d4c985f6b52630ec0acff188b162e410b3d5b569825fb29a
+    calibration_run: dfine_ref
+  placeholder: FINAL_HOME_BASE
+  source: "D-52: the reference model (D-FINE S, reference recipe, seed 0, 72 epochs; D-50, D-22) trained once on all three cross-validation folds (gpu/runpod/job_final.sh, session final-1). Its operating threshold and count ranges are fitted on the reference recipe's out-of-fold predictions (dfine_ref), the same method as every Phase 2 score, never on the test farm."
+
+onboard:
+  value:
+    onnx: runs/phase7/models/final_n1920/last.onnx
+    sha256: 97ebf2c8b38da151638696c5395d9c78fc798f13e221dd20ce7035d74a17f8ae
+    long_side_px: 1920
+    calibration_run: dfine_onboard_1920
+  placeholder: FINAL_ONBOARD
+  source: "D-51 record (G10b): D-FINE N on stills reduced to a 1,920 px long side, adopted over 1,280 px; trained once on all three folds (session final-1). Threshold from the G10b out-of-fold predictions (dfine_onboard_1920). Latency on a Raspberry Pi 5 is still not measured (D-29)."

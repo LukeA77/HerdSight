@@ -4,7 +4,7 @@ HerdSight counts cattle from the air and tells a farmer when animals may be miss
 
 A drone surveys each camp (paddock). The software counts the cattle in the photos, making sure an animal seen in several photos is counted once, and compares the total with the farm's herd records. It raises an alert only when the shortfall is clear enough to act on. The aim is to help farmers notice stock theft and straying early.
 
-> **Status: work in progress, about 70% of planned tasks complete.**
+> **Status: work in progress, about 75% of planned tasks complete.**
 > HerdSight has not been flown on a real farm. Every result below comes from public drone data or from simulation, and each one says which. None is a field result.
 
 ---
@@ -42,7 +42,7 @@ flowchart LR
 | 4 | Herd records and alerts | Done; to be refitted with the final accuracy |
 | 5 | Simulated drone mission | 16 of 16 overnight simulated missions passed their checks; GPS-loss return works up to 5 m/s wind |
 | 6 | Farmer dashboard | Prototype built; usability test with five people next |
-| 7 | Final test on the held-back farm, and write-up | Not started |
+| 7 | Final test on the held-back farm, and write-up | Test run once: 1 of 9 targets met (see 8 below); write-up in progress |
 
 ## Results so far
 
@@ -109,22 +109,37 @@ early indication, not a guarantee. Using all 447 of Mauron's photos did not help
 with 200), so beyond a couple of hundred photos from the same days the gain stops. Photos from more days and seasons may
 matter more than the number of photos; that is the next thing to test.
 
+### 8. The final test on a farm held back from the start (public data)
+
+![Results on the held-back test farm against the targets](docs/figures/test_farm.svg)
+
+One farm in the public data was set aside before any work began and never used for training or tuning. At the end I
+froze the final models and settings, then scored that farm once: 62 photos with 1,355 cattle. The final detector found
+69% of the cattle, and 74% of its marks were cattle, against targets of 80% for both. That is between how it did on
+farms it had seen (73%) and on a farm left out of training (55%). It met 1 of the 9 targets I set before the work started.
+
+Counting suffered most from how crowded the photos were. They hold about 22 cattle each, against about 3 in the photos
+used for training, and the count was off by 2.2 animals per photo on average (target 0.45). On photos with 20 or more
+animals that is under 5%, but the ranges I give for each count were fitted on sparse photos and held the true count
+on only 79% of photos, against 85%. The small onboard model, meant to spot herds during the flight, found only 52% of the
+herds on this farm, against 99% in earlier tests, because the animals stood close together. I report these as misses
+and did not rerun the test. The fixes I would try first are count ranges that grow with the count and teaching the
+detector each new farm (section 7).
+
 ## How the work is done
 
 - Before each experiment I write down what I expect and what counts as a pass (`docs/hypotheses.md`). Results that miss are reported as misses.
-- Each decision is logged with the options considered, the evidence, and the easier option I turned down. There are about 50 so far (`docs/decisions.md`).
-- The targets were fixed before the main work began. One farm is held back, untouched, for a single final test in Phase 7.
+- Each decision is logged with the options considered, the evidence, and the easier option I turned down. There are about 55 so far (`docs/decisions.md`).
+- The targets were fixed before the main work began. One farm was held back, untouched, for a single final test in Phase 7, and was scored once.
 - Scripts produce the headline numbers and figures from `results/` (for this page, `scripts/make_readme_figures.py`). No number is typed in by hand.
 - What the system cannot do is listed in `docs/limitations.md`.
 
 ## What comes next
 
-1. Finish the onboard detector, choose the final model, and rerun counting and alerts with it.
-2. Make the camera return reliable in wind, and finish the night (thermal) and second-look missions.
-3. Run the mission tests automatically on every change, with a larger run every night.
-4. Build the farmer dashboard and test it with five people who are not technical.
-5. Freeze everything, run the held-back test farm once, and write up the results.
-6. After that, trials with a real drone on real farms, with a clear go/no-go decision first.
+1. Make the count ranges scale with the number of animals, and check them again on cross-validation (the test farm is not reused).
+2. Run the dashboard test with five people who are not technical.
+3. Make the camera return reliable in wind (a stabilised camera is the likely fix).
+4. Then trials with a real drone on real farms, set up farm by farm, with a clear go/no-go decision first.
 
 ## Repository layout
 
