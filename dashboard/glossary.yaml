@@ -28,10 +28,12 @@ status:
   check: {colour: amber, label: "Checking again"}
   moved: {colour: amber, label: "May have moved"}
   missing: {colour: red, label: "Some may be missing"}
-  unknown: {colour: grey, label: "Not checked yet"}
+  unknown: {colour: grey, label: "Not fully checked"}
 
 messages:
   ok: "{camp}: {count} {animals} counted (likely between {low} and {high}). That matches your records ({expected})."
+  ok_more: "{camp}: {count} {animals} counted (likely between {low} and {high}). That is more than your records show ({expected}), so your records may need updating."
+  ok_fewer: "{camp}: {count} {animals} counted (likely between {low} and {high}), a few fewer than your records show ({expected}). Not enough to raise an alert yet."
   check: "{camp}: fewer {animals} than your records show. The drone will check again before raising an alert."
   missing_checked_twice: "Some {animals} may be missing in {camp}: about {short_low} to {short_high} fewer than your records show ({expected}). Checked twice."
   missing_large: "Some {animals} may be missing in {camp}: about {short_low} to {short_high} fewer than your records show ({expected}). This is a large difference, so you are told straight away."

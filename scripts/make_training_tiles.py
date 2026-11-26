@@ -61,13 +61,25 @@ def coco_set(tiles: list[dict]) -> dict:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--onboard", action="store_true")
+    ap.add_argument(
+        "--long-side",
+        type=int,
+        default=None,
+        help="onboard only: reduce stills to this long side instead of onboard_long_side_px "
+        "(package herdsight_onboard_tiles_<px>_v1; G10b, D-51)",
+    )
     args = ap.parse_args(argv)
+    if args.long_side and not args.onboard:
+        ap.error("--long-side applies with --onboard only")
     cfg = load_config("baselines")
     tile = int(cfg.require("dfine_tile_px"))
     if args.onboard:
         NAME = "herdsight_onboard_tiles_v1"
         overlap = int(cfg.require("onboard_tile_overlap_px"))
         long_side = int(cfg.require("onboard_long_side_px"))
+        if args.long_side:
+            long_side = args.long_side
+            NAME = f"herdsight_onboard_tiles_{long_side}_v1"
     else:
         NAME = "herdsight_tiles_v1"
         overlap = int(cfg.require("tile_overlap_px"))

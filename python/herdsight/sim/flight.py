@@ -26,6 +26,7 @@ from numpy.typing import NDArray
 
 from herdsight.count.identities import constrained_identities
 from herdsight.count.link import match_points
+from herdsight.count.watch import track_positions, watch_count
 from herdsight.herd import messages
 from herdsight.herd.alerts import Rule
 from herdsight.herd.sim import ErrorModel, Survey, measured_flight_error
@@ -38,6 +39,9 @@ GEOTAG_GATE_M = 3.0  # as scripts/link_animals.py (GEOTAG_PAIR_GATE_M)
 REGISTRATION_GATE_SHARE = 0.5  # of the median animal length, as scripts/link_animals.py
 LEVELS = (0.68, 0.9, 0.95)
 SORTIE_GAP_S = 300.0  # battery swap between sorties
+# second look (_drafts/second-look-spec.md): watch height, duration, frame rate, spots, trigger
+WATCH_S, WATCH_DT_S, MAX_SPOTS = 45.0, 0.5, 5
+TOUCHING_SHARE, MIN_GROUP = 0.3, 3
 
 
 def _interp_quantiles(q: dict[str, float], rng: np.random.Generator, n: int) -> NDArray:
@@ -125,6 +129,7 @@ class Flight:
     herd_modes: int = 0
     false_triggers: int = 0
     min_descent_clearance_m: float | None = None  # nearest animal where the drone descended
+    watches: list[dict] = field(default_factory=list)  # second-look spots and their counts
 
 
 def _in_footprint(
@@ -156,6 +161,7 @@ def fly(
     new_farm: bool = False,
     herd_mode: bool = False,
     force_trigger: bool = False,
+    second_look: bool = False,
 ) -> Flight:
     """Fly the plan in time over the moving herd. `stop_after`: the drone turns home after
     this many stills (battery, wind or a failure). `herd_mode`: herds found by the onboard
@@ -247,6 +253,36 @@ def fly(
         advance((plan.height_agl - h) / climb, *centre, plan.height_agl)
         advance(np.linalg.norm(back_to - centre) / plan.speed, *back_to, plan.height_agl)
 
+    def watch(centre: NDArray, back_to: NDArray) -> dict:
+        """Second look: descend clear of the animals, hover over the spot at the herd-mode floor
+        for WATCH_S taking frames every WATCH_DT_S, count by tracking (herdsight.count.watch)."""
+        h = hm_min_h
+        away = back_to - centre
+        away = away / np.linalg.norm(away) if np.linalg.norm(away) > 1e-6 else np.array([1.0, 0])
+        r = clearance
+        for _ in range(30):
+            descent = centre + away * r
+            near = float(np.min(np.linalg.norm(herd.pos - descent, axis=1)))
+            if near >= clearance:
+                break
+            r += 10.0
+        clearances.append(near)
+        advance(np.linalg.norm(descent - back_to) / plan.speed, *descent, plan.height_agl)
+        advance((plan.height_agl - h) / climb, *descent, h)
+        advance(np.linalg.norm(centre - descent) / plan.speed, *centre, h)
+        scale = h / plan.height_agl
+        fp = (plan.footprint_m[0] * scale, plan.footprint_m[1] * scale)
+        frames = []
+        for _ in range(int(round(WATCH_S / WATCH_DT_S))):
+            frames.append(capture(-2, centre.copy(), h / focal, fp, "watch").points)
+            advance(WATCH_DT_S, *centre, h)
+        tracks = track_positions(frames, dt_s=WATCH_DT_S)
+        wc = watch_count(tracks, len(frames))
+        err = rng.normal(0, sigma, 2)  # the watch is placed by its own geotag at home base
+        advance((plan.height_agl - h) / climb, *centre, plan.height_agl)
+        return {"centre_est": centre + err, "footprint": fp, "count": int(wc["count"]),
+                "t": clock["t"]}  # fmt: skip
+
     taken = 0
     for so in plan.sorties:
         prev = so.launch
@@ -276,6 +312,12 @@ def fly(
             clock["t"] += SORTIE_GAP_S
             continue
         break
+    watches: list[dict] = []
+    if second_look:
+        here = stills[-1].centre.copy() if stills else plan.sorties[0].launch
+        for spot in _uncertain_spots(stills, world.median_adult_m, link_m, plan):
+            watches.append(watch(spot, here))
+            here = spot
     survey = [s.centre for s in stills if s.kind == "survey"]
     coverage = _coverage(world.camp, survey, plan)
     return Flight(
@@ -296,7 +338,50 @@ def fly(
         herd_modes=counters["herd"],
         false_triggers=counters["false"],
         min_descent_clearance_m=min(clearances) if clearances else None,
+        watches=watches,
     )
+
+
+def _uncertain_spots(
+    stills: list[Still], animal_m: float, link_m: float, plan: Plan
+) -> list[NDArray]:
+    """Second-look spots from the survey's own detections (spec section 1, touching criterion).
+
+    In each survey still, detections (placed by the still's geotag) are chained within link_m;
+    a group of at least MIN_GROUP is uncertain when at least TOUCHING_SHARE of its animals have
+    another within one animal length. Spots closer than half a watch footprint are merged;
+    the MAX_SPOTS largest are kept, largest first."""
+    from scipy.cluster.hierarchy import fcluster, linkage
+
+    cands: list[tuple[float, NDArray]] = []
+    for s in stills:
+        if s.kind != "survey" or len(s.points) < MIN_GROUP:
+            continue
+        pts = s.points + s.geotag_error
+        lab = fcluster(linkage(pts, "single"), link_m, "distance")
+        for k in np.unique(lab):
+            g = pts[lab == k]
+            if len(g) < MIN_GROUP:
+                continue
+            d = np.linalg.norm(g[:, None] - g[None], axis=2)
+            np.fill_diagonal(d, np.inf)
+            share = float((d.min(1) < animal_m).mean())
+            if share >= TOUCHING_SHARE:
+                cands.append((len(g) * share, g.mean(0)))
+    # watch footprints must not overlap, or animals in the overlap would be counted twice
+    scale = float(load_config("mission").require("herd_mode_height_m")) / plan.height_agl
+    across, along = plan.footprint_m[0] * scale, plan.footprint_m[1] * scale
+    c_, s_ = np.cos(plan.heading_rad), np.sin(plan.heading_rad)
+    rot = np.array([[c_, -s_], [s_, c_]])
+    spots: list[tuple[float, NDArray]] = []
+    for w, c in sorted(cands, key=lambda t: -t[0]):
+        apart = all(
+            abs(((c - sc) @ rot)[0]) >= along or abs(((c - sc) @ rot)[1]) >= across
+            for _, sc in spots
+        )
+        if apart:
+            spots.append((w, c))
+    return [c for _, c in spots[:MAX_SPOTS]]
 
 
 def _coverage(camp: Camp, centres: list[NDArray], plan: Plan, step: float = 5.0) -> float:
@@ -354,8 +439,22 @@ def count_flight(flight: Flight, median_animal_m: float, rng: np.random.Generato
             for a, b, dist in match_points(pi, pj, gate):
                 links.append(((i, a), (j, b), dist))
     ids = constrained_identities(counts, links)
+    watched = 0
+    if flight.watches:  # second look: watched counts replace the survey's animals in each spot
+        kept = []
+        for ident in ids:
+            pos = np.mean([points[i][k] + st[i].geotag_error for i, k in ident], axis=0)
+            inside = any(
+                _in_footprint(pos[None], w["centre_est"], flight.heading, w["footprint"])[0][0]
+                for w in flight.watches
+            )
+            if not inside:
+                kept.append(ident)
+        ids = kept
+        watched = sum(w["count"] for w in flight.watches)
     return {
-        "count": len(ids),
+        "count": len(ids) + watched,
+        "watched_spots": len(flight.watches),
         "detections": int(sum(counts)),
         "pairs_registered": accepted,
         "pairs_geotag": fallback,

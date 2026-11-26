@@ -1,0 +1,20 @@
+{
+ "note": "Simulation result, one flight on one world, no wind; not a field result. Camera return home (VISION=1).",
+ "keyframes": 2,
+ "px4_modes_after_gnss_loss": [
+  "loiter"
+ ],
+ "blind_descent": false,
+ "touchdown_distance_from_launch_m": 0.017006192356348038,
+ "frames_after_loss_above_5m": 31,
+ "fixed_share": 1.0,
+ "fix_error_median_m": 0.01118033988749895,
+ "fix_error_max_m": 0.018027756377319952,
+ "seconds_from_gnss_loss_to_touchdown": -18446744073682.945,
+ "position_sent_error_median_m": 0.01118033988749895,
+ "position_sent_error_p90_m": 0.018027756377319952,
+ "passes": true,
+ "passes_test5_rule": null,
+ "rule": "test 5 (same limits as test 4; rangefinder assumed), fixed before flying",
+ "invalid": "INVALID: the mission failed 18 s into the teach square, before GPS loss; PX4 never started a return."
+}

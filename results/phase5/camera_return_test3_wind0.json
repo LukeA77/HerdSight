@@ -1,0 +1,19 @@
+{
+ "note": "Simulation result, one flight on one world, no wind; not a field result. Camera return home (VISION=1).",
+ "keyframes": 40,
+ "px4_modes_after_gnss_loss": [
+  "offboard",
+  "return to launch"
+ ],
+ "blind_descent": false,
+ "touchdown_distance_from_launch_m": 77.41709899902344,
+ "frames_after_loss_above_5m": 952,
+ "fixed_share": 0.2510504201680672,
+ "fix_error_median_m": 5.614133949239202,
+ "fix_error_max_m": 26.329658182361577,
+ "seconds_from_gnss_loss_to_touchdown": 259.476,
+ "position_sent_error_median_m": 66.83962862764852,
+ "position_sent_error_p90_m": 84.50782487688765,
+ "passes": false,
+ "rescored": "25 Nov 2026: position_sent_error_* now counts frames at 5 m and above only (before, frames logged after touchdown swamped it); pass/fail unchanged."
+}

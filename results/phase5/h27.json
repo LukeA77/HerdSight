@@ -1,0 +1,1300 @@
+{
+ "set": "validation",
+ "seed": 20261122,
+ "flights": 40,
+ "note": "Simulation results on simulated camps; not field results.",
+ "mean_error_survey_only": 0.2524931116573879,
+ "mean_error_herd_mode": 0.2174151127412009,
+ "mean_error_second_look": 0.22471367645359477,
+ "mean_signed_second_look": 0.20773978261402926,
+ "ratio_second_look_to_survey": 0.8899794334132667,
+ "ratio_ci95": [
+  0.7917605012757454,
+  1.0164144076591768
+ ],
+ "watched_spots": 93,
+ "H27_rule": "held if second-look / survey-only mean error <= 2/3 and below herd mode",
+ "H27": "not held",
+ "rows": [
+  {
+   "camp_ha": 5.888647327326219,
+   "animals": 62,
+   "groups": 2,
+   "survey_only": {
+    "count": 77,
+    "error": 0.24193548387096775,
+    "signed": 0.24193548387096775,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 71,
+    "error": 0.14516129032258066,
+    "signed": 0.14516129032258066,
+    "herd_mode_stills": 2,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.952353489928996,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 78,
+    "error": 0.25806451612903225,
+    "signed": 0.25806451612903225,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 37.13662785260971,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 11.873372155667962,
+   "animals": 117,
+   "groups": 1,
+   "survey_only": {
+    "count": 120,
+    "error": 0.02564102564102564,
+    "signed": 0.02564102564102564,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 110,
+    "error": 0.05982905982905983,
+    "signed": -0.05982905982905983,
+    "herd_mode_stills": 5,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 30.908785771045668,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 121,
+    "error": 0.03418803418803419,
+    "signed": 0.03418803418803419,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 35.29526189439048,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 12.878040949187408,
+   "animals": 64,
+   "groups": 2,
+   "survey_only": {
+    "count": 65,
+    "error": 0.015625,
+    "signed": 0.015625,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 65,
+    "error": 0.015625,
+    "signed": 0.015625,
+    "herd_mode_stills": 5,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 34.857609219258606,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 67,
+    "error": 0.046875,
+    "signed": 0.046875,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 36.31919711712836,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 10.347387280283968,
+   "animals": 142,
+   "groups": 1,
+   "survey_only": {
+    "count": 148,
+    "error": 0.04225352112676056,
+    "signed": 0.04225352112676056,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 140,
+    "error": 0.014084507042253521,
+    "signed": -0.014084507042253521,
+    "herd_mode_stills": 4,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 30.388836626022016,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 147,
+    "error": 0.035211267605633804,
+    "signed": 0.035211267605633804,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.387024382882675,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 9.550662175456674,
+   "animals": 93,
+   "groups": 1,
+   "survey_only": {
+    "count": 112,
+    "error": 0.20430107526881722,
+    "signed": 0.20430107526881722,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 105,
+    "error": 0.12903225806451613,
+    "signed": 0.12903225806451613,
+    "herd_mode_stills": 5,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 31.728414260205398,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 110,
+    "error": 0.1827956989247312,
+    "signed": 0.1827956989247312,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 36.149112548581954,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 11.740448174688662,
+   "animals": 46,
+   "groups": 1,
+   "survey_only": {
+    "count": 51,
+    "error": 0.10869565217391304,
+    "signed": 0.10869565217391304,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 58,
+    "error": 0.2608695652173913,
+    "signed": 0.2608695652173913,
+    "herd_mode_stills": 7,
+    "false_triggers": 4,
+    "min_descent_clearance_m": 37.35459092804349,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 51,
+    "error": 0.10869565217391304,
+    "signed": 0.10869565217391304,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.664573313783784,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 8.630708851441407,
+   "animals": 146,
+   "groups": 2,
+   "survey_only": {
+    "count": 152,
+    "error": 0.0410958904109589,
+    "signed": 0.0410958904109589,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 134,
+    "error": 0.0821917808219178,
+    "signed": -0.0821917808219178,
+    "herd_mode_stills": 7,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 34.72481128014159,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 151,
+    "error": 0.03424657534246575,
+    "signed": 0.03424657534246575,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 34.67097427871203,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 12.178772682142645,
+   "animals": 131,
+   "groups": 1,
+   "survey_only": {
+    "count": 142,
+    "error": 0.08396946564885496,
+    "signed": 0.08396946564885496,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 132,
+    "error": 0.007633587786259542,
+    "signed": 0.007633587786259542,
+    "herd_mode_stills": 5,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 30.18536087246542,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 140,
+    "error": 0.06870229007633588,
+    "signed": 0.06870229007633588,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.864464669764345,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 11.95442336843328,
+   "animals": 53,
+   "groups": 2,
+   "survey_only": {
+    "count": 81,
+    "error": 0.5283018867924528,
+    "signed": 0.5283018867924528,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 80,
+    "error": 0.5094339622641509,
+    "signed": 0.5094339622641509,
+    "herd_mode_stills": 10,
+    "false_triggers": 8,
+    "min_descent_clearance_m": 30.53190295908705,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 80,
+    "error": 0.5094339622641509,
+    "signed": 0.5094339622641509,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 36.56980248305051,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 15.438251220455227,
+   "animals": 122,
+   "groups": 2,
+   "survey_only": {
+    "count": 134,
+    "error": 0.09836065573770492,
+    "signed": 0.09836065573770492,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 131,
+    "error": 0.07377049180327869,
+    "signed": 0.07377049180327869,
+    "herd_mode_stills": 8,
+    "false_triggers": 4,
+    "min_descent_clearance_m": 30.702880085458414,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 127,
+    "error": 0.040983606557377046,
+    "signed": 0.040983606557377046,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 34.27528394366303,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 7.669431971290854,
+   "animals": 42,
+   "groups": 1,
+   "survey_only": {
+    "count": 80,
+    "error": 0.9047619047619048,
+    "signed": 0.9047619047619048,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 73,
+    "error": 0.7380952380952381,
+    "signed": 0.7380952380952381,
+    "herd_mode_stills": 7,
+    "false_triggers": 5,
+    "min_descent_clearance_m": 36.81994600870095,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 81,
+    "error": 0.9285714285714286,
+    "signed": 0.9285714285714286,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 35.594634367393496,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 10.134343033460237,
+   "animals": 70,
+   "groups": 2,
+   "survey_only": {
+    "count": 76,
+    "error": 0.08571428571428572,
+    "signed": 0.08571428571428572,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 64,
+    "error": 0.08571428571428572,
+    "signed": -0.08571428571428572,
+    "herd_mode_stills": 5,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 34.04444906457819,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 77,
+    "error": 0.1,
+    "signed": 0.1,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 33.975798313236766,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 12.999356214505626,
+   "animals": 116,
+   "groups": 1,
+   "survey_only": {
+    "count": 122,
+    "error": 0.05172413793103448,
+    "signed": 0.05172413793103448,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 117,
+    "error": 0.008620689655172414,
+    "signed": 0.008620689655172414,
+    "herd_mode_stills": 7,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 30.691140224676538,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 121,
+    "error": 0.04310344827586207,
+    "signed": 0.04310344827586207,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.321706565687453,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 9.60374044102506,
+   "animals": 96,
+   "groups": 2,
+   "survey_only": {
+    "count": 113,
+    "error": 0.17708333333333334,
+    "signed": 0.17708333333333334,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 78,
+    "error": 0.1875,
+    "signed": -0.1875,
+    "herd_mode_stills": 4,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 30.021586550483267,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 113,
+    "error": 0.17708333333333334,
+    "signed": 0.17708333333333334,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.50868089090778,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 11.172707613435621,
+   "animals": 134,
+   "groups": 2,
+   "survey_only": {
+    "count": 125,
+    "error": 0.06716417910447761,
+    "signed": -0.06716417910447761,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 98,
+    "error": 0.26865671641791045,
+    "signed": -0.26865671641791045,
+    "herd_mode_stills": 10,
+    "false_triggers": 6,
+    "min_descent_clearance_m": 30.43407230508641,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 131,
+    "error": 0.022388059701492536,
+    "signed": -0.022388059701492536,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 32.03450714253354,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 15.090850293802784,
+   "animals": 47,
+   "groups": 1,
+   "survey_only": {
+    "count": 68,
+    "error": 0.44680851063829785,
+    "signed": 0.44680851063829785,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 64,
+    "error": 0.3617021276595745,
+    "signed": 0.3617021276595745,
+    "herd_mode_stills": 5,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 36.38912431802716,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 67,
+    "error": 0.425531914893617,
+    "signed": 0.425531914893617,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.497769794188642,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 6.396706377407706,
+   "animals": 99,
+   "groups": 1,
+   "survey_only": {
+    "count": 83,
+    "error": 0.16161616161616163,
+    "signed": -0.16161616161616163,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 60,
+    "error": 0.3939393939393939,
+    "signed": -0.3939393939393939,
+    "herd_mode_stills": 5,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 30.74453910819706,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 85,
+    "error": 0.1414141414141414,
+    "signed": -0.1414141414141414,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.2068494692428,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 13.815333774723067,
+   "animals": 100,
+   "groups": 2,
+   "survey_only": {
+    "count": 131,
+    "error": 0.31,
+    "signed": 0.31,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 125,
+    "error": 0.25,
+    "signed": 0.25,
+    "herd_mode_stills": 7,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 32.1668523173358,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 132,
+    "error": 0.32,
+    "signed": 0.32,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 34.980240002227546,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 9.53623305124997,
+   "animals": 123,
+   "groups": 2,
+   "survey_only": {
+    "count": 132,
+    "error": 0.07317073170731707,
+    "signed": 0.07317073170731707,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 135,
+    "error": 0.0975609756097561,
+    "signed": 0.0975609756097561,
+    "herd_mode_stills": 5,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 32.55396338668899,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 127,
+    "error": 0.032520325203252036,
+    "signed": 0.032520325203252036,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 35.29172951154981,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 14.170107256563261,
+   "animals": 76,
+   "groups": 1,
+   "survey_only": {
+    "count": 91,
+    "error": 0.19736842105263158,
+    "signed": 0.19736842105263158,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 85,
+    "error": 0.11842105263157894,
+    "signed": 0.11842105263157894,
+    "herd_mode_stills": 7,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 33.3372222171644,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 89,
+    "error": 0.17105263157894737,
+    "signed": 0.17105263157894737,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 33.83370389044872,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 9.190110711383763,
+   "animals": 92,
+   "groups": 1,
+   "survey_only": {
+    "count": 344,
+    "error": 2.739130434782609,
+    "signed": 2.739130434782609,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 290,
+    "error": 2.152173913043478,
+    "signed": 2.152173913043478,
+    "herd_mode_stills": 5,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 30.985160609200662,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 260,
+    "error": 1.826086956521739,
+    "signed": 1.826086956521739,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.83920038611146,
+    "watched_spots": 5
+   }
+  },
+  {
+   "camp_ha": 15.35471016944056,
+   "animals": 98,
+   "groups": 1,
+   "survey_only": {
+    "count": 107,
+    "error": 0.09183673469387756,
+    "signed": 0.09183673469387756,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 104,
+    "error": 0.061224489795918366,
+    "signed": 0.061224489795918366,
+    "herd_mode_stills": 6,
+    "false_triggers": 4,
+    "min_descent_clearance_m": 30.450473188706898,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 107,
+    "error": 0.09183673469387756,
+    "signed": 0.09183673469387756,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 34.71350362083828,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 10.601158771895639,
+   "animals": 145,
+   "groups": 1,
+   "survey_only": {
+    "count": 162,
+    "error": 0.11724137931034483,
+    "signed": 0.11724137931034483,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 148,
+    "error": 0.020689655172413793,
+    "signed": 0.020689655172413793,
+    "herd_mode_stills": 5,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 30.760648256934324,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 165,
+    "error": 0.13793103448275862,
+    "signed": 0.13793103448275862,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 33.173434234374966,
+    "watched_spots": 5
+   }
+  },
+  {
+   "camp_ha": 8.404308994914901,
+   "animals": 147,
+   "groups": 1,
+   "survey_only": {
+    "count": 171,
+    "error": 0.16326530612244897,
+    "signed": 0.16326530612244897,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 148,
+    "error": 0.006802721088435374,
+    "signed": 0.006802721088435374,
+    "herd_mode_stills": 6,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 32.95229542012948,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 167,
+    "error": 0.1360544217687075,
+    "signed": 0.1360544217687075,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.198394284936754,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 12.963500388148049,
+   "animals": 81,
+   "groups": 2,
+   "survey_only": {
+    "count": 102,
+    "error": 0.25925925925925924,
+    "signed": 0.25925925925925924,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 100,
+    "error": 0.2345679012345679,
+    "signed": 0.2345679012345679,
+    "herd_mode_stills": 7,
+    "false_triggers": 5,
+    "min_descent_clearance_m": 32.068820776096246,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 103,
+    "error": 0.2716049382716049,
+    "signed": 0.2716049382716049,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 35.374345739830034,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 8.984601608584455,
+   "animals": 98,
+   "groups": 2,
+   "survey_only": {
+    "count": 118,
+    "error": 0.20408163265306123,
+    "signed": 0.20408163265306123,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 104,
+    "error": 0.061224489795918366,
+    "signed": 0.061224489795918366,
+    "herd_mode_stills": 4,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 30.99236407933373,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 115,
+    "error": 0.17346938775510204,
+    "signed": 0.17346938775510204,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.563878433015404,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 14.190881116533538,
+   "animals": 122,
+   "groups": 2,
+   "survey_only": {
+    "count": 133,
+    "error": 0.09016393442622951,
+    "signed": 0.09016393442622951,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 113,
+    "error": 0.07377049180327869,
+    "signed": -0.07377049180327869,
+    "herd_mode_stills": 9,
+    "false_triggers": 4,
+    "min_descent_clearance_m": 30.08099193005912,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 136,
+    "error": 0.11475409836065574,
+    "signed": 0.11475409836065574,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 32.50670990107009,
+    "watched_spots": 4
+   }
+  },
+  {
+   "camp_ha": 8.712578385146177,
+   "animals": 76,
+   "groups": 2,
+   "survey_only": {
+    "count": 86,
+    "error": 0.13157894736842105,
+    "signed": 0.13157894736842105,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 67,
+    "error": 0.11842105263157894,
+    "signed": -0.11842105263157894,
+    "herd_mode_stills": 3,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 35.146834478549096,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 84,
+    "error": 0.10526315789473684,
+    "signed": 0.10526315789473684,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 37.033303929267284,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 15.124781404162986,
+   "animals": 73,
+   "groups": 2,
+   "survey_only": {
+    "count": 78,
+    "error": 0.0684931506849315,
+    "signed": 0.0684931506849315,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 69,
+    "error": 0.0547945205479452,
+    "signed": -0.0547945205479452,
+    "herd_mode_stills": 6,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 34.97726199459989,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 83,
+    "error": 0.136986301369863,
+    "signed": 0.136986301369863,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.84854182362004,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 11.51954865713055,
+   "animals": 134,
+   "groups": 1,
+   "survey_only": {
+    "count": 146,
+    "error": 0.08955223880597014,
+    "signed": 0.08955223880597014,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 168,
+    "error": 0.2537313432835821,
+    "signed": 0.2537313432835821,
+    "herd_mode_stills": 8,
+    "false_triggers": 4,
+    "min_descent_clearance_m": 30.710609206247504,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 144,
+    "error": 0.07462686567164178,
+    "signed": 0.07462686567164178,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.393711702659964,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 14.873060009424034,
+   "animals": 146,
+   "groups": 2,
+   "survey_only": {
+    "count": 178,
+    "error": 0.2191780821917808,
+    "signed": 0.2191780821917808,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 170,
+    "error": 0.1643835616438356,
+    "signed": 0.1643835616438356,
+    "herd_mode_stills": 8,
+    "false_triggers": 5,
+    "min_descent_clearance_m": 31.606943989182664,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 177,
+    "error": 0.21232876712328766,
+    "signed": 0.21232876712328766,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.518366831374873,
+    "watched_spots": 4
+   }
+  },
+  {
+   "camp_ha": 11.242293367693343,
+   "animals": 52,
+   "groups": 1,
+   "survey_only": {
+    "count": 78,
+    "error": 0.5,
+    "signed": 0.5,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 74,
+    "error": 0.4230769230769231,
+    "signed": 0.4230769230769231,
+    "herd_mode_stills": 2,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 136.96183441401107,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 75,
+    "error": 0.4423076923076923,
+    "signed": 0.4423076923076923,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.48551882356501,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 5.966211011948512,
+   "animals": 74,
+   "groups": 1,
+   "survey_only": {
+    "count": 56,
+    "error": 0.24324324324324326,
+    "signed": -0.24324324324324326,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 38,
+    "error": 0.4864864864864865,
+    "signed": -0.4864864864864865,
+    "herd_mode_stills": 3,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 34.164892394661834,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 61,
+    "error": 0.17567567567567569,
+    "signed": -0.17567567567567569,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 32.27880644300374,
+    "watched_spots": 1
+   }
+  },
+  {
+   "camp_ha": 11.65826691413596,
+   "animals": 46,
+   "groups": 2,
+   "survey_only": {
+    "count": 56,
+    "error": 0.21739130434782608,
+    "signed": 0.21739130434782608,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 46,
+    "error": 0.0,
+    "signed": 0.0,
+    "herd_mode_stills": 3,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 35.00037210101859,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 53,
+    "error": 0.15217391304347827,
+    "signed": 0.15217391304347827,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.9284176279548,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 8.979114958516076,
+   "animals": 125,
+   "groups": 2,
+   "survey_only": {
+    "count": 132,
+    "error": 0.056,
+    "signed": 0.056,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 121,
+    "error": 0.032,
+    "signed": -0.032,
+    "herd_mode_stills": 5,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 32.397092335398064,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 130,
+    "error": 0.04,
+    "signed": 0.04,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.32152043181375,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 12.221351267154134,
+   "animals": 131,
+   "groups": 1,
+   "survey_only": {
+    "count": 158,
+    "error": 0.20610687022900764,
+    "signed": 0.20610687022900764,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 150,
+    "error": 0.1450381679389313,
+    "signed": 0.1450381679389313,
+    "herd_mode_stills": 7,
+    "false_triggers": 4,
+    "min_descent_clearance_m": 32.79211619141743,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 160,
+    "error": 0.22137404580152673,
+    "signed": 0.22137404580152673,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 32.46428005398538,
+    "watched_spots": 4
+   }
+  },
+  {
+   "camp_ha": 6.757996793051129,
+   "animals": 129,
+   "groups": 2,
+   "survey_only": {
+    "count": 150,
+    "error": 0.16279069767441862,
+    "signed": 0.16279069767441862,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 113,
+    "error": 0.12403100775193798,
+    "signed": -0.12403100775193798,
+    "herd_mode_stills": 5,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 32.55681734353614,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 163,
+    "error": 0.26356589147286824,
+    "signed": 0.26356589147286824,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 35.7358642753605,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 12.615364467189083,
+   "animals": 98,
+   "groups": 2,
+   "survey_only": {
+    "count": 100,
+    "error": 0.02040816326530612,
+    "signed": 0.02040816326530612,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 82,
+    "error": 0.16326530612244897,
+    "signed": -0.16326530612244897,
+    "herd_mode_stills": 6,
+    "false_triggers": 3,
+    "min_descent_clearance_m": 35.63932304781836,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 105,
+    "error": 0.07142857142857142,
+    "signed": 0.07142857142857142,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 30.33595138060689,
+    "watched_spots": 3
+   }
+  },
+  {
+   "camp_ha": 7.70858598246817,
+   "animals": 136,
+   "groups": 1,
+   "survey_only": {
+    "count": 157,
+    "error": 0.15441176470588236,
+    "signed": 0.15441176470588236,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 141,
+    "error": 0.03676470588235294,
+    "signed": 0.03676470588235294,
+    "herd_mode_stills": 4,
+    "false_triggers": 2,
+    "min_descent_clearance_m": 31.349237753323862,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 156,
+    "error": 0.14705882352941177,
+    "signed": 0.14705882352941177,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 31.23099941527818,
+    "watched_spots": 2
+   }
+  },
+  {
+   "camp_ha": 9.575967188734305,
+   "animals": 76,
+   "groups": 1,
+   "survey_only": {
+    "count": 114,
+    "error": 0.5,
+    "signed": 0.5,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": null,
+    "watched_spots": 0
+   },
+   "herd_mode": {
+    "count": 97,
+    "error": 0.27631578947368424,
+    "signed": 0.27631578947368424,
+    "herd_mode_stills": 3,
+    "false_triggers": 1,
+    "min_descent_clearance_m": 31.854925601709766,
+    "watched_spots": 0
+   },
+   "second_look": {
+    "count": 115,
+    "error": 0.5131578947368421,
+    "signed": 0.5131578947368421,
+    "herd_mode_stills": 0,
+    "false_triggers": 0,
+    "min_descent_clearance_m": 36.60539627627629,
+    "watched_spots": 1
+   }
+  }
+ ]
+}

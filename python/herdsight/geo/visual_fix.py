@@ -42,6 +42,9 @@ class Fix:
     east_north: np.ndarray
     inliers: int
     keyframe: int
+    # live-frame pixels to map (2x3), so callers can check the implied scale and rotation
+    to_map: np.ndarray | None = None
+    matches: int = 0  # ratio-test matches before RANSAC
 
 
 def _orb(n: int = 2000) -> cv2.ORB:
@@ -98,7 +101,9 @@ def locate(
         where = k.to_map @ np.array([*centre_kf, 1.0])
         if max_jump_m is not None and np.linalg.norm(where - prior_east_north) > max_jump_m:
             continue
-        best = Fix(where, n_in, int(i))
+        to_map = k.to_map[:, :2] @ sim
+        to_map[:, 2] += k.to_map[:, 2]
+        best = Fix(where, n_in, int(i), to_map, len(good))
     return best
 
 

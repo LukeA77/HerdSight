@@ -95,9 +95,9 @@ herd_mode_min_animals:
   source: "Design choice: herd mode is used for groups of at least this many animals, where double counting between survey stills is most likely; smaller groups are left to the survey."
 
 herd_trigger_source:
-  value: results/baselines/dfine_onboard_herds.json
+  value: results/baselines/dfine_onboard_1920_herds.json
   placeholder: HERD_TRIGGER
-  source: "Onboard herd trigger performance measured in Phase 1 (S7): a herd in view is found and grouped with probability herd_recall_grouped, and herd-free stills trigger falsely at false_triggers_per_image. Used as the S7 error model in simulation; latency is the D-29 estimate (not measured)."
+  source: "Onboard herd trigger performance measured on public data (S7): a herd in view is found and grouped with probability herd_recall_grouped, and herd-free stills trigger falsely at false_triggers_per_image. Used as the S7 error model in simulation; latency is the D-29 estimate (not measured). Since 2026-11-26 the adopted 1,920 px onboard model (D-51, G10b); H21 and H27 were run with the 1,280 px Phase 1 model (results/baselines/dfine_onboard_herds.json)."
 
 herd_mode_window_s:
   value: 600

@@ -5,6 +5,18 @@
  "flight_count_error_current": 0.267,
  "flight_count_error_perfect_detector": 0.145,
  "flight_count_error_add_up": 2.479,
+ "onboarding_jalogny_0_photos_found": 0.682,
+ "onboarding_jalogny_0_photos_correct": 0.706,
+ "onboarding_jalogny_50_photos_found": 0.697,
+ "onboarding_jalogny_50_photos_correct": 0.746,
+ "onboarding_jalogny_168_photos_found": 0.757,
+ "onboarding_jalogny_168_photos_correct": 0.808,
+ "onboarding_mauron_0_photos_found": 0.532,
+ "onboarding_mauron_0_photos_correct": 0.622,
+ "onboarding_mauron_50_photos_found": 0.596,
+ "onboarding_mauron_50_photos_correct": 0.619,
+ "onboarding_mauron_200_photos_found": 0.679,
+ "onboarding_mauron_200_photos_correct": 0.707,
  "gps_loss_blind_landing_m": [
   198.6,
   906.5

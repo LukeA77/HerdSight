@@ -85,7 +85,14 @@ MicroXRCEAgent udp4 -p 8888 > "$OUT/agent.log" 2>&1 &
 pids=($!)
 
 cd "$PX4_DIR"
-HEADLESS=1 PX4_GZ_WORLD=herdsight_farm PX4_SIM_MODEL=gz_x500 PX4_SYS_AUTOSTART=4001 \
+# RANGEFINDER=1 flies PX4's x500 with a downward laser rangefinder (LW20 model, 100 m), so the
+# camera return knows its height above the ground without GPS; off by default
+if [ "${RANGEFINDER:-0}" = 1 ]; then
+  SIM_MODEL=gz_x500_lidar_down; AUTOSTART=4016
+else
+  SIM_MODEL=gz_x500; AUTOSTART=4001
+fi
+HEADLESS=1 PX4_GZ_WORLD=herdsight_farm PX4_SIM_MODEL=$SIM_MODEL PX4_SYS_AUTOSTART=$AUTOSTART \
   ./build/px4_sitl_default/bin/px4 -d > "$OUT/px4.log" 2>&1 &
 pids+=($!)
 
@@ -120,6 +127,11 @@ if [ "$VISION" = 1 ]; then  # fuse the camera fixes as horizontal position (bit 
   # EVP_GATE: how many standard deviations a camera fix may be from PX4's estimate and still be
   # used (PX4 default 5). Once PX4 has drifted past the gate it rejects every later fix too.
   $P/px4-param set EKF2_EVP_GATE "${EVP_GATE:-5}"
+  # RETURN_HEIGHT_M: after GPS loss, come down to this height over the spot, then return at it
+  # (camera fixes are better lower down); PX4's return height is set to match. Off by default.
+  if [ -n "${RETURN_HEIGHT_M:-}" ]; then
+    $P/px4-param set RTL_RETURN_ALT "$RETURN_HEIGHT_M"
+  fi
 fi
 
 if [ "$INJECT" = link ]; then  # a ground station that sends heartbeats until the link is cut
@@ -148,6 +160,8 @@ if [ "$VISION" = 1 ]; then
     $([ "$VALIDATE" = 1 ] && echo --validate) \
     --lag-s "${LAG_S:-0}" \
     $([ "${RECORD:-0}" = 1 ] && echo --record "$OUT/frames") \
+    $([ "${RANGEFINDER:-0}" = 1 ] && echo --rangefinder) \
+    $([ -n "${RETURN_HEIGHT_M:-}" ] && echo --return-height "$RETURN_HEIGHT_M") \
     > "$OUT/camera_return.log" 2>&1 &
   pids+=($!)
 fi
@@ -172,16 +186,16 @@ while [ $SECONDS -lt $end ]; do
     if [ "$INJECT" = herd ]; then
       ros2 topic pub --once herdsight/herd_found herdsight_msgs/msg/HerdFound         "{centre: {x: ${HERD_X:-120.0}, y: ${HERD_Y:-0.0}, z: 0.0}, extent_m: 20.0, animals_estimate: 20}" > /dev/null
     elif [ "$INJECT" = gnss ]; then
-      # PX4's simulator bridge occasionally misses the change; confirm the fix is gone, else resend
-      for attempt in 1 2 3 4 5; do
+      # PX4's simulator bridge can take several seconds to apply the change; wait for the fix to
+      # go and resend the same value. Never set the satellites back: an earlier retry loop that
+      # did so restored GPS and the loss was never applied (development flight, 25 Nov)
+      for attempt in $(seq 1 15); do
         $P/px4-param set SIM_GPS_USED 0
-        sleep 3
-        if $P/px4-listener sensor_gps -n 1 | grep -q "fix_type: 0"; then
-          echo "GPS fix removed (attempt $attempt)"
+        sleep 1
+        if $P/px4-listener sensor_gps -n 1 | grep -q "fix_type: [012]"; then
+          echo "GPS fix removed (after ${attempt} s)"
           break
         fi
-        $P/px4-param set SIM_GPS_USED 10
-        sleep 1
       done
     elif [ "$INJECT" = link ]; then
       kill "$GCS_PID"

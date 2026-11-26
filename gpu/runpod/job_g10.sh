@@ -16,7 +16,9 @@ case "$RECIPE" in
     *) echo "HS_G10_RECIPE must be g2 or phase1 (got '$RECIPE')"; exit 2 ;;
 esac
 download_tiles "$PKGROOT" || exit 3
-PKG=$(package_dir "$PKGROOT" herdsight_tiles_v1) || { echo "tile package not found"; exit 3; }
+# D-29: the onboard detector trains on stills reduced before tiling (the first G10 run used the
+# full-resolution package by mistake, D-51)
+PKG=$(package_dir "$PKGROOT" "${HS_PACKAGE:-herdsight_onboard_tiles_v1}") || { echo "tile package not found"; exit 3; }
 EXTRA=(--recipe phase1)
 if [ "$RECIPE" = g2 ]; then
     HN=$(package_dir "$PKGROOT" herdsight_hardneg_v1) || { echo "hard-negative package not found"; exit 3; }

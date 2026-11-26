@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f5130">
+  <title>HerdSight</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+  <header class="top">
+    <a href="#/" class="brand">HerdSight</a>
+    <nav>
+      <a href="#/" data-nav="map">Farm</a>
+      <a href="#/alerts" data-nav="alerts">Alerts <span id="alert-count" class="badge" hidden></span></a>
+    </nav>
+  </header>
+  <div id="offline" class="banner" hidden>No signal: showing the last results saved on this phone.</div>
+  <div id="sim" class="banner sim" hidden>Made-up data for testing. Not from a real farm.</div>
+  <main id="view" aria-live="polite"><p class="muted">Loading…</p></main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+ "note": "Simulation result, one flight on one world, no wind; not a field result. Camera return home (VISION=1).",
+ "keyframes": 39,
+ "px4_modes_after_gnss_loss": [
+  "loiter",
+  "offboard",
+  "return to launch",
+  "blind descent"
+ ],
+ "blind_descent": true,
+ "touchdown_distance_from_launch_m": 11.377941131591797,
+ "frames_after_loss_above_5m": 553,
+ "fixed_share": 0.32730560578661844,
+ "fix_error_median_m": 2.8460498941515415,
+ "fix_error_max_m": 12.157569658447361,
+ "seconds_from_gnss_loss_to_touchdown": 126.944,
+ "position_sent_error_median_m": 6.584846239662695,
+ "position_sent_error_p90_m": 18.60568749120134,
+ "valid": true,
+ "passes_test4_rule": false,
+ "passes": false,
+ "rule": "test 6 (test 4 limits; design range up to 5 m/s; 10 m/s reported only), fixed before flying",
+ "in_design_range": true
+}

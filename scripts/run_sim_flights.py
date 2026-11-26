@@ -1,6 +1,6 @@
 """Simulated survey flights without ROS: H20 and H21 (Phase 5 plan; validation seeds only).
 
-Usage: python scripts/run_sim_flights.py [--experiment h20|h21] [--flights N] [--workers N]
+Usage: python scripts/run_sim_flights.py [--experiment h20|h21|h27] [--flights N] [--workers N]
 
 H21: camps whose animals stand in one or two packed groups of 20 or more, flown with and without
 herd mode (same world and draws); H21 holds if the mean error with herd mode is at most two
@@ -37,7 +37,7 @@ RATIO_MIN = 1.5  # H20
 H21_MAX = 2 / 3  # H21
 
 
-def herd_mode_flight(job: tuple[int, int]) -> dict:
+def herd_mode_flight(job: tuple[int, int], second_look: bool = False) -> dict:
     seed, i = job
     rng = np.random.default_rng([seed, 21, i])
     camp = Camp.rectangle(rng.uniform(250, 500), rng.uniform(200, 400), f"camp{i}")
@@ -45,19 +45,55 @@ def herd_mode_flight(job: tuple[int, int]) -> dict:
     s = replace(settings_from_config(rng), groups=int(rng.integers(1, 3)))
     plan = plan_survey(camp, PlannerSettings.from_config("uk"))
     out = {"camp_ha": camp.area_m2() / 1e4, "animals": n, "groups": s.groups}
-    for hm in (False, True):
+    arms = ("survey_only", "herd_mode") + (("second_look",) if second_look else ())
+    for arm in arms:
         world = build_world(camp, n, np.random.default_rng([seed, 21, i, 1]), herd_settings=s)
-        flight = fly(world, plan, np.random.default_rng([seed, 21, i, 2]), herd_mode=hm)
+        flight = fly(
+            world,
+            plan,
+            np.random.default_rng([seed, 21, i, 2]),
+            herd_mode=arm == "herd_mode",
+            second_look=arm == "second_look",
+        )
         res = count_flight(flight, world.median_adult_m, np.random.default_rng([seed, 21, i, 3]))
-        out["herd_mode" if hm else "survey_only"] = {
+        out[arm] = {
             "count": res["count"],
             "error": abs(res["count"] - n) / n,
             "signed": (res["count"] - n) / n,
             "herd_mode_stills": res["herd_mode_stills"],
             "false_triggers": flight.false_triggers,
             "min_descent_clearance_m": flight.min_descent_clearance_m,
+            "watched_spots": len(flight.watches),
         }
     return out
+
+
+def second_look_flight(job: tuple[int, int]) -> dict:
+    return herd_mode_flight(job, second_look=True)
+
+
+def run_h27(rows: list[dict], seed: int) -> dict:
+    a = np.array([r["survey_only"]["error"] for r in rows])
+    h = np.array([r["herd_mode"]["error"] for r in rows])
+    b = np.array([r["second_look"]["error"] for r in rows])
+    rng = np.random.default_rng(seed + 27)
+    boot = []
+    for _ in range(2000):
+        k = rng.integers(0, len(rows), len(rows))
+        boot.append(b[k].mean() / max(a[k].mean(), 1e-9))
+    ratio = float(b.mean() / max(a.mean(), 1e-9))
+    held = ratio <= H21_MAX and b.mean() < h.mean()
+    return {
+        "mean_error_survey_only": float(a.mean()),
+        "mean_error_herd_mode": float(h.mean()),
+        "mean_error_second_look": float(b.mean()),
+        "mean_signed_second_look": float(np.mean([r["second_look"]["signed"] for r in rows])),
+        "ratio_second_look_to_survey": ratio,
+        "ratio_ci95": [float(np.quantile(boot, 0.025)), float(np.quantile(boot, 0.975))],
+        "watched_spots": int(sum(r["second_look"]["watched_spots"] for r in rows)),
+        "H27_rule": "held if second-look / survey-only mean error <= 2/3 and below herd mode",
+        "H27": "held" if held else "not held",
+    }
 
 
 def run_h21(rows: list[dict], seed: int) -> dict:
@@ -113,25 +149,29 @@ def one_flight(job: tuple[int, int]) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--experiment", default="h20", choices=("h20", "h21"))
+    ap.add_argument("--experiment", default="h20", choices=("h20", "h21", "h27"))
     ap.add_argument("--flights", type=int, default=60)
     ap.add_argument("--workers", type=int, default=6)
     args = ap.parse_args(argv)
     seed = int(load_config("sim_worlds").require("seed_validation"))
-    if args.experiment == "h21":
+    if args.experiment in ("h21", "h27"):
+        h27 = args.experiment == "h27"
+        fn = second_look_flight if h27 else herd_mode_flight
         with ProcessPoolExecutor(args.workers) as pool:
-            rows = list(pool.map(herd_mode_flight, [(seed, i) for i in range(args.flights)]))
+            rows = list(pool.map(fn, [(seed, i) for i in range(args.flights)]))
         out = {
             "set": "validation",
             "seed": seed,
             "flights": len(rows),
             "note": "Simulation results on simulated camps; not field results.",
-            **run_h21(rows, seed),
+            **(run_h27(rows, seed) if h27 else run_h21(rows, seed)),
             "rows": rows,
         }
         dest = REPO_ROOT / "results" / "phase5"
         dest.mkdir(parents=True, exist_ok=True)
-        (dest / "h21.json").write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
+        (dest / ("h27.json" if h27 else "h21.json")).write_text(
+            json.dumps(out, indent=1) + "\n", encoding="utf-8"
+        )
         print(json.dumps({k: v for k, v in out.items() if k != "rows"}, indent=1))
         return 0
     with ProcessPoolExecutor(args.workers) as pool:

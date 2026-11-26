@@ -1,0 +1,6 @@
+{
+ "note": "Simulation; not a field result.",
+ "passes_test5_rule": null,
+ "invalid": "INVALID: Docker Desktop crashed during start-up; the flight never ran.",
+ "rule": "test 5 (same limits as test 4; rangefinder assumed), fixed before flying"
+}

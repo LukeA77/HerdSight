@@ -1,0 +1,108 @@
+{
+ "note": "Public data (ICAERUS), two farms, one random draw of photos per k; tile scores on the farm's later survey days only. Not a field result.",
+ "claim_rule": "supported if some k <= 200 reaches centre recall >= 0.8 and precision >= 0.8",
+ "farms": {
+  "Jalogny": {
+   "setup": {
+    "pool_days": [
+     "20230623",
+     "20230627"
+    ],
+    "seed": 0,
+    "counts": {
+     "pool_photos": 168,
+     "test_tiles": 2219,
+     "k50": {
+      "photos": 50,
+      "farm_tiles": 265,
+      "all_tiles": 4073
+     },
+     "k200": {
+      "photos": 168,
+      "farm_tiles": 958,
+      "all_tiles": 4766
+     }
+    }
+   },
+   "curve": {
+    "0": {
+     "test_tiles": 2219,
+     "test_animals": 2647,
+     "centre_recall": 0.6823,
+     "centre_precision": 0.7055,
+     "count_mae_per_tile": 0.1978,
+     "centre_ap": 0.5323
+    },
+    "50": {
+     "test_tiles": 2219,
+     "test_animals": 2647,
+     "centre_recall": 0.6974,
+     "centre_precision": 0.7456,
+     "count_mae_per_tile": 0.1843,
+     "centre_ap": 0.5634
+    },
+    "200": {
+     "test_tiles": 2219,
+     "test_animals": 2647,
+     "centre_recall": 0.7571,
+     "centre_precision": 0.8077,
+     "count_mae_per_tile": 0.1785,
+     "centre_ap": 0.6404
+    }
+   },
+   "supported": false,
+   "fewest_photos_meeting_rule": null
+  },
+  "Mauron": {
+   "setup": {
+    "pool_days": [
+     "20230605",
+     "20230607"
+    ],
+    "seed": 0,
+    "counts": {
+     "pool_photos": 447,
+     "test_tiles": 1648,
+     "k50": {
+      "photos": 50,
+      "farm_tiles": 183,
+      "all_tiles": 3834
+     },
+     "k200": {
+      "photos": 200,
+      "farm_tiles": 745,
+      "all_tiles": 4396
+     }
+    }
+   },
+   "curve": {
+    "0": {
+     "test_tiles": 1648,
+     "test_animals": 1514,
+     "centre_recall": 0.5324,
+     "centre_precision": 0.6219,
+     "count_mae_per_tile": 0.2816,
+     "centre_ap": 0.3446
+    },
+    "50": {
+     "test_tiles": 1648,
+     "test_animals": 1514,
+     "centre_recall": 0.5964,
+     "centre_precision": 0.6189,
+     "count_mae_per_tile": 0.1875,
+     "centre_ap": 0.3652
+    },
+    "200": {
+     "test_tiles": 1648,
+     "test_animals": 1514,
+     "centre_recall": 0.679,
+     "centre_precision": 0.7065,
+     "count_mae_per_tile": 0.1535,
+     "centre_ap": 0.4519
+    }
+   },
+   "supported": false,
+   "fewest_photos_meeting_rule": null
+  }
+ }
+}

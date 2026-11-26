@@ -13,7 +13,8 @@
  "fix_error_median_m": 0.8672784490118334,
  "fix_error_max_m": 9.476187260707762,
  "seconds_from_gnss_loss_to_touchdown": 119.53999999999999,
- "position_sent_error_median_m": 0.40672472263190496,
- "position_sent_error_p90_m": 4.627988958598127,
- "passes": true
+ "position_sent_error_median_m": 0.8654623042050993,
+ "position_sent_error_p90_m": 5.5179505840457646,
+ "passes": true,
+ "rescored": "25 Nov 2026: position_sent_error_* now counts frames at 5 m and above only (before, frames logged after touchdown swamped it); pass/fail unchanged."
 }

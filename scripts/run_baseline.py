@@ -57,6 +57,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--gpu", action="store_true", help="D-FINE on CUDA; stops if it is unavailable")
     ap.add_argument("--farm", default=None, help="only this farm (leave-one-farm-out models)")
+    ap.add_argument(
+        "--long-side", type=int, default=None, help="--onboard: long side to reduce stills to"
+    )
     args = ap.parse_args(argv)
     if args.farm and (args.detector != "dfine" or args.fold != "all" or args.onboard):
         ap.error("--farm applies to D-FINE tile models with --fold all")
@@ -67,7 +70,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.detector != "dfine":
             ap.error("--onboard applies to the dfine detector only")
         overlap = int(cfg.require("onboard_tile_overlap_px"))
-        long_side = int(cfg.require("onboard_long_side_px"))
+        long_side = args.long_side or int(cfg.require("onboard_long_side_px"))
     run_name = args.name or ("dfine_onboard" if args.onboard else args.detector)
     sp = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"]
     folds = [f"fold{k}" for k in range(sp["n_folds"])]

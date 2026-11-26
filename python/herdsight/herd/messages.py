@@ -122,7 +122,17 @@ def survey_record(
             }
         )
     if status == "ok":
-        notes.insert(0, message("ok", camp=camp, count=s.count, low=low, high=high, expected=exp))
+        # "matches" only when the records fall inside the likely range (found with the mock farm,
+        # Phase 6: a camp with extra animals was told its count matched)
+        key = (
+            "ok" if exp is None or low <= exp <= high else ("ok_more" if low > exp else "ok_fewer")
+        )
+        notes.insert(0, message(key, camp=camp, count=s.count, low=low, high=high, expected=exp))
+        if key == "ok_more":
+            # clearly more animals than the records is never shown as "all here": it is either a
+            # records change or a counting problem (simulated flights with grazing herds counted
+            # several times over, 26 Nov), so the camp is flagged for a check
+            status = "check"
     return {
         "schema_version": "1",
         "survey_id": f"{farm_id}-{s.camp}-{s.day:g}-{mode}",

@@ -14,9 +14,10 @@
  "fix_error_median_m": 3.690770054960202,
  "fix_error_max_m": 14.026193353864763,
  "seconds_from_gnss_loss_to_touchdown": 537.172,
- "position_sent_error_median_m": 198.2711570047444,
- "position_sent_error_p90_m": 265.949794559085,
+ "position_sent_error_median_m": 3.536377328016163,
+ "position_sent_error_p90_m": 7.375841741258629,
  "passes": false,
  "first_ground_contact_from_launch_m": 8.6,
- "warning": "The drone first touched the ground 206 s into the log, 8.6 m from launch, but PX4 did not detect the landing until about 610 s; with motors running it was dragged about 200 m downwind across the ground. The touchdown field is the end position. Fails the rule as written; it also shows that landing detection in strong wind needs a fix."
+ "warning": "The drone first touched the ground 206 s into the log, 8.6 m from launch, but PX4 did not detect the landing until about 610 s; with motors running it was dragged about 200 m downwind across the ground. The touchdown field is the end position. Fails the rule as written; it also shows that landing detection in strong wind needs a fix.",
+ "rescored": "25 Nov 2026: position_sent_error_* now counts frames at 5 m and above only (before, frames logged after touchdown swamped it); pass/fail unchanged."
 }

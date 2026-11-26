@@ -12,7 +12,8 @@ the image centre is the drone's position plus the height times the tilt of the o
 Teach: while GPS is good, a frame becomes a keyframe, with the map position of its centre and its
 heading, whenever the drone is 40% of a footprint from every kept keyframe at a similar height,
 including during the climb over the take-off point so that the descent home can be matched too.
-Repeat: once GPS is lost (no 3D fix for 3 s of PX4 time), each new frame is matched to keyframes
+Repeat: once GPS is lost (GPS reports no 3D fix for 1.5 s, or falls silent for 10 s), each new
+frame is matched to keyframes
 taken at a similar height near the last position (herdsight.geo.visual_fix.locate, with the 75 m
 jump limit of the third camera test); the drone's position is the matched image centre minus the
 tilt offset. EKF2 only starts vision fusion when samples arrive at least every 0.2 s, so the camera
@@ -52,6 +53,7 @@ from px4_msgs.msg import (
     SensorGps,
     VehicleAttitude,
     VehicleCommand,
+    VehicleGlobalPosition,
     VehicleLocalPosition,
     VehicleOdometry,
 )
@@ -66,21 +68,39 @@ from add_body_camera import HEIGHT_PX, TOPIC, WIDTH_PX  # noqa: E402
 
 from herdsight.geo.visual_fix import Keyframe, locate, register  # noqa: E402
 
-# GPS arrives up to 1 s apart in the simulator; one dropped message must not count as loss
-GPS_TIMEOUT_S = 3.0
+# GPS loss: PX4 keeps publishing GPS messages that report no 3D fix for this long, or no GPS
+# message arrives at all for GPS_SILENT_S. Gaps between messages alone are not loss: simulator
+# stalls at start-up made 3 s gaps and false returns during the teach square (test 5, 25 Nov)
+GPS_NOFIX_S = 1.5
+GPS_SILENT_S = 10.0
 NEW_KEYFRAME_SHARE = 0.4  # of the footprint width
 SAME_HEIGHT_SHARE = 0.15
 MIN_KEYFRAME_HEIGHT_M = 4.0
 MATCH_HEIGHT_RATIO = 2.0  # only keyframes from half to twice the current height
 MAX_JUMP_M = 75.0
 FIX_SIGMA_M = 1.0
+# a fix is used only if it agrees with the chained position (within this many metres, or 3 sigma),
+# or implies the same correction to the chain as the rejected fix before it: single wrong matches
+# are dropped, but a drifted chain is still corrected by two fixes that agree (test 3 compared raw
+# positions, which differ by the drone's own movement, so a drifted chain was never corrected)
+FIX_AGREE_M = 6.0
+FIX_MIN_INLIERS = 150  # and at least this share of the ratio-test matches must be RANSAC inliers:
+FIX_MIN_SHARE = 0.5
+QUALITY_ABOVE_M = 20.0  # the quality limits apply above this height only: the offline study found
+# no wrong fixes below 20 m, and close-up frames near the ground have fewer matches (test 4)
+# Final descent: below this height, after this long with no accepted fix, stop sending positions so
+# PX4 lands where it is; a frozen position sent near the ground made PX4 fly off (test 4)
+LAND_IN_PLACE_BELOW_M = 10.0
+NO_FIX_LAND_S = 3.0
+FIX_PAIR_M = 3.0
 CARRY_SIGMA_M_S = 0.3  # added uncertainty per second of carrying a fix forward
 CARRY_MAX_S = 1.0  # only bridges a missed frame; longer carrying fed drift back into PX4
-GROUND_HEIGHT_M = 0.5  # below this, with no vertical movement, the drone is on the ground
-GROUND_STILL_M_S = 0.2
+GROUND_HEIGHT_M = 0.5  # below this for GROUND_HOLD_S, the drone is on the ground
 GROUND_HOLD_S = 3.0
 VO_SIGMA_STEP_M = 0.15  # uncertainty added per chained frame-to-frame step
 VO_SIGMA_MISS_M = 0.5  # added when a step falls back on PX4's velocity
+VO_MAX_SPEED_M_S = 20.0  # fastest plausible ground speed (cruise plus a strong tailwind)
+VO_STEP_SLACK_M = 2.0
 PUBLISH_PERIOD_US = 100_000
 HISTORY_S = 10.0
 CHECK_EVERY = 4
@@ -113,11 +133,20 @@ def frame_to_map(east: float, north: float, slant: float, theta: float, fov: flo
 class State:
     """PX4's state at one instant: position (NED), height above home, attitude, distance moved."""
 
-    def __init__(self, t_us: int, ned: np.ndarray, q: np.ndarray, moved: np.ndarray) -> None:
+    def __init__(
+        self,
+        t_us: int,
+        ned: np.ndarray,
+        q: np.ndarray,
+        moved: np.ndarray,
+        height_agl: float | None = None,
+    ) -> None:
         self.t_us, self.ned, self.q, self.moved = t_us, ned, q, moved
         r = rotation(q)
         axis = r @ np.array([0.0, 0.0, 1.0])  # optical axis (body down) in NED
-        self.height = float(-ned[2])
+        # height above the ground: the rangefinder's when there is one (without GPS, PX4's own
+        # height drifts several metres during the descent: development flight, 25 Nov)
+        self.height = float(-ned[2]) if height_agl is None else float(height_agl)
         self.cos_tilt = max(float(axis[2]), 0.2)
         # ground offset of the image centre from the point under the drone (east, north)
         self.offset_en = self.height * np.array([axis[1], axis[0]]) / self.cos_tilt
@@ -139,10 +168,16 @@ class CameraReturn(Node):
         validate: bool,
         lag_s: float = 0.0,
         record: Path | None = None,
+        rangefinder: bool = False,
+        return_height: float = 0.0,
     ) -> None:
         super().__init__("camera_return")
         self.fov = 2 * math.atan(float(plan["footprint_m"][0]) / 2 / float(plan["height_agl_m"]))
         self.validate = validate
+        self.rangefinder = rangefinder
+        self.return_height = return_height
+        self.descending = False
+        self.global_alt: float | None = None
         self.lock = threading.Lock()
         self.history: deque[State] = deque()
         self.q = np.array([1.0, 0.0, 0.0, 0.0])
@@ -153,6 +188,8 @@ class CameraReturn(Node):
         self.frames_seen = 0
         self.truth: deque[tuple[int, float, float]] = deque(maxlen=400)  # sim us, east, north
         self.gps_us = 0
+        self.gps_any_us = 0
+        self.nofix_since_us: int | None = None
         self.sim_us = 0  # latest Gazebo simulation time
         self.att_msgs = 0
         self.ground_since: int | None = None
@@ -171,6 +208,8 @@ class CameraReturn(Node):
         )
         self.vo_pos: np.ndarray | None = None  # chained camera position (east, north)
         self.vo_sigma = FIX_SIGMA_M
+        self.pending: np.ndarray | None = None
+        self.vision_stopped = False
         self.prev: tuple[np.ndarray, State, np.ndarray] | None = None  # grey, state, position
         self.last_pub_us = 0
         self.rtl_sent = False
@@ -186,6 +225,9 @@ class CameraReturn(Node):
         )
         self.create_subscription(VehicleAttitude, "/fmu/out/vehicle_attitude", self.on_att, qos)
         self.create_subscription(SensorGps, "/fmu/out/vehicle_gps_position", self.on_gps, qos)
+        self.create_subscription(
+            VehicleGlobalPosition, "/fmu/out/vehicle_global_position", self.on_global, qos
+        )
         self.ev_pub = self.create_publisher(VehicleOdometry, "/fmu/in/vehicle_visual_odometry", qos)
         self.cmd_pub = self.create_publisher(VehicleCommand, "/fmu/in/vehicle_command", qos)
         self.gz = GzNode()
@@ -211,29 +253,36 @@ class CameraReturn(Node):
             return
         # filed under the simulation time it arrived at: PX4's own stamps reach ROS converted to
         # wall-clock time, while frames carry simulation time (lockstep keeps the gap to a few ms)
-        s = State(self.sim_us, np.array([m.x, m.y, m.z], float), self.q.copy(), self.moved.copy())
+        agl = float(m.dist_bottom) if self.rangefinder and m.dist_bottom_valid else None
+        s = State(
+            self.sim_us, np.array([m.x, m.y, m.z], float), self.q.copy(), self.moved.copy(), agl
+        )
         self.px4_us = m.timestamp
         with self.lock:
             self.history.append(s)
             while self.history and s.t_us - self.history[0].t_us > HISTORY_S * 1e6:
                 self.history.popleft()
         self.publish(s)
-        self.check_ground(m)
+        self.check_ground(s.height)
+
+    def on_global(self, m: VehicleGlobalPosition) -> None:
+        self.global_alt = float(m.alt)
 
     def on_clock(self, m: Clock) -> None:
         self.sim_us = m.sim.sec * 1_000_000 + m.sim.nsec // 1000
 
-    def check_ground(self, m: VehicleLocalPosition) -> None:
+    def check_ground(self, height: float) -> None:
         """Stop the motors once the returning drone sits on the ground.
 
         In strong wind PX4's own landing detector can miss a touchdown (the drone leans against the
         wind on the ground), and with motors running the wind then drags it. During a camera return,
-        once the height is under 0.5 m and the drone has moved up or down no faster than 0.2 m/s
-        for 3 s, the node commands a forced disarm.
+        once the height has stayed under 0.5 m for 3 s, the node commands a forced disarm. There
+        is no stillness test: on the ground PX4's height estimate can keep sinking, which a
+        stillness test mistook for flight (development flight, 25 Nov).
         """
         if not self.rtl_sent or self.disarmed:
             return
-        on_ground = -m.z < GROUND_HEIGHT_M and abs(m.vz) < GROUND_STILL_M_S
+        on_ground = height < GROUND_HEIGHT_M
         if not on_ground:
             self.ground_since = None
             return
@@ -245,8 +294,23 @@ class CameraReturn(Node):
             print("on the ground: forced disarm sent", flush=True)
 
     def on_gps(self, m: SensorGps) -> None:
-        if m.fix_type >= 3:  # PX4 time, so that a slow simulator does not look like GPS loss
-            self.gps_us = m.timestamp
+        # timed on the simulation clock: PX4's stamps as received over the bridge can jump when it
+        # re-synchronises, which looked like 10 s of GPS silence (development flight, 25 Nov); the
+        # simulation clock only moves forward and stops when the simulator stalls
+        if not self.sim_us:
+            return
+        self.gps_any_us = self.sim_us
+        if m.fix_type >= 3:
+            self.gps_us = self.sim_us
+            self.nofix_since_us = None
+        elif self.nofix_since_us is None:
+            self.nofix_since_us = self.sim_us
+
+    def gps_ok(self) -> bool:
+        since = self.nofix_since_us
+        if since is not None and self.sim_us - since > GPS_NOFIX_S * 1e6:
+            return False
+        return self.sim_us - self.gps_any_us < GPS_SILENT_S * 1e6
 
     def on_image(self, m: ImgMsg) -> None:
         a = np.frombuffer(m.data, np.uint8).reshape(m.height, m.width, -1)[..., :3]
@@ -289,7 +353,7 @@ class CameraReturn(Node):
         self.frames_seen += 1
         if self.record is not None:
             self.save_frame(frame, st)
-        gps_ok = self.px4_us - self.gps_us < GPS_TIMEOUT_S * 1e6
+        gps_ok = self.gps_ok()
         if gps_ok and not self.lost:
             self.prev = (frame[1], st, st.en)
             self.maybe_keyframe(frame[1], st)
@@ -303,21 +367,59 @@ class CameraReturn(Node):
             self.vo_pos = self.prev[2] if self.prev is not None else st.en
             self.write("gps_lost", st, None, None)
             # the chained camera position starts from the last GPS-based estimate, so the return
-            # can begin at once
-            self.command(VehicleCommand.VEHICLE_CMD_NAV_RETURN_TO_LAUNCH)
+            # can begin at once; with --return-height the drone first comes down over the spot,
+            # because camera fixes are far better lower down (results/phase5/
+            # camera_fix_consistency_study.json: median 5.7 m at 80 m and up, 3.5 m at 40-60 m)
             self.rtl_sent = True
+            if (
+                self.return_height
+                and st.height > self.return_height + 5
+                and self.global_alt is not None
+            ):
+                target = self.global_alt - st.height + self.return_height
+                nan = float("nan")
+                self.command(VehicleCommand.VEHICLE_CMD_DO_REPOSITION, -1.0, 1.0, nan, nan, target)
+                self.descending = True
+                self.write("descend_requested", st, None, None)
+            else:
+                self.command(VehicleCommand.VEHICLE_CMD_NAV_RETURN_TO_LAUNCH)
+                self.write("return_requested", st, None, None)
+        if self.descending and st.height <= self.return_height + 3:
+            self.descending = False
+            self.command(VehicleCommand.VEHICLE_CMD_NAV_RETURN_TO_LAUNCH)
             self.write("return_requested", st, None, None)
         self.odometry_step(frame[1], st)
         fix = self.locate(frame[1], st, self.vo_pos)
+        if fix is not None and not self.agrees(fix[0]):
+            self.write("fix_rejected", st, fix[0], fix[1])
+            self.pending = fix[0] - self.vo_pos  # the correction this fix implies
+            fix = None
         if fix is None:
             self.write("no_fix", st, None, None)
         else:
+            self.pending = None
             self.last_fix = (st.t_us, fix[0])
             self.vo_pos, self.vo_sigma = fix[0], FIX_SIGMA_M
             self.write("fix", st, fix[0], fix[1])
         self.write("vo", st, self.vo_pos, None)
+        stale = self.last_fix is None or st.t_us - self.last_fix[0] > NO_FIX_LAND_S * 1e6
+        if not self.vision_stopped and st.height < LAND_IN_PLACE_BELOW_M and stale:
+            self.vision_stopped = True
+            self.write("vision_stopped", st, None, None)
+            print("final descent without fixes: positions stopped, PX4 lands in place", flush=True)
         self.anchor = (self.vo_pos, st.moved, st.t_us, self.vo_sigma)
         self.prev = (frame[1], st, self.vo_pos)
+
+    def agrees(self, fix: np.ndarray) -> bool:
+        """Whether a new fix fits the chained position, or implies the same correction as the last
+        rejected fix."""
+        if float(np.linalg.norm(fix - self.vo_pos)) <= max(FIX_AGREE_M, 3 * self.vo_sigma):
+            return True
+        correction = fix - self.vo_pos
+        return (
+            self.pending is not None
+            and float(np.linalg.norm(correction - self.pending)) <= FIX_PAIR_M
+        )
 
     def odometry_step(self, grey: np.ndarray, st: State) -> None:
         """Move the chained position by the ground shift between the previous frame and this one."""
@@ -334,7 +436,15 @@ class CameraReturn(Node):
         pmap = frame_to_map(centre[0], centre[1], pst.slant, pst.theta, self.fov)
         here = reg[0] @ np.array([WIDTH_PX / 2, HEIGHT_PX / 2, 1.0])
         ground = pmap @ np.array([*here, 1.0])  # ground point at this frame's centre
-        self.vo_pos = ground - st.offset_en
+        step = ground - st.offset_en - ppos
+        # a step faster than the drone can fly is a wrong frame-to-frame match: one such step
+        # jumped the chain 90 m (development flight, 25 Nov). Not checked against PX4's own
+        # movement: once PX4 had drifted, that check rejected every correct step (25 Nov)
+        dt = max((st.t_us - pst.t_us) / 1e6, 0.0)
+        if float(np.linalg.norm(step)) > VO_MAX_SPEED_M_S * dt + VO_STEP_SLACK_M:
+            self.vo_sigma = math.hypot(self.vo_sigma, VO_SIGMA_MISS_M)
+            return
+        self.vo_pos = ppos + step
         self.vo_sigma = math.hypot(self.vo_sigma, VO_SIGMA_STEP_M)
 
     def locate(
@@ -351,6 +461,11 @@ class CameraReturn(Node):
         fix = locate(grey, similar, prior + st.offset_en, max_jump_m=MAX_JUMP_M)
         if fix is None:
             return None
+        # quality limits from the offline study (results/phase5/camera_fix_consistency_study.json):
+        # weak or inconsistent matches are where the wrong fixes come from
+        weak = fix.inliers < FIX_MIN_INLIERS or fix.inliers < FIX_MIN_SHARE * max(fix.matches, 1)
+        if st.height > QUALITY_ABOVE_M and weak:
+            return None
         return fix.east_north - st.offset_en, fix.inliers
 
     def save_frame(self, frame: tuple[int, np.ndarray], st: State) -> None:
@@ -361,7 +476,7 @@ class CameraReturn(Node):
             t, te, tn = min(self.truth, key=lambda x: abs(x[0] - st.t_us))
         row = {
             "image_us": frame[0], "state_us": st.t_us, "ned": st.ned.tolist(), "q": st.q.tolist(),
-            "moved": st.moved.tolist(), "gps_ok": self.px4_us - self.gps_us < GPS_TIMEOUT_S * 1e6,
+            "moved": st.moved.tolist(), "gps_ok": self.gps_ok(),
             "true_en": None if te is None else [te, tn],
         }  # fmt: skip
         with open(self.record / "frames.jsonl", "a") as fh:
@@ -386,6 +501,8 @@ class CameraReturn(Node):
 
     # outputs ---------------------------------------------------------------------------------
     def publish(self, s: State) -> None:
+        if self.vision_stopped:
+            return
         if self.anchor is None or s.t_us - self.last_pub_us < PUBLISH_PERIOD_US:
             return
         fix, moved_then, then_us, sigma = self.anchor
@@ -423,11 +540,20 @@ class CameraReturn(Node):
         m.quality = 100
         self.ev_pub.publish(m)
 
-    def command(self, cmd: int, param1: float = 0.0, param2: float = 0.0) -> None:
+    def command(
+        self,
+        cmd: int,
+        param1: float = 0.0,
+        param2: float = 0.0,
+        param5: float = 0.0,
+        param6: float = 0.0,
+        param7: float = 0.0,
+    ) -> None:
         m = VehicleCommand()
         m.timestamp = self.px4_us
         m.command = cmd
         m.param1, m.param2 = param1, param2
+        m.param5, m.param6, m.param7 = float(param5), float(param6), float(param7)
         m.target_system = m.target_component = 1
         m.source_system = m.source_component = 1
         m.from_external = True
@@ -457,10 +583,23 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--validate", action="store_true")
     ap.add_argument("--lag-s", type=float, default=0.0, help="picture age behind the frame stamp")
     ap.add_argument("--record", type=Path, default=None, help="folder to keep every frame in")
+    ap.add_argument("--rangefinder", action="store_true", help="use the rangefinder height")
+    ap.add_argument(
+        "--return-height", type=float, default=0.0, help="come down to this height before returning"
+    )
     args = ap.parse_args(argv)
     plan = yaml.safe_load(args.plan.read_text(encoding="utf-8"))
     rclpy.init()
-    node = CameraReturn(plan, args.log, args.world, args.validate, args.lag_s, args.record)
+    node = CameraReturn(
+        plan,
+        args.log,
+        args.world,
+        args.validate,
+        args.lag_s,
+        args.record,
+        args.rangefinder,
+        args.return_height,
+    )
     executor = MultiThreadedExecutor(num_threads=3)
     executor.add_node(node)
     try:

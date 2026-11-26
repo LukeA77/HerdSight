@@ -1,0 +1,22 @@
+{
+ "note": "Simulation result, one flight on one world, wind 10.0 m/s (east +10.0, north +0.0); k 0.1837; force while holding position 3.67 N (CdA 0.06 m^2, assumed); not a field result. Camera return home (VISION=1).",
+ "keyframes": 41,
+ "px4_modes_after_gnss_loss": [
+  "loiter",
+  "offboard",
+  "return to launch"
+ ],
+ "blind_descent": false,
+ "touchdown_distance_from_launch_m": 77.82587432861328,
+ "frames_after_loss_above_5m": 263,
+ "fixed_share": 0.30038022813688214,
+ "fix_error_median_m": 2.3214219780126095,
+ "fix_error_max_m": 13.856424502735194,
+ "seconds_from_gnss_loss_to_touchdown": 126.65599999999999,
+ "position_sent_error_median_m": 4.86390789386476,
+ "position_sent_error_p90_m": 36.33312033808123,
+ "passes": false,
+ "passes_test4_rule": false,
+ "rule": "test 4 (sent position replaces fixed share), fixed before flying",
+ "warning": "Reached the launch point at about 4-8 m height, then got no camera fixes (the new quality limit of 150 inliers rejected the close-up frames) while the node kept sending a frozen position; PX4 then flew off about 70 m and crashed. Failure of the final descent, not of the return."
+}

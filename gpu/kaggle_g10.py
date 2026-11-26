@@ -2,7 +2,9 @@
 
 D-FINE N, reference recipe (D-50), the three cross-validation folds, 72 epochs each, each model
 exported to ONNX and checked on its monitor set. Runs as a Kaggle script with GPU and Internet on.
-Inputs (private Kaggle datasets): herdsight-tiles-v1 and a code snapshot of the repository at a
+Inputs (private Kaggle datasets): the onboard tile package (D-29: stills reduced before tiling;
+HS_PACKAGE names it, default herdsight_onboard_tiles_v1; the first G10 run used the full-resolution
+herdsight_tiles_v1 by mistake, D-51) and a code snapshot of the repository at a
 fixed commit (a `git archive` zip). Outputs go to /kaggle/working/out/g10n_<fold>/, as on RunPod,
 so full-image scoring (job_fullscore.sh, HS_KINDS=g10n) reads them the same way.
 
@@ -69,7 +71,7 @@ def main():
     WORK.mkdir(parents=True, exist_ok=True)
     OUT.mkdir(parents=True, exist_ok=True)
     repo = code_root()
-    pkg = package("herdsight_tiles_v1")
+    pkg = package(os.environ.get("HS_PACKAGE", "herdsight_onboard_tiles_v1"))
     try:
         sh(sys.executable, "-m", "pip", "install", "-q", "onnxruntime-gpu==1.22.0")
     except subprocess.CalledProcessError:
@@ -83,7 +85,7 @@ def main():
             print(f"{fold} not started (time budget; {used:.2f} h used)", flush=True)
             continue
         t = time.time()
-        run = f"g10n_{fold}"
+        run = f"{os.environ.get('HS_RUN_PREFIX', 'g10n')}_{fold}"
         sh(
             sys.executable,
             repo / "gpu" / "train_dfine.py",

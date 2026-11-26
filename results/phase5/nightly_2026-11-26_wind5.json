@@ -1,0 +1,87 @@
+{
+ "note": "Simulation: S5 checks on simulated survey flights (ideal stabilised camera); not field results.",
+ "generated_utc": "2026-11-26T03:55:39+00:00",
+ "flights": {
+  "seed28_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 39,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.9
+  },
+  "seed29_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 33,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 7.0
+  },
+  "seed30_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 39,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.8
+  },
+  "seed31_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 113,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.8
+  },
+  "seed32_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 113,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.8
+  },
+  "seed33_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 33,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 7.0
+  },
+  "seed34_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 32,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.8
+  },
+  "seed35_wind5": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 34,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.8
+  }
+ },
+ "passed": 8,
+ "flown": 8,
+ "finished": 8,
+ "pass_rate": 1.0,
+ "pass_rate_ci95": [
+  0.6755843804891231,
+  1.0
+ ],
+ "finding": "Seeds 31 and 32 counted 113 against 30. Re-flown in calm air they counted 124 and 120, so wind is not the cause (results/phase5/wind_check_seed31_32.json). Their worlds have few fixed objects (3 and 6), so rocks do not explain it either; the photos of the same animals were linked far less often than on the other flights (147 registered pairs against 263 on seed 30). The cause is not yet established (H24 found grazing moves animals less than the matching distance, so movement alone is unlikely). The S5 checks judge the mission, not the count."
+}

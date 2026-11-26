@@ -1,0 +1,32 @@
+{
+ "note": "Simulation: S5 checks on simulated survey flights (ideal stabilised camera); not field results.",
+ "generated_utc": "2026-11-26T04:10:50+00:00",
+ "flights": {
+  "seed31_wind0": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 124,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.9
+  },
+  "seed32_wind0": {
+   "finished": true,
+   "passes": true,
+   "failed_checks": [],
+   "count": 120,
+   "expected_count": 30,
+   "status": "ok",
+   "minutes": 6.9
+  }
+ },
+ "passed": 2,
+ "flown": 2,
+ "finished": 2,
+ "pass_rate": 1.0,
+ "pass_rate_ci95": [
+  0.34237195288961925,
+  1.0
+ ]
+}

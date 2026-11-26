@@ -69,6 +69,7 @@ def bars(
     path: str,
     target: tuple[float, str] | None = None,
     ylabel: str = "",
+    target_label_below: bool = False,
 ) -> None:
     """Grouped vertical bars. groups: labels; series: {name: [value per group]}."""
     w, h, left, top, bottom = 720, 400, 70, 70, 80
@@ -107,7 +108,10 @@ def bars(
             f"<line x1='{left}' x2='{left + pw}' y1='{y:.1f}' y2='{y:.1f}' stroke='{RED}' "
             "stroke-dasharray='6 4' stroke-width='1.5'/>"
         )
-        body.append(text(left + pw, y - 6, target[1], 11, RED, "end"))
+        if target_label_below:  # in the legend row, clear of the value labels
+            body.append(text(left + pw, h - 20, f"- - {target[1]}", 12, RED, "end"))
+        else:
+            body.append(text(left + pw, y - 6, target[1], 11, RED, "end"))
     lx = left
     for si, name in enumerate(series):
         body.append(
@@ -163,6 +167,42 @@ def count_figure(nums: dict) -> None:
         lambda x: f"{x:.0%}",
         "flight_count_error.svg",
         target=(0.15, "target 15%"),
+    )
+
+
+def onboarding_figure(nums: dict) -> None:
+    """G13: detection on a farm's later survey days against the number of its own photos learned."""
+    path = RES / "phase2" / "g13_onboarding.json"
+    if not path.exists():
+        print("no g13_onboarding.json; onboarding figure skipped")
+        return
+    farms = json.loads(path.read_text(encoding="utf-8"))["farms"]
+    groups, found, correct = [], [], []
+    for farm in sorted(farms):
+        d = farms[farm]
+        counts = (d.get("setup") or {}).get("counts", {})
+        for k in sorted(int(x) for x in d["curve"]):
+            v = d["curve"][str(k)]
+            used = int(counts.get(f"k{k}", {}).get("photos", k)) if k else 0
+            groups.append(f"{farm}: {used if used else 'none'}")
+            found.append(v["centre_recall"])
+            correct.append(v["centre_precision"])
+            nums[f"onboarding_{farm.lower()}_{used}_photos_found"] = round(v["centre_recall"], 3)
+            nums[f"onboarding_{farm.lower()}_{used}_photos_correct"] = round(
+                v["centre_precision"], 3
+            )
+    bars(
+        "Learning a new farm from its own photos",
+        "Photos of the farm learned (none = not trained on this farm); scored on its later survey "
+        "days. Public data, one draw.",
+        groups,
+        {"Share of cattle found": found, "Share of marks that were cattle": correct},
+        [BLUE, GREEN],
+        1.0,
+        lambda v: f"{v:.0%}",
+        "onboarding_curve.svg",
+        target=(0.80, "agreed level 80%"),
+        target_label_below=True,
     )
 
 
@@ -316,6 +356,7 @@ def main(argv: list[str] | None = None) -> int:
     nums: dict = {"note": "Public-data and simulation results; none is a field result."}
     detector_figure(nums)
     count_figure(nums)
+    onboarding_figure(nums)
     gps_loss_figure(nums)
     flight_path_figure(args.storage, nums)
     thermal_figure(args.storage, nums)

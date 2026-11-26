@@ -1,0 +1,54 @@
+{
+ "detector": "dfine_g10n",
+ "definition": "herd = >= 3 animals single-linked within 10.0 m (D-28)",
+ "design": "grouped 3-fold cross-validation (D-26); threshold per fold from the other folds",
+ "splits_sha256": "c99fb03b8f02b222300f128084b4f68f28ecd6beb6e49c7baed1eca66dcc89ed",
+ "evaluation_config_hash": "b5d419b1c487",
+ "n_images_with_predictions": 1323,
+ "n_images_scored": 1323,
+ "n_images_skipped_no_scale": 0,
+ "n_groups": 10,
+ "true_herds": 339,
+ "per_fold_threshold": {
+  "fold0": 0.76,
+  "fold1": 0.79,
+  "fold2": 0.81
+ },
+ "herd_recall_found": 0.9734513274336283,
+ "herd_recall_found_ci95": [
+  0.9198600746268656,
+  1.0
+ ],
+ "herd_recall_grouped": 0.8112094395280236,
+ "herd_recall_grouped_ci95": [
+  0.6381720430107527,
+  0.916432363872338
+ ],
+ "false_triggers_per_image": 0.02947845804988662,
+ "false_triggers_per_image_ci95": [
+  0.0031308354942775037,
+  0.07667446674523648
+ ],
+ "images_without_a_true_herd": 1080,
+ "false_trigger_share_of_herd_free_images": 0.016666666666666666,
+ "latency": "not measured: requires a Raspberry Pi 5 (D-10, D-29)",
+ "environment": {
+  "generated_utc": "2026-11-25T20:04:32+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ }
+}
