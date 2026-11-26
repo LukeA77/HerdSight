@@ -4,7 +4,7 @@ HerdSight counts cattle from the air and tells a farmer when animals may be miss
 
 A drone surveys each camp (paddock). The software counts the cattle in the photos, making sure an animal seen in several photos is counted once, and compares the total with the farm's herd records. It raises an alert only when the shortfall is clear enough to act on. The aim is to help farmers notice stock theft and straying early.
 
-> **Status: work in progress, about 55% of planned tasks complete.**
+> **Status: work in progress, about 70% of planned tasks complete.**
 > HerdSight has not been flown on a real farm. Every result below comes from public drone data or from simulation, and each one says which. None is a field result.
 
 ---
@@ -29,7 +29,7 @@ flowchart LR
 | Counting | Links the same animal across overlapping photos and gives each flight a count range | `python/herdsight/count/`, `core/` (C++) |
 | Herd records and alerts | Tracks expected animals per camp and decides when to alert | `python/herdsight/` |
 | Drone mission | Plans and flies the survey with safety checks, in PX4 and Gazebo simulation | `ros2/`, `sim/` |
-| Farmer dashboard | Shows results in plain language on a phone | `dashboard/` (not built yet) |
+| Farmer dashboard | Shows results in plain language on a phone (working prototype) | `dashboard/`, `python/herdsight/dashboard/` |
 
 ## Progress
 
@@ -37,11 +37,11 @@ flowchart LR
 |---|---|---|
 | 0 | Setup: code structure, automated checks, C++ core | Done |
 | 1 | Data audit, fair splits, baselines, frozen targets | Done |
-| 2 | Cattle detector | Mostly done; the final onboard model is training |
+| 2 | Cattle detector | Mostly done; onboard detector chosen; learning a new farm from its own photos improves results, but levels off below the agreed 80% |
 | 3 | Counting across photos | Method chosen; to be rerun with the final detector |
 | 4 | Herd records and alerts | Done; to be refitted with the final accuracy |
-| 5 | Simulated drone mission | The mission and its safety checks fly; the GPS-loss return and night (thermal) counting are in progress |
-| 6 | Farmer dashboard | Not started |
+| 5 | Simulated drone mission | 16 of 16 overnight simulated missions passed their checks; GPS-loss return works up to 5 m/s wind |
+| 6 | Farmer dashboard | Prototype built; usability test with five people next |
 | 7 | Final test on the held-back farm, and write-up | Not started |
 
 ## Results so far
@@ -81,6 +81,33 @@ In calm air the drone landed 0.2 m from the launch point. In a 5 m/s wind it lan
 ![Simulated thermal frame at 40 m](docs/figures/thermal_night_frame.png)
 
 This is a simulated thermal camera at night, with patches of warmer and cooler ground, blur and sensor noise added. At 40 m, counting the warm shapes comes within 5% of the true count, an average of 0.5 animals off per frame. With warm rocks added it stays inside the 10% limit. The simulated animals are simple blocks at fixed temperatures, so this shows the approach can work. It says nothing yet about accuracy on real animals.
+
+### 6. The farmer's dashboard (prototype, made-up data)
+
+<p>
+  <img src="docs/figures/dashboard_farm.png" alt="Farm map: five camps need attention, coloured by status" width="300">
+  <img src="docs/figures/dashboard_camp.png" alt="Camp page: count, likely range, records and alert buttons" width="300">
+</p>
+
+A phone-first page that says in one line whether any camp needs attention, colours a map of the camps, and lists the
+ones to look at first. Each camp shows its count, the likely range and the number in the records, with the plain-language
+message and large buttons to act on an alert. It keeps working on a weak signal: the last results stay on the phone and
+actions are sent when the signal returns. Simulated drone flights already flow from the mission to the count to this
+page. The pictures use a made-up farm, and the page says so.
+
+### 7. Learning a new farm from its own photos (public data)
+
+![Share of cattle found and correct marks against the number of the farm's photos learned](docs/figures/onboarding_curve.svg)
+
+The detector does worse on a farm it has never seen. So the plan is to start from the general model and teach it each new
+farm using labelled photos from that farm's first surveys, then check it on the farm's later surveys. I tried this on two
+public farms. On Jalogny, the share of cattle found went from 68% with none of its photos to 76% with 168. On Mauron,
+scored in a different season, it went from 53% to 68% with 200 photos, and the counting error per tile dropped by almost
+half. Results improved with more of the farm's photos on both farms, but neither reached the level I set before the
+runs (80% found and 80% of marks correct), so I don't claim that level yet. Two farms and one random draw of photos is an
+early indication, not a guarantee. Using all 447 of Mauron's photos did not help further (66% found, against 68%
+with 200), so beyond a couple of hundred photos from the same days the gain stops. Photos from more days and seasons may
+matter more than the number of photos; that is the next thing to test.
 
 ## How the work is done
 

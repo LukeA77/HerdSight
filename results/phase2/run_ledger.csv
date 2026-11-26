@@ -51,3 +51,5 @@ g10-score-1,2026-11-25,fullscore,NVIDIA GeForce RTX 3090,COMMUNITY,0.22,8,0.03,s
 g10-score-2,2026-11-25,fullscore,NVIDIA A40,SECURE,0.59,40,0.38,done,"full-photo scoring of the three G10 models (cost estimated from the job time; billing not yet final)"
 g13-jalogny,2026-11-26,g13,Kaggle GPU (free),KAGGLE,0.00,641,0.00,done,"farm onboarding curve for Jalogny: models trained with 50 and 168 of its photos (pool used up at k=200), scored on its later survey days"
 g13-mauron,2026-11-26,g13,Kaggle GPU (free),KAGGLE,0.00,598,0.00,done,"farm onboarding curve for Mauron: models trained with 50 and 200 of its 447 pool photos, scored on its later survey day (another season)"
+g13b-1,2026-11-26,g13b,NVIDIA GeForce RTX 4080 SUPER,COMMUNITY,0.28,9,0.05,failed,"setup error (the code snapshot was already unpacked; job looked for a zip); deleted, no training done"
+g13b-2,2026-11-26,g13b,NVIDIA GeForce RTX 4080 SUPER,COMMUNITY,0.28,131,0.59,done,"farm onboarding, Mauron with all 447 pool photos, scored on the same later-day tiles as g13-mauron (billed amount)"

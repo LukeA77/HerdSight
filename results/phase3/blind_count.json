@@ -1,0 +1,49 @@
+{
+ "note": "Public data; one person's blind count of whole flights against the verified truth. Indicative only (few flights).",
+ "rule": "(fixed before the page was made, 25 Nov 2026): one flight per farm-date group, the one with\nthe fewest photos among the verified flights with at most 50 photos; at most 5 flights, fewest\nphotos first. Only photos with at least one labelled animal are shown (empty photos add time, not\ninformation), in time order, reduced to a 1,600 px long side.",
+ "flights": [
+  {
+   "flight": "Mauron/DJI_202306071703_029",
+   "blind": 23,
+   "verified": 23,
+   "relative_difference": 0.0,
+   "most_in_one_photo": 23,
+   "blind_below_one_photo": false
+  },
+  {
+   "flight": "Mauron/DJI_202306051814_022",
+   "blind": 44,
+   "verified": 53,
+   "relative_difference": -0.1698,
+   "most_in_one_photo": 52,
+   "blind_below_one_photo": true
+  },
+  {
+   "flight": "Mauron/DJI_202311071541_064",
+   "blind": 12,
+   "verified": 30,
+   "relative_difference": -0.6,
+   "most_in_one_photo": 12,
+   "blind_below_one_photo": false
+  },
+  {
+   "flight": "Jalogny/DJI_202308031317_042",
+   "blind": 97,
+   "verified": 120,
+   "relative_difference": -0.1917,
+   "most_in_one_photo": 19,
+   "blind_below_one_photo": false
+  },
+  {
+   "flight": "Derval/DJI_202308091507_014",
+   "blind": 17,
+   "verified": 31,
+   "relative_difference": -0.4516,
+   "most_in_one_photo": 14,
+   "blind_below_one_photo": false
+  }
+ ],
+ "mean_absolute_relative_difference": 0.2826,
+ "reading": "The blind count is lower than the verified count on every flight but one. Where it is below the most animals labelled in a single photo, the blind count is too low, not the verified count too high. Where it is close to that single-photo figure, telling repeat sightings apart by eye was the difficulty (reported by the counter). This check does not show the verified counts are inflated, and with five flights it cannot prove them either.",
+ "recount_note": "Flight 2 (Mauron/DJI_202306051814_022) was re-counted as 54 after the counter had been told that one photo holds 52 labelled animals; that re-count is not blind and is not used in the score above."
+}

@@ -17,6 +17,8 @@
  "onboarding_mauron_50_photos_correct": 0.619,
  "onboarding_mauron_200_photos_found": 0.679,
  "onboarding_mauron_200_photos_correct": 0.707,
+ "onboarding_mauron_447_photos_found": 0.658,
+ "onboarding_mauron_447_photos_correct": 0.69,
  "gps_loss_blind_landing_m": [
   198.6,
   906.5

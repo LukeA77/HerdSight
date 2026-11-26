@@ -88,6 +88,13 @@ def score(answers: Path, out: Path) -> dict:
     truth = json.loads((REPO_ROOT / "results" / "data" / "s3_truth.json").read_text())["flights"]
     chosen = json.loads((out / "flights.json").read_text())
     rows = {int(r["flight"]): r["count"] for r in csv.DictReader(answers.open())}
+    # the most labelled animals in any one photo: a floor for the flight's true count, since
+    # animals in one photo are all different
+    floor = {k: 0 for k in chosen}
+    for img, _problem in iter_images(default_root(), with_metadata=False):
+        key = f"{img.farm}/{img.flight}"
+        if key in floor and img.boxes_xyxy is not None:
+            floor[key] = max(floor[key], len(img.boxes_xyxy))
     res = []
     for i, key in enumerate(chosen, 1):
         if not str(rows.get(i, "")).strip():
@@ -99,6 +106,8 @@ def score(answers: Path, out: Path) -> dict:
                 "blind": blind,
                 "verified": verified,
                 "relative_difference": round((blind - verified) / verified, 4),
+                "most_in_one_photo": floor[key],
+                "blind_below_one_photo": blind < floor[key],
             }
         )
     mean_abs = sum(abs(r["relative_difference"]) for r in res) / max(len(res), 1)
@@ -108,6 +117,13 @@ def score(answers: Path, out: Path) -> dict:
         "rule": __doc__.split("Rule")[1].split("--score")[0].strip(),
         "flights": res,
         "mean_absolute_relative_difference": round(mean_abs, 4),
+        "reading": "The blind count is lower than the verified count on every flight but one. "
+        "Where it "
+        "is below the most animals labelled in a single photo, the blind count is too low, "
+        "not the verified count too high. Where it is close to that single-photo figure, "
+        "telling repeat sightings apart by eye was the difficulty (reported by the counter). "
+        "This check does not show the verified counts are inflated, and with five flights it "
+        "cannot prove them either.",
     }
     dest = REPO_ROOT / "results" / "phase3" / "blind_count.json"
     dest.write_text(json.dumps(result, indent=1) + "\n", encoding="utf-8")

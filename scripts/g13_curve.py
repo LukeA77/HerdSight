@@ -23,6 +23,7 @@ from herdsight.utils.config import REPO_ROOT
 
 RECALL_MIN = PRECISION_MIN = 0.80
 K_MAX = 200
+AP_GAIN_MIN = 0.02
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -47,11 +48,12 @@ def main(argv: list[str] | None = None) -> int:
             }
         for f in folder.rglob("onb_*_photos.json"):
             rec = json.loads(f.read_text(encoding="utf-8"))
-            farms.setdefault(rec["farm"], {})["setup"] = {
-                "pool_days": rec["pool_days"],
-                "seed": rec["seed"],
-                "counts": rec["counts"],
-            }
+            setup = farms.setdefault(rec["farm"], {}).setdefault(
+                "setup", {"pool_days": rec["pool_days"], "seed": rec["seed"], "counts": {}}
+            )
+            if (setup["pool_days"], setup["seed"]) != (rec["pool_days"], rec["seed"]):
+                sys.exit(f"{f}: different pool days or seed from an earlier run of {rec['farm']}")
+            setup["counts"].update(rec["counts"])  # later runs (e.g. G13b) add their k
     out: dict = {
         "note": "Public data (ICAERUS), two farms, one random draw of photos per k; tile scores "
         "on the farm's later survey days only. Not a field result.",
@@ -74,6 +76,30 @@ def main(argv: list[str] | None = None) -> int:
             "supported": bool(ok),
             "fewest_photos_meeting_rule": min(ok) if ok else None,
         }
+        beyond = [k for k in curve if k > K_MAX]
+        if beyond and K_MAX in curve:
+            # G13b rule (fixed before the run): more photos keep helping if centre AP rises by at
+            # least AP_GAIN_MIN over k = K_MAX and recall rises; 80/80 there is reported, with the
+            # k <= K_MAX limit relaxed.
+            k_big, ref = max(beyond), curve[K_MAX]
+            big = curve[k_big]
+            helps = (
+                big["centre_ap"] >= ref["centre_ap"] + AP_GAIN_MIN
+                and big["centre_recall"] > ref["centre_recall"]
+            )
+            out["farms"][farm]["more_photos"] = {
+                "k": k_big,
+                "rule": f"centre AP at k={k_big} at least {AP_GAIN_MIN} above k={K_MAX} and "
+                "recall higher",
+                "centre_ap_change": round(big["centre_ap"] - ref["centre_ap"], 4),
+                "centre_recall_change": round(big["centre_recall"] - ref["centre_recall"], 4),
+                "keeps_helping": helps,
+                "reading": "more photos keep helping"
+                if helps
+                else f"flattens between {K_MAX} and {k_big} photos",
+                "meets_80_80_at_k": big["centre_recall"] >= RECALL_MIN
+                and big["centre_precision"] >= PRECISION_MIN,
+            }
     dest = REPO_ROOT / "results" / "phase2" / "g13_onboarding.json"
     dest.write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
     print(json.dumps(out, indent=1))

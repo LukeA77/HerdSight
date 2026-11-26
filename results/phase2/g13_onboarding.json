@@ -72,6 +72,11 @@
       "photos": 200,
       "farm_tiles": 745,
       "all_tiles": 4396
+     },
+     "k447": {
+      "photos": 447,
+      "farm_tiles": 1686,
+      "all_tiles": 5337
      }
     }
    },
@@ -99,10 +104,27 @@
      "centre_precision": 0.7065,
      "count_mae_per_tile": 0.1535,
      "centre_ap": 0.4519
+    },
+    "447": {
+     "test_tiles": 1648,
+     "test_animals": 1514,
+     "centre_recall": 0.6585,
+     "centre_precision": 0.69,
+     "count_mae_per_tile": 0.1742,
+     "centre_ap": 0.4495
     }
    },
    "supported": false,
-   "fewest_photos_meeting_rule": null
+   "fewest_photos_meeting_rule": null,
+   "more_photos": {
+    "k": 447,
+    "rule": "centre AP at k=447 at least 0.02 above k=200 and recall higher",
+    "centre_ap_change": -0.0024,
+    "centre_recall_change": -0.0205,
+    "keeps_helping": false,
+    "reading": "flattens between 200 and 447 photos",
+    "meets_80_80_at_k": false
+   }
   }
  }
 }
