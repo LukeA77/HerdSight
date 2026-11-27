@@ -1,0 +1,20 @@
+{
+ "note": "Step 1 is simulation; step 2 uses public drone photos (ICAERUS). Not field results.",
+ "survey": {
+  "flight": "s5_batch_seed5",
+  "photos": 44
+ },
+ "count": {
+  "flight": "Mauron/DJI_202306071745_035",
+  "photos": 2,
+  "cows_found": [
+   45,
+   35
+  ],
+  "lines": 30,
+  "photo_1_without_line": 15,
+  "new_in_photo_2": 5,
+  "count": 50,
+  "hand_count": 45
+ }
+}
