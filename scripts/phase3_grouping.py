@@ -23,10 +23,15 @@ Only the real-flight part of each hypothesis is judged here; the simulated part 
 Also reported, per method: the share of detections in exactly solved parts, the heuristic's gap
 to the optimum there, and pair-level linking precision and recall on candidate pairs whose truth
 is known. Writes results/phase3/grouping_real.json.
+
+Re-run for another detector's out-of-fold predictions with --detector <run> (for example
+dfine_ref, the final detector); its files get the run name as a suffix and the frozen Phase 3
+results stay as they are.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 import sys
@@ -39,11 +44,14 @@ from herdsight.utils.config import REPO_ROOT, load_config
 from herdsight.utils.env_report import env_report
 from herdsight.utils.paths import storage_path
 
-SOURCES = {"labels": "oracle_s3_v20.json", "dfine": "dfine_s3_v20.json"}
 KINDS = ("fixed", "movement")
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--detector", default="dfine")
+    det_run = ap.parse_args(argv).detector
+    SOURCES = {"labels": "oracle_s3_v20.json", det_run: f"{det_run}_s3_v20.json"}  # noqa: N806
     chk = subprocess.run(
         [
             sys.executable,
@@ -67,7 +75,14 @@ def main() -> int:
     rng = np.random.default_rng(boot["seed"])
     out: dict = {"environment": env_report(), "bootstrap": boot, "exact_solver": exact}
     for src, s3_file in SOURCES.items():
-        d = np.load(storage_path("processed", "phase3") / f"pairs_{src}.npz")
+        d = np.load(
+            storage_path("processed", "phase3")
+            / (
+                f"pairs_labels_{det_run}.npz"
+                if src == "labels" and det_run != "dfine"
+                else f"pairs_{src}.npz"
+            )
+        )
         counts = json.loads(str(d["counts"]))
         phase1 = json.loads((REPO_ROOT / "results" / "phase3" / s3_file).read_text())["flights"]
         keys = sorted(counts)
@@ -162,9 +177,9 @@ def main() -> int:
             print(f"  {k}: {v['mean']:+.3f} {np.round(v['ci95'], 3)}")
         print(f"  H24 subset: {h24}")
     r = rules["H23"]
-    c = out["dfine"]["paired"]["global_minus_greedy_fixed"]
+    c = out[det_run]["paired"]["global_minus_greedy_fixed"]
     out["H23_real"] = {
-        "detections": "dfine",
+        "detections": det_run,
         "evidence": "fixed",
         "gain": -c["mean"],
         "gain_ci95": [-c["ci95"][1], -c["ci95"][0]],
@@ -172,15 +187,18 @@ def main() -> int:
         "real_part_holds": bool(-c["mean"] >= r["mare_gain_min"] and c["ci95"][1] < 0),
         "note": "real-flight part only; the simulated non-inferiority part is judged separately",
     }
-    h = out["dfine"]["h24_subset"]
+    h = out[det_run]["h24_subset"]
     out["H24_real_direction"] = (
         None if h is None else {"movement_better": h["movement_minus_fixed_mean"] < 0, **h}
     )
     print("H23 (real part):", out["H23_real"])
     print("H24 (real direction):", out["H24_real_direction"])
-    (REPO_ROOT / "results" / "phase3" / "grouping_real.json").write_text(
-        json.dumps(out, indent=1) + "\n", encoding="utf-8", newline="\n"
-    )
+    (
+        REPO_ROOT
+        / "results"
+        / "phase3"
+        / ("grouping_real.json" if det_run == "dfine" else f"grouping_real_{det_run}.json")
+    ).write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8", newline="\n")
     return 0
 
 

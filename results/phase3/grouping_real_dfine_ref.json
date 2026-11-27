@@ -1,0 +1,707 @@
+{
+ "environment": {
+  "generated_utc": "2026-11-27T00:21:29+00:00",
+  "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "logical_cores": 16,
+  "memory_gb": 15.38,
+  "gpus": [],
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10",
+  "packages": {
+   "numpy": "2.5.5",
+   "scipy": "1.18.1",
+   "pyyaml": "6.0.3",
+   "torch": null,
+   "onnxruntime": "1.32.0",
+   "opencv-python-headless": "5.1.0.95",
+   "pytest": "9.2.0",
+   "ruff": "0.17.5"
+  }
+ },
+ "bootstrap": {
+  "resamples": 5000,
+  "seed": 0,
+  "unit": "flight",
+  "paired": true,
+  "level": 0.95
+ },
+ "exact_solver": {
+  "max_detections": 60,
+  "time_limit_s": 60
+ },
+ "labels": {
+  "flights": {
+   "Derval/DJI_202308091442_012": {
+    "truth": 27,
+    "separate_passes": false,
+    "phase1": 21,
+    "greedy_fixed": 21,
+    "global_fixed": 28,
+    "global_fixed_exact_share": 1.0,
+    "global_fixed_heuristic_gap": 0.6716397834986907,
+    "greedy_movement": 21,
+    "global_movement": 28,
+    "global_movement_exact_share": 1.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Derval/DJI_202308091507_014": {
+    "truth": 31,
+    "separate_passes": false,
+    "phase1": 35,
+    "greedy_fixed": 35,
+    "global_fixed": 37,
+    "global_fixed_exact_share": 0.845360824742268,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 35,
+    "global_movement": 38,
+    "global_movement_exact_share": 0.845360824742268,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202306231103_031": {
+    "truth": 59,
+    "separate_passes": false,
+    "phase1": 61,
+    "greedy_fixed": 59,
+    "global_fixed": 59,
+    "global_fixed_exact_share": 0.4675324675324675,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 59,
+    "global_movement": 59,
+    "global_movement_exact_share": 0.4675324675324675,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202306271323_032": {
+    "truth": 65,
+    "separate_passes": false,
+    "phase1": 77,
+    "greedy_fixed": 69,
+    "global_fixed": 69,
+    "global_fixed_exact_share": 0.48936170212765956,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 69,
+    "global_movement": 69,
+    "global_movement_exact_share": 0.48936170212765956,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202307260838_039": {
+    "truth": 98,
+    "separate_passes": false,
+    "phase1": 110,
+    "greedy_fixed": 102,
+    "global_fixed": 111,
+    "global_fixed_exact_share": 0.7692307692307693,
+    "global_fixed_heuristic_gap": 0.5685906441200697,
+    "greedy_movement": 102,
+    "global_movement": 111,
+    "global_movement_exact_share": 0.7692307692307693,
+    "global_movement_heuristic_gap": 1.065872765284431
+   },
+   "Jalogny/DJI_202308031317_042": {
+    "truth": 120,
+    "separate_passes": false,
+    "phase1": 158,
+    "greedy_fixed": 126,
+    "global_fixed": 126,
+    "global_fixed_exact_share": 0.5948717948717949,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 125,
+    "global_movement": 125,
+    "global_movement_exact_share": 0.6051282051282051,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309151045_055": {
+    "truth": 158,
+    "separate_passes": false,
+    "phase1": 183,
+    "greedy_fixed": 174,
+    "global_fixed": 174,
+    "global_fixed_exact_share": 0.30288461538461536,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 173,
+    "global_movement": 173,
+    "global_movement_exact_share": 0.3125,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309151045_056": {
+    "truth": 168,
+    "separate_passes": false,
+    "phase1": 188,
+    "greedy_fixed": 181,
+    "global_fixed": 181,
+    "global_fixed_exact_share": 0.2850467289719626,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 181,
+    "global_movement": 181,
+    "global_movement_exact_share": 0.2850467289719626,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309261339_058": {
+    "truth": 126,
+    "separate_passes": false,
+    "phase1": 140,
+    "greedy_fixed": 134,
+    "global_fixed": 134,
+    "global_fixed_exact_share": 0.7033492822966507,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 134,
+    "global_movement": 134,
+    "global_movement_exact_share": 0.7033492822966507,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309261339_059": {
+    "truth": 135,
+    "separate_passes": false,
+    "phase1": 163,
+    "greedy_fixed": 145,
+    "global_fixed": 145,
+    "global_fixed_exact_share": 0.6465116279069767,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 145,
+    "global_movement": 145,
+    "global_movement_exact_share": 0.6465116279069767,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306051814_022": {
+    "truth": 53,
+    "separate_passes": false,
+    "phase1": 61,
+    "greedy_fixed": 56,
+    "global_fixed": 56,
+    "global_fixed_exact_share": 0.7692307692307693,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 56,
+    "global_movement": 56,
+    "global_movement_exact_share": 0.7692307692307693,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306051839_025": {
+    "truth": 68,
+    "separate_passes": false,
+    "phase1": 81,
+    "greedy_fixed": 64,
+    "global_fixed": 78,
+    "global_fixed_exact_share": 0.5588235294117647,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 63,
+    "global_movement": 78,
+    "global_movement_exact_share": 0.5588235294117647,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071624_028": {
+    "truth": 35,
+    "separate_passes": false,
+    "phase1": 37,
+    "greedy_fixed": 24,
+    "global_fixed": 28,
+    "global_fixed_exact_share": 1.0,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 24,
+    "global_movement": 28,
+    "global_movement_exact_share": 1.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071703_029": {
+    "truth": 23,
+    "separate_passes": false,
+    "phase1": 23,
+    "greedy_fixed": 23,
+    "global_fixed": 23,
+    "global_fixed_exact_share": 0.0,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 23,
+    "global_movement": 23,
+    "global_movement_exact_share": 0.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071745_034": {
+    "truth": 46,
+    "separate_passes": false,
+    "phase1": 46,
+    "greedy_fixed": 46,
+    "global_fixed": 46,
+    "global_fixed_exact_share": 0.0,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 46,
+    "global_movement": 46,
+    "global_movement_exact_share": 0.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071745_035": {
+    "truth": 86,
+    "separate_passes": false,
+    "phase1": 94,
+    "greedy_fixed": 88,
+    "global_fixed": 88,
+    "global_fixed_exact_share": 0.5573770491803278,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 88,
+    "global_movement": 88,
+    "global_movement_exact_share": 0.5573770491803278,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202311071416_061": {
+    "truth": 30,
+    "separate_passes": false,
+    "phase1": 14,
+    "greedy_fixed": 14,
+    "global_fixed": 23,
+    "global_fixed_exact_share": 0.0,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 14,
+    "global_movement": 26,
+    "global_movement_exact_share": 0.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202311071416_062": {
+    "truth": 12,
+    "separate_passes": false,
+    "phase1": 12,
+    "greedy_fixed": 12,
+    "global_fixed": 12,
+    "global_fixed_exact_share": 1.0,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 12,
+    "global_movement": 12,
+    "global_movement_exact_share": 1.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202311071541_064": {
+    "truth": 30,
+    "separate_passes": false,
+    "phase1": 38,
+    "greedy_fixed": 14,
+    "global_fixed": 26,
+    "global_fixed_exact_share": 0.32941176470588235,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 14,
+    "global_movement": 26,
+    "global_movement_exact_share": 0.32941176470588235,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202311071541_065": {
+    "truth": 25,
+    "separate_passes": false,
+    "phase1": 25,
+    "greedy_fixed": 21,
+    "global_fixed": 31,
+    "global_fixed_exact_share": 0.6586206896551724,
+    "global_fixed_heuristic_gap": 2.037479859972194,
+    "greedy_movement": 21,
+    "global_movement": 31,
+    "global_movement_exact_share": 0.6586206896551724,
+    "global_movement_heuristic_gap": 1.6869152893827533
+   }
+  },
+  "summary": {
+   "phase1": {
+    "mare": 0.1448481890842118,
+    "mare_ci95": [
+     0.09321221257811937,
+     0.2057790035840017
+    ],
+    "mean_signed": 0.06929263352865626
+   },
+   "greedy_fixed": {
+    "mare": 0.12497288394951259,
+    "mare_ci95": [
+     0.06357899295390892,
+     0.20423731456335312
+    ],
+    "mean_signed": -0.05722692930912419,
+    "link_precision": 0.8709759188846641,
+    "link_recall": 0.9724069619357577
+   },
+   "global_fixed": {
+    "mare": 0.09122874686815675,
+    "mare_ci95": [
+     0.059070250918561176,
+     0.1264250942560201
+    ],
+    "mean_signed": 0.034562080201490084,
+    "link_precision": 0.9048770083890232,
+    "link_recall": 0.900523560209424
+   },
+   "greedy_movement": {
+    "mare": 0.12497505570429046,
+    "mare_ci95": [
+     0.06364747306519199,
+     0.20356372844954257
+    ],
+    "mean_signed": -0.05869534578964045,
+    "link_precision": 0.8708533806026842,
+    "link_recall": 0.9732559784915806
+   },
+   "global_movement": {
+    "mare": 0.087108527731094,
+    "mare_ci95": [
+     0.056490954296108634,
+     0.11990216671803401
+    ],
+    "mean_signed": 0.04044186106442734,
+    "link_precision": 0.906496486447727,
+    "link_recall": 0.8944389415593604
+   }
+  },
+  "paired": {
+   "global_minus_greedy_fixed": {
+    "mean": -0.03374413708135584,
+    "ci95": [
+     -0.09441314733778816,
+     0.01563096442878219
+    ]
+   },
+   "global_minus_greedy_movement": {
+    "mean": -0.037866527973196444,
+    "ci95": [
+     -0.10317740223329475,
+     0.01623144096348217
+    ]
+   }
+  },
+  "h24_subset": null
+ },
+ "dfine_ref": {
+  "flights": {
+   "Derval/DJI_202308091442_012": {
+    "truth": 27,
+    "separate_passes": false,
+    "phase1": 15,
+    "greedy_fixed": 17,
+    "global_fixed": 18,
+    "global_fixed_exact_share": 0.94,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 18,
+    "global_movement": 19,
+    "global_movement_exact_share": 0.92,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Derval/DJI_202308091507_014": {
+    "truth": 31,
+    "separate_passes": false,
+    "phase1": 13,
+    "greedy_fixed": 11,
+    "global_fixed": 11,
+    "global_fixed_exact_share": 0.9047619047619048,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 11,
+    "global_movement": 11,
+    "global_movement_exact_share": 0.9047619047619048,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202306231103_031": {
+    "truth": 59,
+    "separate_passes": false,
+    "phase1": 60,
+    "greedy_fixed": 57,
+    "global_fixed": 57,
+    "global_fixed_exact_share": 0.4868421052631579,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 57,
+    "global_movement": 57,
+    "global_movement_exact_share": 0.4868421052631579,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202306271323_032": {
+    "truth": 65,
+    "separate_passes": false,
+    "phase1": 82,
+    "greedy_fixed": 74,
+    "global_fixed": 74,
+    "global_fixed_exact_share": 0.46464646464646464,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 74,
+    "global_movement": 74,
+    "global_movement_exact_share": 0.46464646464646464,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202307260838_039": {
+    "truth": 98,
+    "separate_passes": false,
+    "phase1": 116,
+    "greedy_fixed": 107,
+    "global_fixed": 115,
+    "global_fixed_exact_share": 0.746268656716418,
+    "global_fixed_heuristic_gap": 3.5228869854776748,
+    "greedy_movement": 106,
+    "global_movement": 115,
+    "global_movement_exact_share": 0.746268656716418,
+    "global_movement_heuristic_gap": 2.3978579798939914
+   },
+   "Jalogny/DJI_202308031317_042": {
+    "truth": 120,
+    "separate_passes": false,
+    "phase1": 159,
+    "greedy_fixed": 128,
+    "global_fixed": 128,
+    "global_fixed_exact_share": 0.5743589743589743,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 128,
+    "global_movement": 128,
+    "global_movement_exact_share": 0.5743589743589743,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309151045_055": {
+    "truth": 158,
+    "separate_passes": false,
+    "phase1": 179,
+    "greedy_fixed": 170,
+    "global_fixed": 170,
+    "global_fixed_exact_share": 0.2885572139303483,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 170,
+    "global_movement": 170,
+    "global_movement_exact_share": 0.2885572139303483,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309151045_056": {
+    "truth": 168,
+    "separate_passes": false,
+    "phase1": 180,
+    "greedy_fixed": 171,
+    "global_fixed": 171,
+    "global_fixed_exact_share": 0.2736318407960199,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 171,
+    "global_movement": 171,
+    "global_movement_exact_share": 0.2736318407960199,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309261339_058": {
+    "truth": 126,
+    "separate_passes": false,
+    "phase1": 136,
+    "greedy_fixed": 129,
+    "global_fixed": 129,
+    "global_fixed_exact_share": 0.6818181818181818,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 129,
+    "global_movement": 129,
+    "global_movement_exact_share": 0.6818181818181818,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Jalogny/DJI_202309261339_059": {
+    "truth": 135,
+    "separate_passes": false,
+    "phase1": 153,
+    "greedy_fixed": 139,
+    "global_fixed": 139,
+    "global_fixed_exact_share": 0.625615763546798,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 139,
+    "global_movement": 139,
+    "global_movement_exact_share": 0.625615763546798,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306051814_022": {
+    "truth": 53,
+    "separate_passes": false,
+    "phase1": 50,
+    "greedy_fixed": 46,
+    "global_fixed": 46,
+    "global_fixed_exact_share": 0.6666666666666666,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 46,
+    "global_movement": 46,
+    "global_movement_exact_share": 0.6666666666666666,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306051839_025": {
+    "truth": 68,
+    "separate_passes": false,
+    "phase1": 77,
+    "greedy_fixed": 58,
+    "global_fixed": 67,
+    "global_fixed_exact_share": 0.6717325227963525,
+    "global_fixed_heuristic_gap": 1.8623493266432547,
+    "greedy_movement": 57,
+    "global_movement": 66,
+    "global_movement_exact_share": 0.6717325227963525,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071624_028": {
+    "truth": 35,
+    "separate_passes": false,
+    "phase1": 34,
+    "greedy_fixed": 24,
+    "global_fixed": 27,
+    "global_fixed_exact_share": 0.9967845659163987,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 24,
+    "global_movement": 27,
+    "global_movement_exact_share": 0.9967845659163987,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071703_029": {
+    "truth": 23,
+    "separate_passes": false,
+    "phase1": 8,
+    "greedy_fixed": 8,
+    "global_fixed": 8,
+    "global_fixed_exact_share": 0.0,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 8,
+    "global_movement": 8,
+    "global_movement_exact_share": 0.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071745_034": {
+    "truth": 46,
+    "separate_passes": false,
+    "phase1": 45,
+    "greedy_fixed": 45,
+    "global_fixed": 45,
+    "global_fixed_exact_share": 0.0,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 45,
+    "global_movement": 45,
+    "global_movement_exact_share": 0.0,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202306071745_035": {
+    "truth": 86,
+    "separate_passes": false,
+    "phase1": 91,
+    "greedy_fixed": 86,
+    "global_fixed": 86,
+    "global_fixed_exact_share": 0.5172413793103449,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 86,
+    "global_movement": 86,
+    "global_movement_exact_share": 0.5172413793103449,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202311071416_061": {
+    "truth": 30,
+    "separate_passes": false,
+    "phase1": 21,
+    "greedy_fixed": 20,
+    "global_fixed": 25,
+    "global_fixed_exact_share": 0.35251798561151076,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 20,
+    "global_movement": 26,
+    "global_movement_exact_share": 0.35251798561151076,
+    "global_movement_heuristic_gap": 0.477111426353801
+   },
+   "Mauron/DJI_202311071416_062": {
+    "truth": 12,
+    "separate_passes": false,
+    "phase1": 22,
+    "greedy_fixed": 22,
+    "global_fixed": 22,
+    "global_fixed_exact_share": 0.954248366013072,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 22,
+    "global_movement": 22,
+    "global_movement_exact_share": 0.954248366013072,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202311071541_064": {
+    "truth": 30,
+    "separate_passes": false,
+    "phase1": 37,
+    "greedy_fixed": 14,
+    "global_fixed": 26,
+    "global_fixed_exact_share": 0.39880952380952384,
+    "global_fixed_heuristic_gap": 0.2772663210435269,
+    "greedy_movement": 14,
+    "global_movement": 26,
+    "global_movement_exact_share": 0.39880952380952384,
+    "global_movement_heuristic_gap": 0.0
+   },
+   "Mauron/DJI_202311071541_065": {
+    "truth": 25,
+    "separate_passes": false,
+    "phase1": 45,
+    "greedy_fixed": 39,
+    "global_fixed": 54,
+    "global_fixed_exact_share": 0.6493506493506493,
+    "global_fixed_heuristic_gap": 0.0,
+    "greedy_movement": 39,
+    "global_movement": 54,
+    "global_movement_exact_share": 0.6461038961038961,
+    "global_movement_heuristic_gap": 0.11589907921261933
+   }
+  },
+  "summary": {
+   "phase1": {
+    "mare": 0.2672768227048429,
+    "mare_ci95": [
+     0.16554326936334565,
+     0.38512142624865403
+    ],
+    "mean_signed": 0.05885903756790665
+   },
+   "greedy_fixed": {
+    "mare": 0.2510486810988092,
+    "mare_ci95": [
+     0.147055944446805,
+     0.366069901518084
+    ],
+    "mean_signed": -0.06729428744477717,
+    "link_precision": 0.875209763539283,
+    "link_recall": 0.9781756180733163
+   },
+   "global_fixed": {
+    "mare": 0.24404176722214738,
+    "mare_ci95": [
+     0.12331610242970331,
+     0.3944435659389425
+    ],
+    "mean_signed": 0.007875891738007035,
+    "link_precision": 0.9101161995898838,
+    "link_recall": 0.9080988917306053
+   },
+   "greedy_movement": {
+    "mare": 0.24942191928297178,
+    "mare_ci95": [
+     0.145778623407006,
+     0.3646121169032249
+    ],
+    "mean_signed": -0.06668793379220503,
+    "link_precision": 0.8737018937080024,
+    "link_recall": 0.9754475703324809
+   },
+   "global_movement": {
+    "mare": 0.24125854282127596,
+    "mare_ci95": [
+     0.1210084053801073,
+     0.39270806360241844
+    ],
+    "mean_signed": 0.010659116138878506,
+    "link_precision": 0.9081266039349871,
+    "link_recall": 0.9050298380221654
+   }
+  },
+  "paired": {
+   "global_minus_greedy_fixed": {
+    "mean": -0.007006913876661786,
+    "ci95": [
+     -0.07752223389355742,
+     0.0753937852918945
+    ]
+   },
+   "global_minus_greedy_movement": {
+    "mean": -0.008163376461695798,
+    "ci95": [
+     -0.07948026710684272,
+     0.07522115234982878
+    ]
+   }
+  },
+  "h24_subset": null
+ },
+ "H23_real": {
+  "detections": "dfine_ref",
+  "evidence": "fixed",
+  "gain": 0.007006913876661786,
+  "gain_ci95": [
+   -0.0753937852918945,
+   0.07752223389355742
+  ],
+  "gain_min": 0.05,
+  "real_part_holds": false,
+  "note": "real-flight part only; the simulated non-inferiority part is judged separately"
+ },
+ "H24_real_direction": null
+}

@@ -1,0 +1,29 @@
+{
+ "frozen_utc": "2026-11-27T00:30:18+00:00",
+ "phase": "phase7_s3",
+ "git_commit": "586749d",
+ "uncommitted_changes_to_frozen_files": [
+  "M python/herdsight/sim/flight.py",
+  " M results/data/detection_error_model.json",
+  " M scripts/phase3_sim.py",
+  "?? results/phase3/pair_model_dfine_ref.json",
+  "?? results/phase3/ranges_real_dfine_ref.json"
+ ],
+ "files": {
+  "configs/sim_worlds.yaml": "7f2a486de0911fa5263fdbf2b8fad90dbc4ca67b7dd0c4b1679a1efd115d8524",
+  "configs/phase3.yaml": "016ecbe014af6e1a35f4b27d156aa6ce83044e3094f0fd355ac5090a5b694ffe",
+  "configs/mission.yaml": "121916b6b82f482cad21043791e59e3fde984781cb658e107e510b97d9bf7e1a",
+  "scripts/phase3_sim.py": "bb030180840b9acd32fc2cb46a26307dda7a3db296e7092580fd837f00a06437",
+  "results/phase3/pair_model_dfine_ref.json": "f39710e3a5d41e931a376dec3558ab83c3c348567992cd17d10066eea0b50dc0",
+  "results/phase3/ranges_real_dfine_ref.json": "99219005fa8e2eb1aace070db3f22f9b681fa81d008a901fcc745c48c81ee0d5",
+  "results/data/detection_error_model.json": "b27879cbe52139525242cd01beefda49e8995b0b1734c2174d2e1f538ab7d78f",
+  "results/data/flight_error_model.json": "2cdce62d4e6c49667b6adf7ef61dde4e76d7ec19cce4014b3152384222d9212b",
+  "python/herdsight/sim/flight.py": "9e66472f9a390cd79a9bebc27e8655c955266f12e45bca449696cf2b2963ff84",
+  "python/herdsight/sim/phase3.py": "3aeac932b95572552da63df831e820053f0bc07b1e661a4429809b879c26e4cf",
+  "python/herdsight/sim/herds.py": "29ddec8cf0c34e1d9344f282bd5ff36fe732850a26e7106c8a771be3e19a3262",
+  "python/herdsight/sim/errors.py": "662449cc092703e99e8c9762b62f4763e3f2ffb3dcff4bed6c70cd08718f6896",
+  "python/herdsight/count/ranges.py": "60dbc1cb9eed108081ebb247ffe1314abe68421b5b594b0f9a83cf5338c4f124",
+  "python/herdsight/count/clustering.py": "81ec26286728bb154276cb4def702d1b8b0954a3cd593050909376a0c3a20976",
+  "python/herdsight/count/evidence.py": "029bbeb49b68d90fd8c63de73694ef1054c08039024a1e0ee279a826189571ba"
+ }
+}

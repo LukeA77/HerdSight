@@ -1,6 +1,6 @@
 """Phase 3 on simulated validation flights: H23 (simulated part), H24 and H26.
 
-Usage: python scripts/phase3_sim.py [--workers N]
+Usage: python scripts/phase3_sim.py [--workers N] [--detector dfine|dfine_ref] [--set NAME]
 
 Checks the Phase 3 freeze first. Flights: configs/phase3.yaml simulated_flights (count, on the
 validation seed of configs/sim_worlds.yaml); each camp, herd and plan is drawn as in H20's moving
@@ -17,7 +17,10 @@ position-only pair models fitted on all 20 real verified flights.
 * H26: the counting method's 90% ranges, calibrated on the real flights only
   (results/phase3/ranges_real.json, greedy_fixed, all 20 flights), contain the true count on
   85-95% of simulated flights; 68% and 95% are reported too.
-Writes results/phase3/sim_validation.json. Simulation results, not field results.
+Writes results/phase3/sim_validation.json. With --detector dfine_ref (the final detector), the pair
+models and ranges come from its own real-flight runs and the result is
+sim_<set>_dfine_ref.json; --set test uses the test seed once, after scripts/freeze.py --phase
+phase7_s3 (Phase 7). Simulation results, not field results.
 """
 
 from __future__ import annotations
@@ -41,18 +44,19 @@ from herdsight.sim.phase3 import POSITION_COLUMNS, PositionModels, phase3_counts
 from herdsight.utils.config import REPO_ROOT, load_config
 from herdsight.utils.env_report import env_report
 from herdsight.utils.paths import storage_path
+from herdsight.utils.run_once import claim_test_run
 
 METHODS = ("phase1", "greedy_fixed", "global_fixed", "greedy_movement", "global_movement")
 _MODELS: PositionModels | None = None
 _SETTINGS: dict = {}
 
 
-def fit_models() -> PositionModels:
+def fit_models(det_run: str = "dfine") -> PositionModels:
     d3 = storage_path("processed", "phase3")
     lab = np.load(d3 / "pairs_labels.npz")
     m = (lab["y"] == 1) & ~lab["geotag"]
     motion = MotionModel.fit(lab["d_m"][m], lab["dt_s"][m])
-    det = np.load(d3 / "pairs_dfine.npz")
+    det = np.load(d3 / f"pairs_{det_run}.npz")
     k = det["y"] >= 0
     fixed = fit_logistic(det["x_fixed"][k][:, POSITION_COLUMNS], det["y"][k])
     movement = fit_logistic(det["x_movement"][k][:, POSITION_COLUMNS], det["y"][k])
@@ -90,7 +94,15 @@ def one_flight(job: tuple[int, int]) -> dict:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--detector", default="dfine")
+    ap.add_argument("--set", default="validation", choices=("validation", "test"))
     args = ap.parse_args(argv)
+    sfx = "" if args.detector == "dfine" else f"_{args.detector}"
+    if args.set == "test" and not sfx:
+        raise SystemExit("the test run uses the final detector (--detector dfine_ref)")
+    dest = REPO_ROOT / "results" / "phase3" / f"sim_{args.set}{sfx}.json"
+    if args.set == "test":  # one-time run on the test seed (brief section 9.5)
+        claim_test_run("phase7_s3", dest)
     chk = subprocess.run(
         [
             sys.executable,
@@ -111,14 +123,15 @@ def main(argv: list[str] | None = None) -> int:
         p3.require("bootstrap"),
         p3.require("hypotheses"),
     )
-    seed = int(load_config("sim_worlds").require(simc["seed"]))
+    seed_key = simc["seed"] if args.set == "validation" else "seed_test"
+    seed = int(load_config("sim_worlds").require(seed_key))
     ex = p3.require("exact_solver")
     settings = {
         "gap_s": float(p3.require("separate_pass_gap_s")),
         "max_exact": ex["max_detections"],
         "time_limit_s": ex["time_limit_s"],
     }
-    models = fit_models()
+    models = fit_models(args.detector)
     jobs = [(seed, i) for i in range(int(simc["count"]))]
     with ProcessPoolExecutor(args.workers, initializer=_init, initargs=(models, settings)) as pool:
         rows = list(pool.map(one_flight, jobs))
@@ -151,7 +164,7 @@ def main(argv: list[str] | None = None) -> int:
         d24 = np.abs(err["global_movement"]) - np.abs(err["global_fixed"])
         h24 |= {"movement_minus_fixed": float(d24[sub].mean()), "ci95": ci(d24, sub)}
         h24["holds_in_simulation"] = bool(h24["movement_minus_fixed"] < 0 and h24["ci95"][1] < 0)
-    real = json.loads((REPO_ROOT / "results" / "phase3" / "ranges_real.json").read_text())
+    real = json.loads((REPO_ROOT / "results" / "phase3" / f"ranges_real{sfx}.json").read_text())
     calj = real["methods"]["greedy_fixed"]["calibration_all_flights"]
     cal = Calibration(
         calj["centre"],
@@ -171,7 +184,8 @@ def main(argv: list[str] | None = None) -> int:
         "holds": bool(r26["coverage_90_min"] <= cov["0.90"] <= r26["coverage_90_max"]),
     }
     out = {
-        "set": "validation",
+        "set": args.set,
+        "detector": args.detector,
         "seed": seed,
         "flights": len(rows),
         "note": "Simulation results on simulated camps; not field results.",
@@ -187,9 +201,7 @@ def main(argv: list[str] | None = None) -> int:
         "rows": rows,
         "environment": env_report(),
     }
-    (REPO_ROOT / "results" / "phase3" / "sim_validation.json").write_text(
-        json.dumps(out, indent=1) + "\n", encoding="utf-8", newline="\n"
-    )
+    dest.write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8", newline="\n")
     for m, s in summary.items():
         print(
             f"{m:16s} MARE {s['mare']:.3f} {np.round(s['mare_ci95'], 3)} signed {s['signed']:+.3f}"

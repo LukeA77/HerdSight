@@ -14,10 +14,15 @@ folds and applied to its own flights:
 With 20 flights, real coverage is indicative (H26 is judged on simulated flights). Also writes the
 calibration from all 20 flights, which simulated flights use (they are separate data). Writes
 results/phase3/ranges_real.json.
+
+Re-run for another detector's out-of-fold predictions with --detector <run> (for example
+dfine_ref, the final detector); its files get the run name as a suffix and the frozen Phase 3
+results stay as they are.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import sys
@@ -31,15 +36,23 @@ from herdsight.utils.env_report import env_report
 METHODS = ("greedy_fixed", "phase1", "global_fixed")
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--detector", default="dfine")
+    det_run = ap.parse_args(argv).detector
+    sfx = "" if det_run == "dfine" else f"_{det_run}"
     p3 = load_config("phase3")
     levels = tuple(float(x) for x in p3.require("interval_levels"))
     sp = json.loads((REPO_ROOT / p3.require("folds")).read_text())["icaerus_v2"]["flights"]
-    g = json.loads((REPO_ROOT / "results" / "phase3" / "grouping_real.json").read_text())
-    flights = g["dfine"]["flights"]
+    g = json.loads((REPO_ROOT / "results" / "phase3" / f"grouping_real{sfx}.json").read_text())
+    flights = g[det_run]["flights"]
     keys = sorted(flights)
     fold = {k: sp[k] for k in keys}
-    out: dict = {"levels": levels, "detections": "dfine (Phase 1, out of fold)", "methods": {}}
+    out: dict = {
+        "levels": levels,
+        "detections": f"{det_run} (out of fold)" if sfx else "dfine (Phase 1, out of fold)",
+        "methods": {},
+    }
     for mth in METHODS:
         rows = []
         for k in keys:
@@ -97,7 +110,7 @@ def main() -> int:
             )
         )
     out["environment"] = env_report()
-    (REPO_ROOT / "results" / "phase3" / "ranges_real.json").write_text(
+    (REPO_ROOT / "results" / "phase3" / f"ranges_real{sfx}.json").write_text(
         json.dumps(out, indent=1) + "\n", encoding="utf-8", newline="\n"
     )
     return 0

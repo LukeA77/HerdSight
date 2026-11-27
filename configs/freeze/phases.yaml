@@ -48,3 +48,35 @@ phases:
     - python/herdsight/evaluate/herds.py
     - python/herdsight/evaluate/stats.py
     - python/herdsight/evaluate/upright_ap.py
+  # Phase 7 S4 test run (scripts/run_s4.py --set test): the simulated farms and their seeds, the
+  # S4 target, the alert rules, the farm simulator and both measured count errors. Frozen after
+  # the validation run with the final count error (results/phase4/s4_validation_final.json),
+  # before the test farms are simulated.
+  phase7_s4:
+    - configs/sim_farms.yaml
+    - configs/specs.yaml
+    - scripts/run_s4.py
+    - python/herdsight/herd/sim.py
+    - python/herdsight/herd/alerts.py
+    - results/phase3/dfine_ref_s3_v20.json
+    - results/baselines/dfine_s3.json
+  # Phase 7 simulated counting test (scripts/phase3_sim.py --detector dfine_ref --set test): the
+  # simulated worlds and seeds, the counting settings, the final detector's real-flight pair model
+  # summary and ranges, the detection error model, and the simulation and counting code. Frozen
+  # after the simulated validation run with the final detector, before the test seed is flown.
+  phase7_s3:
+    - configs/sim_worlds.yaml
+    - configs/phase3.yaml
+    - configs/mission.yaml
+    - scripts/phase3_sim.py
+    - results/phase3/pair_model_dfine_ref.json
+    - results/phase3/ranges_real_dfine_ref.json
+    - results/data/detection_error_model.json
+    - results/data/flight_error_model.json
+    - python/herdsight/sim/flight.py
+    - python/herdsight/sim/phase3.py
+    - python/herdsight/sim/herds.py
+    - python/herdsight/sim/errors.py
+    - python/herdsight/count/ranges.py
+    - python/herdsight/count/clustering.py
+    - python/herdsight/count/evidence.py

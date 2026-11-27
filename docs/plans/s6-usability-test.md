@@ -47,3 +47,8 @@ the dashboard before. Each session takes about 15 minutes.
 | S6 pass? | |
 
 Store the sheets privately; only initials, times and anonymised comments go into the results file.
+
+## Scoring
+Type each sheet into one private CSV (columns listed in `scripts/score_s6.py`), then run
+`python scripts/score_s6.py <sessions.csv>`. It applies the pass rule above and writes
+`results/phase6/s6_usability.json` with initials, times and remarks only.

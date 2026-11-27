@@ -1,0 +1,53 @@
+{
+ "note": "Breakdown of the single Phase 7 run's stored predictions; nothing re-run or tuned. Public data, not a field result.",
+ "threshold": 0.8,
+ "animals": 1355,
+ "found": 0.6900369003690037,
+ "by_crowding": {
+  "crowded": {
+   "animals": 629,
+   "found": 0.5421303656597775
+  },
+  "apart": {
+   "animals": 726,
+   "found": 0.8181818181818182
+  }
+ },
+ "by_length_px": {
+  "cut_points_px": [
+   87.10968800000008,
+   99.25340266666672
+  ],
+  "small": {
+   "animals": 452,
+   "found": 0.6991150442477876
+  },
+  "middle": {
+   "animals": 451,
+   "found": 0.6917960088691796
+  },
+  "large": {
+   "animals": 452,
+   "found": 0.6792035398230089
+  }
+ },
+ "by_animals_in_photo": {
+  "1-4": {
+   "animals": 20,
+   "found": 1.0
+  },
+  "5-19": {
+   "animals": 370,
+   "found": 0.5351351351351351
+  },
+  "20+": {
+   "animals": 965,
+   "found": 0.7430051813471502
+  }
+ },
+ "false_marks": {
+  "near_an_animal": 244,
+  "on_empty_ground": 78,
+  "near_share": 0.7577639751552795
+ }
+}

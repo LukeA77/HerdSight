@@ -22,10 +22,15 @@ Writes the pair tables with out-of-fold log odds to
 $HERDSIGHT_STORAGE/processed/phase3/pairs_<source>.npz (with each still's detections, read by
 the grouping and appearance steps) and the
 summary to results/phase3/pair_model.json.
+
+Re-run for another detector's out-of-fold predictions with --detector <run> (for example
+dfine_ref, the final detector); its files get the run name as a suffix and the frozen Phase 3
+results stay as they are.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import sys
@@ -56,7 +61,6 @@ from link_animals import centres  # noqa: E402
 from score_baseline import load_preds  # noqa: E402
 from score_s3 import flight_geometry, ground  # noqa: E402
 
-SOURCES = ("labels", "dfine")
 KINDS = ("movement", "fixed")
 CAND_FIELDS = ("i", "a", "j", "b", "d_m", "dt_s", "geotag", "fixed_gate_m", "size", "low_score")
 
@@ -65,7 +69,11 @@ def box_len(b: np.ndarray) -> np.ndarray:
     return np.maximum(b[:, 2] - b[:, 0], b[:, 3] - b[:, 1]) if len(b) else np.zeros(0)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--detector", default="dfine")
+    det_run = ap.parse_args(argv).detector
+    SOURCES = ("labels", det_run)  # noqa: N806
     p3 = load_config("phase3")
     boot = p3.require("bootstrap")
     truth = json.loads((REPO_ROOT / p3.require("truth")).read_text())["flights"]
@@ -73,7 +81,7 @@ def main() -> int:
     sp = json.loads((REPO_ROOT / p3.require("folds")).read_text())["icaerus_v2"]
     fold_of = {k: sp["flights"][k] for k in keys}
     folds = sorted(set(fold_of.values()))
-    det_s3 = json.loads((REPO_ROOT / "results" / "phase3" / "dfine_s3_v20.json").read_text())
+    det_s3 = json.loads((REPO_ROOT / "results" / "phase3" / f"{det_run}_s3_v20.json").read_text())
     thresholds = det_s3["per_fold_threshold"]
 
     meta, sizes = {}, {}
@@ -86,7 +94,7 @@ def main() -> int:
             sizes[(s.farm, s.flight, s.path.name)] = (s.width, s.height)
     preds: dict = {}
     for f in folds:
-        preds |= load_preds(storage_path("runs", "baselines", "dfine") / f"{f}.jsonl")
+        preds |= load_preds(storage_path("runs", "baselines", det_run) / f"{f}.jsonl")
 
     links_dir = storage_path("processed", "s3_links")
     raw: dict[str, list] = {s: [] for s in SOURCES}
@@ -226,7 +234,9 @@ def main() -> int:
             }
         summary[src] = res
         np.savez_compressed(
-            out_dir / f"pairs_{src}.npz",
+            out_dir / f"pairs_{src}.npz"
+            if src != "labels" or det_run == "dfine"
+            else out_dir / f"pairs_labels_{det_run}.npz",
             flight=flight_of,
             y=y,
             log_odds_movement=log_odds["movement"],
@@ -243,9 +253,12 @@ def main() -> int:
             f"{res['auc_movement']['value']:.3f} {np.round(res['auc_movement']['ci95'], 3)}, "
             f"fixed {res['auc_fixed']['value']:.3f} {np.round(res['auc_fixed']['ci95'], 3)}"
         )
-    (REPO_ROOT / "results" / "phase3" / "pair_model.json").write_text(
-        json.dumps(summary, indent=1) + "\n", encoding="utf-8", newline="\n"
-    )
+    (
+        REPO_ROOT
+        / "results"
+        / "phase3"
+        / ("pair_model.json" if det_run == "dfine" else f"pair_model_{det_run}.json")
+    ).write_text(json.dumps(summary, indent=1) + "\n", encoding="utf-8", newline="\n")
     return 0
 
 

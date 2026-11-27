@@ -4,7 +4,7 @@ HerdSight counts cattle from the air and tells a farmer when animals may be miss
 
 A drone surveys each camp (paddock). The software counts the cattle in the photos, making sure an animal seen in several photos is counted once, and compares the total with the farm's herd records. It raises an alert only when the shortfall is clear enough to act on. The aim is to help farmers notice stock theft and straying early.
 
-> **Status: work in progress, about 75% of planned tasks complete.**
+> **Status: work in progress, about 80% of planned tasks complete.**
 > HerdSight has not been flown on a real farm. Every result below comes from public drone data or from simulation, and each one says which. None is a field result.
 
 ---
@@ -38,11 +38,11 @@ flowchart LR
 | 0 | Setup: code structure, automated checks, C++ core | Done |
 | 1 | Data audit, fair splits, baselines, frozen targets | Done |
 | 2 | Cattle detector | Mostly done; onboard detector chosen; learning a new farm from its own photos improves results, but levels off below the agreed 80% |
-| 3 | Counting across photos | Method chosen; to be rerun with the final detector |
-| 4 | Herd records and alerts | Done; to be refitted with the final accuracy |
+| 3 | Counting across photos | Done; rerun with the final detector: 25% whole-flight error against the 15% target |
+| 4 | Herd records and alerts | Done; refitted with the final accuracy and tested once on held-back simulated farms: target not met |
 | 5 | Simulated drone mission | 16 of 16 overnight simulated missions passed their checks; GPS-loss return works up to 5 m/s wind |
 | 6 | Farmer dashboard | Prototype built; usability test with five people next |
-| 7 | Final test on the held-back farm, and write-up | Test run once: 1 of 9 targets met (see 8 below); write-up in progress |
+| 7 | Final test on the held-back farm, and write-up | Test farm and simulated test sets run once each: detection, counting and alert targets not met (see 8 below); write-up in progress |
 
 ## Results so far
 
@@ -52,7 +52,7 @@ flowchart LR
 
 The detector is trained and scored on the public ICAERUS drone dataset: 1,323 photos and 3,392 cattle from three French farms. Tested on survey days held out from training, it finds 73% of the cattle. On a farm it never saw in training, it finds 55%.
 
-That drop is the biggest accuracy problem in the project. Most of the animals it misses on a new farm have dark coats or stand in tight groups. I tried two training changes aimed at this, harder augmentation and then darker coats with tight groups, and neither beat the reference model on unseen farms (`docs/decisions.md`, D-49 and D-50). The next step is a second look: the drone flies lower over uncertain groups and watches them for longer.
+That drop is the biggest accuracy problem in the project. Most of the animals it misses on a new farm have dark coats or stand in tight groups. I tried two training changes aimed at this, harder augmentation and then darker coats with tight groups, and neither beat the reference model on unseen farms (`docs/decisions.md`, D-49 and D-50). A second look, where the drone flies lower over uncertain groups and watches them for longer, did no better than the simpler herd mode in simulation. Teaching the detector each new farm helped more (section 7).
 
 ### 2. Counting a whole flight (public data)
 
@@ -64,7 +64,7 @@ These are 20 flights whose true counts I checked by hand. Adding up the animals 
 
 ![Alert trade-off on 4,000 simulated farms](docs/figures/s4_curve_validation.svg)
 
-Each count comes with a range, and HerdSight alerts only when the whole range sits below the expected herd size. I tested several alert rules on 4,000 simulated farms with losses, moves and record errors, measuring false alarms against losses caught for each. At today's count error, no rule meets the target. At the target count error, a rule that uses each camp's survey history does.
+Each count comes with a range, and HerdSight alerts only when the whole range sits below the expected herd size. I tested several alert rules on 4,000 simulated farms with losses, moves and record errors, measuring false alarms against losses caught for each. At the final detector's count error, no rule meets the target. I then ran 4,000 separate simulated farms once, held back for this test: the standard rule raised 1.6 false alarms per 100 surveys and caught 46% of losses of five or more animals, against a target of at most 1.5 and at least 65%. With counting at its target accuracy the same farms give 1.2 false alarms and 64%, just short. Good alerts depend on better counting more than on a cleverer rule.
 
 ### 4. Returning home after GPS loss (simulation)
 
@@ -116,7 +116,10 @@ matter more than the number of photos; that is the next thing to test.
 One farm in the public data was set aside before any work began and never used for training or tuning. At the end I
 froze the final models and settings, then scored that farm once: 62 photos with 1,355 cattle. The final detector found
 69% of the cattle, and 74% of its marks were cattle, against targets of 80% for both. That is between how it did on
-farms it had seen (73%) and on a farm left out of training (55%). It met 1 of the 9 targets I set before the work started.
+farms it had seen (73%) and on a farm left out of training (55%). It met 1 of the 9 targets I set before the work started. Crowding explains most of the misses: animals standing
+within a body length of another were found 54% of the time, against 82% for animals standing apart, while their size
+in the photo made almost no difference. Three quarters of the false marks sat next to a real animal, which points to
+touching animals being split or merged.
 
 Counting suffered most from how crowded the photos were. They hold about 22 cattle each, against about 3 in the photos
 used for training, and the count was off by 2.2 animals per photo on average (target 0.45). On photos with 20 or more
@@ -131,12 +134,12 @@ detector each new farm (section 7).
 - Before each experiment I write down what I expect and what counts as a pass (`docs/hypotheses.md`). Results that miss are reported as misses.
 - Each decision is logged with the options considered, the evidence, and the easier option I turned down. There are about 55 so far (`docs/decisions.md`).
 - The targets were fixed before the main work began. One farm was held back, untouched, for a single final test in Phase 7, and was scored once.
-- Scripts produce the headline numbers and figures from `results/` (for this page, `scripts/make_readme_figures.py`). No number is typed in by hand.
+- Scripts produce the headline numbers and figures from `results/` (for this page, `scripts/make_readme_figures.py`), and a test checks that every result number on this page traces back to them (`scripts/check_readme_numbers.py`).
 - What the system cannot do is listed in `docs/limitations.md`.
 
 ## What comes next
 
-1. Make the count ranges scale with the number of animals, and check them again on cross-validation (the test farm is not reused).
+1. Improve the detector on new farms: teach it each farm from photos spread across several days and seasons, which is where counting and alerts are held back. Ranges that only widen to cover the error were tried and are too wide to be useful (D-55).
 2. Run the dashboard test with five people who are not technical.
 3. Make the camera return reliable in wind (a stabilised camera is the likely fix).
 4. Then trials with a real drone on real farms, set up farm by farm, with a clear go/no-go decision first.

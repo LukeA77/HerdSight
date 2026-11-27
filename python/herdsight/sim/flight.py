@@ -464,7 +464,7 @@ def count_flight(flight: Flight, median_animal_m: float, rng: np.random.Generato
 
 def real_flight_intervals(count: int, rng: np.random.Generator) -> tuple[dict, dict]:
     """Intervals from the count error measured on real flights (never the simulation's own)."""
-    bias, sd = measured_flight_error()
+    bias, sd = measured_flight_error("results/phase3/dfine_ref_s3_v20.json")  # final detector
     q = ErrorModel(bias=bias, sd=sd, name="measured").calibrate(LEVELS, rng)
     lo = {lv: max(0.0, count - qq * (count + 1)) for lv, qq in q.items()}
     hi = {lv: count + qq * (count + 1) for lv, qq in q.items()}

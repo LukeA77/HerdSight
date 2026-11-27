@@ -270,14 +270,16 @@ def expected_table(farm: Farm) -> dict[str, np.ndarray]:
     return out
 
 
-def measured_flight_error() -> tuple[float, float]:
+def measured_flight_error(source: str = "results/baselines/dfine_s3.json") -> tuple[float, float]:
     """(bias, sd) of the relative error of flight totals after duplicate removal on the
-    owner-verified flights (results/baselines/dfine_s3.json, registration method)."""
+    owner-verified flights in `source` (registration method). The default is the Phase 1
+    detector on the first ten verified flights; results/phase3/dfine_ref_s3_v20.json is the final
+    detector on all twenty."""
     import json
 
     from herdsight.utils.config import REPO_ROOT
 
-    s3 = json.loads((REPO_ROOT / "results" / "baselines" / "dfine_s3.json").read_text())
+    s3 = json.loads((REPO_ROOT / source).read_text())
     rel = np.array(
         [
             f["relative_error"]["registration"]

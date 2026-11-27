@@ -1,0 +1,18 @@
+{
+ "frozen_utc": "2026-11-27T00:10:24+00:00",
+ "phase": "phase7_s4",
+ "git_commit": "586749d",
+ "uncommitted_changes_to_frozen_files": [
+  "M python/herdsight/herd/sim.py",
+  " M scripts/run_s4.py"
+ ],
+ "files": {
+  "configs/sim_farms.yaml": "422455cef4f8340d964fd276d83d7428d716714679f31f99666ea7f4cdf6bd99",
+  "configs/specs.yaml": "dd4889e562affa69ce1c7e25da35d23c573da63dc4e8f4bb076200438833b9d5",
+  "scripts/run_s4.py": "f47fd962dfa2c491107c20b92959ae3a44f4d82ec3cf08a5a0bf49df66ce4a9e",
+  "python/herdsight/herd/sim.py": "8ed56cafc16a5048a35706314dc25ce9a7fa3508afbe2e2d412a81cfcfd95d1f",
+  "python/herdsight/herd/alerts.py": "d8872a89fa220cc7d6057f91bb5bfdf7c5c0b98326d117910632eda4228251bf",
+  "results/phase3/dfine_ref_s3_v20.json": "888607cdf263e735aaae8ca028c4d87034ec8fce88a7c70cb98a6170e6bcfedf",
+  "results/baselines/dfine_s3.json": "5302a088ffb2d8e4f6f2c63c72cbfbe7db04ec5a90a7698c1b1f68f5c905b0a5"
+ }
+}

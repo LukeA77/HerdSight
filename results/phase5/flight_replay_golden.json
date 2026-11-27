@@ -1,30 +1,30 @@
 {
  "note": "Simulation: home-base results of stored Gazebo flights; not field results.",
- "last_change": "first saved results (25 Nov 2026): three stored complete flights",
+ "last_change": "Refit with the final detector: detection error model from the reference model's out-of-fold predictions, and flight ranges from its count error on all 20 verified flights",
  "flights": {
   "s5_batch_seed3": {
-   "count": 34,
+   "count": 37,
    "expected_count": 30,
    "status": "ok",
    "intervals": [
     {
      "level": 0.68,
-     "low": 20,
-     "high": 48
+     "low": 19,
+     "high": 55
     },
     {
      "level": 0.9,
-     "low": 11,
-     "high": 57
+     "low": 0,
+     "high": 104
     },
     {
      "level": 0.95,
      "low": 0,
-     "high": 77
+     "high": 223
     }
    ],
    "notes": [
-    "Sim camp: 34 cows counted (likely between 11 and 57). That matches your records (30)."
+    "Sim camp: 37 cows counted (likely between 0 and 104). That matches your records (30)."
    ],
    "alerts": [],
    "s5_passes": true
@@ -36,49 +36,49 @@
    "intervals": [
     {
      "level": 0.68,
-     "low": 23,
-     "high": 53
+     "low": 20,
+     "high": 56
     },
     {
      "level": 0.9,
-     "low": 13,
-     "high": 63
+     "low": 0,
+     "high": 107
     },
     {
      "level": 0.95,
      "low": 0,
-     "high": 85
+     "high": 229
     }
    ],
    "notes": [
-    "Sim camp: 38 cows counted (likely between 13 and 63). That matches your records (30)."
+    "Sim camp: 38 cows counted (likely between 0 and 107). That matches your records (30)."
    ],
    "alerts": [],
    "s5_passes": true
   },
   "s5_batch_seed5": {
-   "count": 31,
+   "count": 32,
    "expected_count": 30,
    "status": "ok",
    "intervals": [
     {
      "level": 0.68,
-     "low": 18,
-     "high": 44
+     "low": 16,
+     "high": 48
     },
     {
      "level": 0.9,
-     "low": 10,
-     "high": 52
+     "low": 0,
+     "high": 90
     },
     {
      "level": 0.95,
      "low": 0,
-     "high": 70
+     "high": 194
     }
    ],
    "notes": [
-    "Sim camp: 31 cows counted (likely between 10 and 52). That matches your records (30)."
+    "Sim camp: 32 cows counted (likely between 0 and 90). That matches your records (30)."
    ],
    "alerts": [],
    "s5_passes": true

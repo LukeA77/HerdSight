@@ -1,6 +1,6 @@
 """Fit the detection error model used on simulated flights (Phase 5 plan, step 4; D-11).
 
-Usage: python scripts/fit_detection_model.py [--run dfine]
+Usage: python scripts/fit_detection_model.py [--run dfine] [--out results/data/<file>.json]
 
 Rendered cattle are never scored, so home base sees simulated detections drawn from a model
 fitted here on real images: the Phase 1 out-of-fold predictions ($HERDSIGHT_STORAGE/runs/
@@ -47,8 +47,13 @@ LENGTH_REF_PX = 60.0
 
 def load_rows(run: str) -> tuple[list[dict], dict]:
     sp = json.loads((REPO_ROOT / "results" / "splits.json").read_text())["icaerus_v2"]["flights"]
-    scores = json.loads((REPO_ROOT / "results" / "baselines" / f"{run}_scores.json").read_text())
-    thr = {k: v["threshold"] for k, v in scores["per_fold_fit"].items()}
+    path = REPO_ROOT / "results" / "baselines" / f"{run}_scores.json"
+    if path.exists():
+        scores = json.loads(path.read_text())
+        thr = {k: v["threshold"] for k, v in scores["per_fold_fit"].items()}
+    else:  # Phase 2 runs: the per-fold thresholds recorded with their Phase 3 counts
+        s3 = json.loads((REPO_ROOT / "results" / "phase3" / f"{run}_s3_v20.json").read_text())
+        thr = dict(s3["per_fold_threshold"])
     meta = {
         f"{r['farm']}/{r['flight']}/{r['image']}": r
         for r in csv.DictReader((REPO_ROOT / "results" / "data" / "icaerus_images.csv").open())
@@ -243,7 +248,11 @@ def main(argv: list[str] | None = None) -> int:
             "calves: detection probability extrapolated by size from adults (no calf labels)",
             "partly hidden animals: detection probability scaled by visible share (no labels)",
         ],
-        "note": "Phase 1 out-of-fold predictions on real images; refit after Phase 2",
+        "note": (
+            "Phase 1 out-of-fold predictions on real images; refit after Phase 2"
+            if args.run == "dfine"
+            else "final detector (reference recipe, D-52): out-of-fold predictions on real images"
+        ),
     }
     dest = REPO_ROOT / "results" / "data" / "detection_error_model.json"
     dest.write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")

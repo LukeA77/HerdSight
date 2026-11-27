@@ -2,7 +2,7 @@
 
 Usage: python scripts/plot_s4.py
 
-Reads results/phase4/s4_validation_4000farms.json and writes docs/figures/s4_curve_validation.svg:
+Reads results/phase4/s4_validation_final.json (the final detector's count error, D-56) and writes docs/figures/s4_curve_validation.svg:
 for each count error model, false alarms per 100 surveys (log scale) against the share of losses
 of 5 or more animals caught within 3 surveys, one line per alert rule across the interval levels (the dial), with 95% intervals over simulated farms,
 and the frozen S4 target (configs/specs.yaml s4_alert_targets) shaded. Plain SVG, no plotting
@@ -26,9 +26,9 @@ RULES = (  # fixed colour and marker per rule; drawn in this order (recount on t
     ("history", "History", "#6250d6", "triangle"),
 )
 MODELS = (
-    ("measured_rho0.0", "Phase 1 count error, independent checks"),
+    ("final_rho0.0", "Final detector count error, independent checks"),
     ("target_rho0.0", "S3 target count error, independent checks"),
-    ("measured_rho0.5", "Phase 1 count error, correlated checks (0.5)"),
+    ("final_rho0.5", "Final detector count error, correlated checks (0.5)"),
     ("target_rho0.5", "S3 target count error, correlated checks (0.5)"),
 )
 INK, MUTED, GRID, SURFACE = "#1f1f1e", "#6b6a64", "#e4e3de", "#ffffff"
@@ -123,7 +123,7 @@ def panel(runs: dict, model: str, title: str, ox: float, oy: float, target: dict
 
 
 def main() -> int:
-    d = json.loads((REPO_ROOT / "results" / "phase4" / "s4_validation_4000farms.json").read_text())
+    d = json.loads((REPO_ROOT / "results" / "phase4" / "s4_validation_final.json").read_text())
     if d["set"] != "validation":
         raise SystemExit("the figure is drawn from the validation set")
     target = load_config("specs").require("s4_alert_targets")

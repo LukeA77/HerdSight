@@ -157,6 +157,10 @@ def count_figure(nums: dict) -> None:
     nums["flight_count_error_current"] = round(det[-1], 3)
     nums["flight_count_error_perfect_detector"] = round(ora[-1], 3)
     nums["flight_count_error_add_up"] = round(det[0], 3)
+    g = RES / "phase3" / "grouping_real_dfine_ref.json"
+    if g.exists():  # the counting method (greedy joining, fixed gate) with the final detector
+        gr = json.loads(g.read_text(encoding="utf-8"))["dfine_ref"]["summary"]["greedy_fixed"]
+        nums["flight_count_error_final_method"] = round(gr["mare"], 3)
     bars(
         "Whole-flight count error, 20 hand-verified flights",
         "Mean error against the true count. Bars above 100% are cut off. Public data.",
@@ -242,6 +246,17 @@ def test_farm_figure(nums: dict) -> None:
     nums["test_false_herd_alarms_per_photo"] = t["S7 false herd alarms per photo"]["result"]
     nums["test_targets_met"] = sum(bool(v["met"]) for v in t.values())
     nums["test_targets_total"] = len(t)
+    cvh = RES / "baselines" / "dfine_onboard_1920_herds.json"
+    if cvh.exists():  # the same onboard method in cross-validation, for comparison
+        h = json.loads(cvh.read_text(encoding="utf-8"))
+        nums["cv_onboard_herds_found"] = round(h["herd_recall_found"], 4)
+        nums["cv_onboard_herds_grouped"] = round(h["herd_recall_grouped"], 4)
+    fpath = RES / "phase7" / "test_farm_failures.json"
+    if fpath.exists():
+        fl = json.loads(fpath.read_text(encoding="utf-8"))
+        nums["test_found_crowded"] = round(fl["by_crowding"]["crowded"]["found"], 3)
+        nums["test_found_apart"] = round(fl["by_crowding"]["apart"]["found"], 3)
+        nums["test_false_marks_next_to_animal"] = round(fl["false_marks"]["near_share"], 3)
     bars(
         "Held-back test farm, scored once",
         f"{d['n_photos']} photos, {d['n_animals']:,} cattle, never used in training or tuning. "
@@ -253,6 +268,26 @@ def test_farm_figure(nums: dict) -> None:
         lambda v: f"{v:.0%}",
         "test_farm.svg",
     )
+
+
+def s4_test_numbers(nums: dict) -> None:
+    """S4 on the held-out simulated farms, scored once with the final count error (D-56)."""
+    path = RES / "phase4" / "s4_test.json"
+    if not path.exists():
+        return
+    runs = {
+        (r["error_model"], r["rule"]): r
+        for r in json.loads(path.read_text(encoding="utf-8"))["runs"]
+    }
+    for model, tag in (("final_rho0.0", "final"), ("target_rho0.0", "s3_target")):
+        r = runs[(model, "recount@0.9")]
+        nums[f"s4_test_{tag}_false_alarms_per_100"] = round(r["false_alarms_per_100_surveys"], 2)
+        nums[f"s4_test_{tag}_caught_5plus"] = round(r["k5_caught_share"], 3)
+    h = runs[("final_rho0.0", "history@0.95")]
+    nums["s4_test_final_history95_false_alarms_per_100"] = round(
+        h["false_alarms_per_100_surveys"], 2
+    )
+    nums["s4_test_final_history95_caught_5plus"] = round(h["k5_caught_share"], 3)
 
 
 def gps_loss_figure(nums: dict) -> None:
@@ -407,6 +442,7 @@ def main(argv: list[str] | None = None) -> int:
     count_figure(nums)
     onboarding_figure(nums)
     test_farm_figure(nums)
+    s4_test_numbers(nums)
     gps_loss_figure(nums)
     flight_path_figure(args.storage, nums)
     thermal_figure(args.storage, nums)

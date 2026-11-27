@@ -13,6 +13,8 @@ each with a 95% bootstrap interval over farms. Then judges H13-H15 (validation o
 Count error models:
   measured  bias and spread of flight totals after duplicate removal on the owner-verified
             flights (results/baselines/dfine_s3.json, registration method), Phase 1 detector;
+  final     the same, refitted with the final detector on all 20 verified flights
+            (results/phase3/dfine_ref_s3_v20.json); the S4 target is judged on this one;
   target    unbiased, with the mean absolute error of the frozen S3 target
             (configs/specs.yaml s3_flight_error_max);
 each with surveys of a camp independent (correlation 0) and correlated (0.5).
@@ -32,14 +34,19 @@ import numpy as np
 from herdsight.herd.alerts import Rule, run_rule, score
 from herdsight.herd.sim import ErrorModel, draw_settings, measured_flight_error, simulate_farm
 from herdsight.utils.config import REPO_ROOT, load_config
+from herdsight.utils.run_once import claim_test_run
 
 LEVELS = (0.68, 0.8, 0.9, 0.95, 0.99)
 WITHIN = 3
 N_BOOT = 1000
 
 
+FINAL_S3 = "results/phase3/dfine_ref_s3_v20.json"
+
+
 def error_models() -> list[ErrorModel]:
     bias, sd = measured_flight_error()
+    fbias, fsd = measured_flight_error(FINAL_S3)
     target = float(load_config("specs").require("s3_flight_error_max"))
     sd_target = target / np.sqrt(2 / np.pi)  # mean |N(0, sd)| = target
     out = []
@@ -52,6 +59,7 @@ def error_models() -> list[ErrorModel]:
                 name=f"measured_rho{rho}",
             )
         )
+        out.append(ErrorModel(bias=fbias, sd=fsd, correlation=rho, name=f"final_rho{rho}"))
         out.append(
             ErrorModel(bias=0.0, sd=float(sd_target), correlation=rho, name=f"target_rho{rho}")
         )
@@ -127,6 +135,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--tag", default=None, help="save as s4_<set>_<tag>.json")
     ap.add_argument("--workers", type=int, default=1)
     args = ap.parse_args(argv)
+    out_dir = REPO_ROOT / "results" / "phase4"
+    dest = out_dir / (f"s4_{args.set}_{args.tag}.json" if args.tag else f"s4_{args.set}.json")
+    if args.set == "test":  # one-time run on the held-out farms (brief section 9.5)
+        if args.farms is not None:
+            raise SystemExit("the test set is run in full")
+        claim_test_run("phase7_s4", dest)
     cfg = load_config("sim_farms")
     ranges = {k: p.value for k, p in cfg.params.items()}
     n = args.farms or int(cfg.require(f"farms_{args.set}"))
@@ -190,11 +204,9 @@ def main(argv: list[str] | None = None) -> int:
                 round(row["k5_caught_share"], 3),
                 flush=True,
             )
-    out_dir = REPO_ROOT / "results" / "phase4"
     out_dir.mkdir(parents=True, exist_ok=True)
     blob = json.dumps(results, indent=1) + "\n"
     results_hash = hashlib.sha256(blob.encode()).hexdigest()[:12]
-    dest = out_dir / (f"s4_{args.set}_{args.tag}.json" if args.tag else f"s4_{args.set}.json")
     dest.write_text(blob, encoding="utf-8")
     print("written", dest, results_hash)
     return 0
