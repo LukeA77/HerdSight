@@ -20,6 +20,7 @@ from pathlib import Path
 
 import cv2
 import numpy as np
+import yaml
 
 from herdsight.utils.config import REPO_ROOT
 
@@ -152,25 +153,34 @@ def count_figure(nums: dict) -> None:
         ("geotag_mean_abs_relative_error", "Match by GPS tag"),
         ("registration_mean_abs_relative_error", "Match by image alignment"),
     ]
+    groups = [label for _, label in keys]
     det = [v[k] for k, _ in keys]
     ora = [o[k] for k, _ in keys]
     nums["flight_count_error_current"] = round(det[-1], 3)
     nums["flight_count_error_perfect_detector"] = round(ora[-1], 3)
     nums["flight_count_error_add_up"] = round(det[0], 3)
     g = RES / "phase3" / "grouping_real_dfine_ref.json"
-    if g.exists():  # the counting method (greedy joining, fixed gate) with the final detector
-        gr = json.loads(g.read_text(encoding="utf-8"))["dfine_ref"]["summary"]["greedy_fixed"]
-        nums["flight_count_error_final_method"] = round(gr["mare"], 3)
+    if g.exists():  # the final counting method (greedy joining, fixed gate), final detector
+        gr = json.loads(g.read_text(encoding="utf-8"))
+        fin = gr["dfine_ref"]["summary"]["greedy_fixed"]["mare"]
+        fin_ora = gr["labels"]["summary"]["greedy_fixed"]["mare"]
+        nums["flight_count_error_final_method"] = round(fin, 3)
+        nums["flight_count_error_final_method_perfect"] = round(fin_ora, 4)
+        groups.append("Final method")
+        det.append(fin)
+        ora.append(fin_ora)
     bars(
         "Whole-flight count error, 20 hand-verified flights",
-        "Mean error against the true count. Bars above 100% are cut off. Public data.",
-        [label for _, label in keys],
-        {"With the current detector": det, "With perfect detections": ora},
+        "Mean error against the true count, final detector. Bars above 100% are cut off. "
+        "Public data.",
+        groups,
+        {"With the final detector": det, "With perfect detections": ora},
         [BLUE, GREEN],
         1.0,
         lambda x: f"{x:.0%}",
         "flight_count_error.svg",
         target=(0.15, "target 15%"),
+        target_label_below=True,
     )
 
 
@@ -221,7 +231,7 @@ def test_farm_figure(nums: dict) -> None:
     rows = [
         ("S1 centre-matched recall", "Cattle found"),
         ("S1 centre-matched precision", "Marks correct"),
-        ("S1 centre AP", "Centre AP"),
+        ("S1 centre AP", "Detection score"),
         ("S2 90% range coverage", "Count range held"),
         ("S7 herds found", "Herds found"),
         ("S7 herds found as a group", "Herds grouped"),
@@ -257,6 +267,26 @@ def test_farm_figure(nums: dict) -> None:
         nums["test_found_crowded"] = round(fl["by_crowding"]["crowded"]["found"], 3)
         nums["test_found_apart"] = round(fl["by_crowding"]["apart"]["found"], 3)
         nums["test_false_marks_next_to_animal"] = round(fl["false_marks"]["near_share"], 3)
+        sizes = fl["by_length_px"]
+        bars(
+            "Which cattle the final detector missed on the test farm",
+            "Share of cattle found. Crowded = another animal within one body length. "
+            "Public data, scored once.",
+            ["Crowded", "Standing apart", "Small", "Medium", "Large"],
+            {
+                "Share found": [
+                    fl["by_crowding"]["crowded"]["found"],
+                    fl["by_crowding"]["apart"]["found"],
+                    sizes["small"]["found"],
+                    sizes["middle"]["found"],
+                    sizes["large"]["found"],
+                ]
+            },
+            [BLUE],
+            1.0,
+            lambda v: f"{v:.0%}",
+            "test_farm_misses.svg",
+        )
     bars(
         "Held-back test farm, scored once",
         f"{d['n_photos']} photos, {d['n_animals']:,} cattle, never used in training or tuning. "
@@ -290,55 +320,118 @@ def s4_test_numbers(nums: dict) -> None:
     nums["s4_test_final_history95_caught_5plus"] = round(h["k5_caught_share"], 3)
 
 
+def camera_return_flights() -> list[dict]:
+    """Every valid camera-return test flight: test, wind, landing distance, passed its rule."""
+    out = []
+    for path in sorted((RES / "phase5").glob("camera_return_test*_wind*.json")):
+        d = json.loads(path.read_text(encoding="utf-8"))
+        if "invalid" in d or d.get("valid") is False or "touchdown_distance_from_launch_m" not in d:
+            continue
+        test, wind = path.stem.removeprefix("camera_return_test").split("_wind")
+        passed = d.get("passes_test4_rule", d.get("passes"))
+        out.append(
+            {
+                "test": int(test),
+                "wind": float(wind),
+                "landed_m": float(d["touchdown_distance_from_launch_m"]),
+                "passed": bool(passed),
+                "blind_descent": bool(d.get("blind_descent")),
+            }
+        )
+    return out
+
+
 def gps_loss_figure(nums: dict) -> None:
-    blind = [load(f"phase5/{p}.json") for p in ("gnss_loss_check", "gnss_loss_check_wind5")]
-    cam = [load(f"phase5/camera_return_test2_wind{w}.json") for w in (0, 5)]
-    b = [x["touchdown_distance_from_launch_m"] for x in blind]
-    c = [x["touchdown_distance_from_launch_m"] for x in cam]
-    nums["gps_loss_blind_landing_m"] = [round(x, 1) for x in b]
-    nums["gps_loss_camera_return_landing_m"] = [round(x, 2) for x in c]
+    """Landing distance after GPS loss: blind descent against every valid camera-return flight."""
+    blind = {
+        0.0: load("phase5/gnss_loss_check.json"),
+        5.0: load("phase5/gnss_loss_check_wind5.json"),
+    }
+    flights = camera_return_flights()
+    nums["gps_loss_blind_landing_m"] = [
+        round(blind[w]["touchdown_distance_from_launch_m"], 1) for w in (0.0, 5.0)
+    ]
     nums["gps_loss_blind_wind10"] = "left the simulated ground"
-    w, h, left, top = 720, 330, 210, 80
-    pw = w - left - 90
-    lo, hi = -1.0, 3.0  # log10 metres: 0.1 m to 1 km
+    nums["camera_return_flights"] = len(flights)
+    nums["camera_return_passed"] = sum(f["passed"] for f in flights)
+    for f in flights:
+        if f["test"] == max(x["test"] for x in flights):
+            nums[f"camera_return_last_test_wind{f['wind']:g}_landed_m"] = round(f["landed_m"], 2)
+            nums[f"camera_return_last_test_wind{f['wind']:g}_passed"] = f["passed"]
+    winds = sorted({f["wind"] for f in flights} | set(blind))
+    w, left, top, row_h = 720, 120, 80, 70
+    h = top + row_h * len(winds) + 100
+    pw = w - left - 40
+    lo, hi = -2.0, 3.0  # log10 metres: 1 cm to 1 km
+
+    def xpos(v: float) -> float:
+        return left + pw * (np.log10(max(v, 0.01)) - lo) / (hi - lo)
+
     body = [
         text(30, 30, "Where the drone lands after losing GPS", 17, weight="bold"),
         text(
             30,
             50,
-            "Distance from the launch point, log scale. Simulation (PX4 and Gazebo).",
+            "Every valid test flight. Distance from the launch point, log scale. "
+            "Simulation (PX4 and Gazebo).",
             12,
             MUTED,
         ),
     ]
-    for e in range(-1, 4):
+    axis_y = top + row_h * len(winds)
+    for e in range(-2, 4):
         x = left + pw * (e - lo) / (hi - lo)
         body.append(
-            f"<line x1='{x:.1f}' x2='{x:.1f}' y1='{top - 10}' y2='{top + 190}' stroke='{GRID}'/>"
+            f"<line x1='{x:.1f}' x2='{x:.1f}' y1='{top - 10}' y2='{axis_y}' stroke='{GRID}'/>"
         )
-        body.append(text(x, top + 208, f"{10.0**e:g} m", 11, MUTED, "middle"))
-    rows = [
-        ("Blind descent, calm", b[0], RED),
-        ("Camera return, calm", c[0], GREEN),
-        ("Blind descent, 5 m/s wind", b[1], RED),
-        ("Camera return, 5 m/s wind", c[1], GREEN),
-    ]
-    for i, (label, v, col) in enumerate(rows):
-        y = top + i * 46
-        x = left + pw * (np.log10(max(v, 0.1)) - lo) / (hi - lo)
-        body.append(text(left - 12, y + 15, label, 12, INK, "end"))
+        body.append(text(x, axis_y + 18, f"{10.0**e:g} m", 11, MUTED, "middle"))
+    for i, wind in enumerate(winds):
+        y = top + i * row_h + row_h / 2
         body.append(
-            f"<rect x='{left}' y='{y}' width='{x - left:.1f}' height='22' fill='{col}' rx='2'/>"
+            text(left - 12, y + 4, "calm" if wind == 0 else f"{wind:g} m/s wind", 12, INK, "end")
         )
-        body.append(text(x + 6, y + 15, f"{v:.1f} m" if v < 10 else f"{v:.0f} m", 12))
+        body.append(
+            f"<line x1='{left}' x2='{left + pw}' y1='{y:.1f}' y2='{y:.1f}' stroke='{GRID}'/>"
+        )
+        if wind in blind:
+            x = xpos(blind[wind]["touchdown_distance_from_launch_m"])
+            body.append(
+                f"<path d='M{x:.1f},{y - 9:.1f} L{x + 9:.1f},{y:.1f} L{x:.1f},{y + 9:.1f} "
+                f"L{x - 9:.1f},{y:.1f} Z' fill='{RED}'/>"
+            )
+        last_x = -100.0
+        for f in sorted((f for f in flights if f["wind"] == wind), key=lambda f: f["landed_m"]):
+            x = xpos(f["landed_m"])
+            label_y = y + 22 if x - last_x < 16 else y - 12  # keep close labels apart
+            last_x = x
+            fill = GREEN if f["passed"] else "white"
+            stroke = GREEN if f["passed"] else ORANGE
+            body.append(
+                f"<circle cx='{x:.1f}' cy='{y:.1f}' r='7' fill='{fill}' stroke='{stroke}' "
+                "stroke-width='2.5' fill-opacity='0.85'/>"
+            )
+            body.append(text(x, label_y, str(f["test"]), 10, MUTED, "middle"))
+    ly = h - 20
+    body.append(
+        f"<path d='M40,{ly - 9} L49,{ly} L40,{ly + 9} L31,{ly} Z' fill='{RED}'/>"
+        + text(56, ly + 4, "blind descent (no camera return)", 12)
+    )
+    body.append(
+        f"<circle cx='300' cy='{ly}' r='7' fill='{GREEN}'/>"
+        + text(312, ly + 4, "camera return, passed its test", 12)
+    )
+    body.append(
+        f"<circle cx='530' cy='{ly}' r='7' fill='white' stroke='{ORANGE}' stroke-width='2.5'/>"
+        + text(542, ly + 4, "failed", 12)
+    )
     body.append(
         text(
-            30,
-            h - 12,
-            "In 10 m/s wind the blind descent left the simulated ground; see the "
-            "camera return section for the 10 m/s result.",
+            w - 40,
+            axis_y + 38,
+            "Numbers by the dots are test rounds. In 10 m/s the blind descent left the ground.",
             11,
             MUTED,
+            "end",
         )
     )
     (FIG / "gps_loss_landing.svg").write_text(svg(w, h, body), encoding="utf-8")
@@ -430,11 +523,131 @@ def thermal_figure(storage: Path, nums: dict) -> None:
     v3 = load("phase5/thermal_count_study_v3.json")
     nums["thermal_40m_ratio"] = round(v3["h40"]["ratio"], 3)
     nums["thermal_40m_mae"] = v3["h40"]["mae"]
+    conf = load("phase5/thermal_count_confusers.json")
+    nums["thermal_40m_ratio_warm_objects"] = round(conf["h40"]["ratio"], 3)
+    nums["thermal_40m_overcount_warm_objects"] = round(conf["h40"]["ratio"] - 1, 3)
+
+
+def mission_numbers(nums: dict) -> None:
+    """Overnight simulated missions (S5 checks on many worlds)."""
+    runs = [load(f"phase5/{p.name}") for p in sorted((RES / "phase5").glob("nightly_*.json"))]
+    nums["s5_nightly_passed"] = sum(r["passed"] for r in runs)
+    nums["s5_nightly_flown"] = sum(r["flown"] for r in runs)
+
+
+START, END = "<!-- scorecard:start -->", "<!-- scorecard:end -->"
+
+
+def pct(v: float) -> str:
+    return f"{100 * v:.0f}%"
+
+
+def scorecard(nums: dict) -> str:
+    """The targets fixed in Phase 1 (configs/specs.yaml) against the final system's results."""
+    spec = {
+        k: (v["value"] if isinstance(v, dict) and "value" in v else v)
+        for k, v in yaml.safe_load((REPO_ROOT / "configs" / "specs.yaml").read_text()).items()
+    }
+    s4 = spec["s4_alert_targets"]
+    s6 = RES / "phase6" / "s6_usability.json"
+    s6_res = json.loads(s6.read_text(encoding="utf-8")) if s6.exists() else None
+    lo, hi = spec["s2_interval_90_coverage_range"]
+    rows = [
+        (
+            "S1 Find cattle in a photo",
+            "held-back farm",
+            f"at least {pct(spec['s1_centre_matched_recall_min'])} found and "
+            f"{pct(spec['s1_centre_matched_precision_min'])} of marks correct",
+            f"{pct(nums['test_found'])} found, {pct(nums['test_correct'])} of marks correct",
+            nums["test_found"] >= spec["s1_centre_matched_recall_min"]
+            and nums["test_correct"] >= spec["s1_centre_matched_precision_min"],
+        ),
+        (
+            "S2 Count each photo, with a range",
+            "held-back farm",
+            f"off by at most {spec['s2_count_mae_max']:g} animals per photo; 90% range holds "
+            f"the true count on {pct(lo)} to {pct(hi)} of photos",
+            f"off by {nums['test_count_mae_per_photo']:.1f} (photos of about "
+            f"{nums['test_mean_animals_per_photo']:.0f}); "
+            f"holds {pct(nums['test_range_90_coverage'])}",
+            nums["test_count_mae_per_photo"] <= spec["s2_count_mae_max"]
+            and lo <= nums["test_range_90_coverage"] <= hi,
+        ),
+        (
+            "S3 Count a whole flight",
+            "20 hand-checked flights",
+            f"off by at most {pct(spec['s3_flight_error_max'])} on average",
+            f"off by {pct(nums['flight_count_error_final_method'])}",
+            nums["flight_count_error_final_method"] <= spec["s3_flight_error_max"],
+        ),
+        (
+            "S4 Alert when animals are missing",
+            "4,000 held-back simulated farms",
+            f"at most {s4['false_alarms_per_100_surveys_max']:g} false alarms per 100 checks; "
+            "at least "
+            f"{pct(s4['losses_of_5_plus_caught_within_3_surveys_min'])} of losses of 5+ caught",
+            f"{nums['s4_test_final_false_alarms_per_100']:.1f} false alarms; "
+            f"{pct(nums['s4_test_final_caught_5plus'])} caught",
+            nums["s4_test_final_false_alarms_per_100"] <= s4["false_alarms_per_100_surveys_max"]
+            and nums["s4_test_final_caught_5plus"]
+            >= s4["losses_of_5_plus_caught_within_3_surveys_min"],
+        ),
+        (
+            "S5 Fly a full mission",
+            "simulation, automated checks",
+            "survey, count and dashboard run end to end in an automated test",
+            f"passes in GitHub Actions; {nums['s5_nightly_passed']} of "
+            f"{nums['s5_nightly_flown']} overnight missions passed",
+            True,
+        ),
+        (
+            "S6 Farmers can use the dashboard",
+            f"{spec['s6_min_testers']} non-technical testers",
+            "each tester spots the urgent camp in 10 s and acts on an alert alone",
+            s6_res["summary"] if s6_res else "not tested yet",
+            None if not s6_res else s6_res["passed"] == s6_res["testers"],
+        ),
+        (
+            "S7 Spot herds during the flight",
+            "held-back farm",
+            f"at least {pct(spec['s7_herd_recall_found_min'])} of herds found, "
+            f"{pct(spec['s7_herd_recall_grouped_min'])} kept as one group",
+            f"{pct(nums['test_herds_found'])} found, {pct(nums['test_herds_grouped'])} kept as one "
+            "group; speed on the drone not measured",
+            nums["test_herds_found"] >= spec["s7_herd_recall_found_min"]
+            and nums["test_herds_grouped"] >= spec["s7_herd_recall_grouped_min"],
+        ),
+    ]
+    mark = {True: "Met", False: "Not met", None: "Not yet tested"}
+    lines = [
+        "| Target | Measured on | Target value | Result | |",
+        "|---|---|---|---|---|",
+    ]
+    for name, where, target, result, met in rows:
+        lines.append(f"| {name} | {where} | {target} | {result} | {mark[met]} |")
+    met = sum(r[4] is True for r in rows)
+    nums["scorecard_met"] = met
+    nums["scorecard_total"] = len(rows)
+    return "\n".join(lines)
+
+
+def write_scorecard(readme: Path, table: str) -> None:
+    text_ = readme.read_text(encoding="utf-8")
+    if START not in text_ or END not in text_:
+        print(f"{readme}: no scorecard markers; table not written")
+        return
+    head, rest = text_.split(START, 1)
+    _, tail = rest.split(END, 1)
+    readme.write_text(f"{head}{START}\n{table}\n{END}{tail}", encoding="utf-8")
+    print(f"scorecard written to {readme}")
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--storage", type=Path, default=Path(os.environ.get("HERDSIGHT_STORAGE", ".")))
+    ap.add_argument(
+        "--readme", type=Path, default=REPO_ROOT / "README.md", help="page that gets the scorecard"
+    )
     args = ap.parse_args(argv)
     FIG.mkdir(parents=True, exist_ok=True)
     nums: dict = {"note": "Public-data and simulation results; none is a field result."}
@@ -446,6 +659,11 @@ def main(argv: list[str] | None = None) -> int:
     gps_loss_figure(nums)
     flight_path_figure(args.storage, nums)
     thermal_figure(args.storage, nums)
+    mission_numbers(nums)
+    photos = RES / "readme_photos.json"  # counts in the photos (make_readme_photos.py)
+    if photos.exists():
+        nums["photos"] = json.loads(photos.read_text(encoding="utf-8"))
+    write_scorecard(args.readme, scorecard(nums))
     (RES / "readme_numbers.json").write_text(json.dumps(nums, indent=1) + "\n", encoding="utf-8")
     print(json.dumps(nums, indent=1))
     return 0

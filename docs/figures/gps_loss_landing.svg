@@ -1,28 +1,53 @@
-<svg xmlns='http://www.w3.org/2000/svg' width='720' height='330' viewBox='0 0 720 330' font-family='Helvetica, Arial, sans-serif'>
-<rect width='720' height='330' fill='white'/>
+<svg xmlns='http://www.w3.org/2000/svg' width='720' height='390' viewBox='0 0 720 390' font-family='Helvetica, Arial, sans-serif'>
+<rect width='720' height='390' fill='white'/>
 <text x='30.0' y='30.0' font-size='17' fill='#1f2933' text-anchor='start' font-weight='bold'>Where the drone lands after losing GPS</text>
-<text x='30.0' y='50.0' font-size='12' fill='#616e7c' text-anchor='start' font-weight='normal'>Distance from the launch point, log scale. Simulation (PX4 and Gazebo).</text>
-<line x1='210.0' x2='210.0' y1='70' y2='270' stroke='#d9dee3'/>
-<text x='210.0' y='288.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>0.1 m</text>
-<line x1='315.0' x2='315.0' y1='70' y2='270' stroke='#d9dee3'/>
-<text x='315.0' y='288.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>1 m</text>
-<line x1='420.0' x2='420.0' y1='70' y2='270' stroke='#d9dee3'/>
-<text x='420.0' y='288.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>10 m</text>
-<line x1='525.0' x2='525.0' y1='70' y2='270' stroke='#d9dee3'/>
-<text x='525.0' y='288.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>100 m</text>
-<line x1='630.0' x2='630.0' y1='70' y2='270' stroke='#d9dee3'/>
-<text x='630.0' y='288.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>1000 m</text>
-<text x='198.0' y='95.0' font-size='12' fill='#1f2933' text-anchor='end' font-weight='normal'>Blind descent, calm</text>
-<rect x='210' y='80' width='346.3' height='22' fill='#c0392b' rx='2'/>
-<text x='562.3' y='95.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>199 m</text>
-<text x='198.0' y='141.0' font-size='12' fill='#1f2933' text-anchor='end' font-weight='normal'>Camera return, calm</text>
-<rect x='210' y='126' width='29.2' height='22' fill='#3c8d5a' rx='2'/>
-<text x='245.2' y='141.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>0.2 m</text>
-<text x='198.0' y='187.0' font-size='12' fill='#1f2933' text-anchor='end' font-weight='normal'>Blind descent, 5 m/s wind</text>
-<rect x='210' y='172' width='415.5' height='22' fill='#c0392b' rx='2'/>
-<text x='631.5' y='187.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>906 m</text>
-<text x='198.0' y='233.0' font-size='12' fill='#1f2933' text-anchor='end' font-weight='normal'>Camera return, 5 m/s wind</text>
-<rect x='210' y='218' width='193.9' height='22' fill='#3c8d5a' rx='2'/>
-<text x='409.9' y='233.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>7.0 m</text>
-<text x='30.0' y='318.0' font-size='11' fill='#616e7c' text-anchor='start' font-weight='normal'>In 10 m/s wind the blind descent left the simulated ground; see the camera return section for the 10 m/s result.</text>
+<text x='30.0' y='50.0' font-size='12' fill='#616e7c' text-anchor='start' font-weight='normal'>Every valid test flight. Distance from the launch point, log scale. Simulation (PX4 and Gazebo).</text>
+<line x1='120.0' x2='120.0' y1='70' y2='290' stroke='#d9dee3'/>
+<text x='120.0' y='308.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>0.01 m</text>
+<line x1='232.0' x2='232.0' y1='70' y2='290' stroke='#d9dee3'/>
+<text x='232.0' y='308.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>0.1 m</text>
+<line x1='344.0' x2='344.0' y1='70' y2='290' stroke='#d9dee3'/>
+<text x='344.0' y='308.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>1 m</text>
+<line x1='456.0' x2='456.0' y1='70' y2='290' stroke='#d9dee3'/>
+<text x='456.0' y='308.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>10 m</text>
+<line x1='568.0' x2='568.0' y1='70' y2='290' stroke='#d9dee3'/>
+<text x='568.0' y='308.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>100 m</text>
+<line x1='680.0' x2='680.0' y1='70' y2='290' stroke='#d9dee3'/>
+<text x='680.0' y='308.0' font-size='11' fill='#616e7c' text-anchor='middle' font-weight='normal'>1000 m</text>
+<text x='108.0' y='119.0' font-size='12' fill='#1f2933' text-anchor='end' font-weight='normal'>calm</text>
+<line x1='120' x2='680' y1='115.0' y2='115.0' stroke='#d9dee3'/>
+<path d='M601.4,106.0 L610.4,115.0 L601.4,124.0 L592.4,115.0 Z' fill='#c0392b'/>
+<circle cx='263.1' cy='115.0' r='7' fill='#3c8d5a' stroke='#3c8d5a' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='263.1' y='103.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>2</text>
+<circle cx='462.3' cy='115.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='462.3' y='103.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>6</text>
+<circle cx='470.0' cy='115.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='470.0' y='137.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>4</text>
+<circle cx='555.5' cy='115.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='555.5' y='103.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>3</text>
+<text x='108.0' y='189.0' font-size='12' fill='#1f2933' text-anchor='end' font-weight='normal'>5 m/s wind</text>
+<line x1='120' x2='680' y1='185.0' y2='185.0' stroke='#d9dee3'/>
+<path d='M675.2,176.0 L684.2,185.0 L675.2,194.0 L666.2,185.0 Z' fill='#c0392b'/>
+<circle cx='197.4' cy='185.0' r='7' fill='#3c8d5a' stroke='#3c8d5a' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='197.4' y='173.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>3</text>
+<circle cx='283.7' cy='185.0' r='7' fill='#3c8d5a' stroke='#3c8d5a' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='283.7' y='173.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>6</text>
+<circle cx='438.8' cy='185.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='438.8' y='173.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>2</text>
+<circle cx='645.4' cy='185.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='645.4' y='173.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>4</text>
+<text x='108.0' y='259.0' font-size='12' fill='#1f2933' text-anchor='end' font-weight='normal'>10 m/s wind</text>
+<line x1='120' x2='680' y1='255.0' y2='255.0' stroke='#d9dee3'/>
+<circle cx='266.3' cy='255.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='266.3' y='243.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>6</text>
+<circle cx='444.5' cy='255.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='444.5' y='243.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>3</text>
+<circle cx='555.8' cy='255.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='555.8' y='243.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>4</text>
+<circle cx='619.6' cy='255.0' r='7' fill='white' stroke='#d9822b' stroke-width='2.5' fill-opacity='0.85'/>
+<text x='619.6' y='243.0' font-size='10' fill='#616e7c' text-anchor='middle' font-weight='normal'>2</text>
+<path d='M40,361 L49,370 L40,379 L31,370 Z' fill='#c0392b'/><text x='56.0' y='374.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>blind descent (no camera return)</text>
+<circle cx='300' cy='370' r='7' fill='#3c8d5a'/><text x='312.0' y='374.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>camera return, passed its test</text>
+<circle cx='530' cy='370' r='7' fill='white' stroke='#d9822b' stroke-width='2.5'/><text x='542.0' y='374.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>failed</text>
+<text x='680.0' y='328.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>Numbers by the dots are test rounds. In 10 m/s the blind descent left the ground.</text>
 </svg>

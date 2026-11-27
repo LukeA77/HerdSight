@@ -2,12 +2,12 @@
 
 Usage: python scripts/check_readme_numbers.py [README.md]
 
-Every percentage and every decimal in the README's results sections ("Progress" to "How the work is
-done") must match a value in results/readme_numbers.json (written by
-scripts/make_readme_figures.py), as a percentage rounded to whole numbers or to one decimal
-place, or as the value itself rounded to the same number of decimals. Numbers that are settings
-or targets rather than results (the agreed 80%, the 15% target) are listed in ALLOWED with the
-place they come from. Exits 1 and lists any number it cannot trace.
+Every percentage and every decimal in the README's results sections (from "Results at a
+glance", or "Progress" in older versions, to "How the work is done") must match a value in
+results/readme_numbers.json (written by scripts/make_readme_figures.py): as a percentage rounded
+to a whole number or one decimal place, or as the value rounded to the same number of decimals.
+Numbers that are settings or targets rather than results (the agreed 80%, the 15% target) are
+listed in ALLOWED with the place they come from. Exits 1 and lists any number it cannot trace.
 """
 
 from __future__ import annotations
@@ -24,7 +24,9 @@ ALLOWED = {
     "80%": "S1 targets and the onboarding rule (configs/specs.yaml, D-52)",
     "15%": "S3 target (configs/specs.yaml)",
     "65%": "S4 target (configs/specs.yaml)",
-    "85%": "S2 range coverage target (configs/specs.yaml)",
+    "85%": "S2 range coverage and S7 grouping targets (configs/specs.yaml)",
+    "90%": "the S2 range level (configs/specs.yaml)",
+    "95%": "S2 range coverage upper limit and S7 herds-found target (configs/specs.yaml)",
     "10%": "thermal pass rule (docs/plans/phase5-simulation-mission.md)",
     "1.5": "S4 false-alarm target (configs/specs.yaml)",
     "0.45": "S2 target (configs/specs.yaml)",
@@ -60,13 +62,15 @@ def main(argv: list[str] | None = None) -> int:
     args = argv if argv is not None else sys.argv[1:]
     readme = Path(args[0]) if args else REPO_ROOT / "README.md"
     text = readme.read_text(encoding="utf-8")
-    start, stop = text.find("## Progress"), text.find("## How the work is done")
+    start, stop = text.find("## Results at a glance"), text.find("## How the work is done")
+    if start < 0:
+        start = text.find("## Progress")
     body = text[start:stop] if start >= 0 and stop > start else text
     nums = json.loads((REPO_ROOT / "results" / "readme_numbers.json").read_text(encoding="utf-8"))
     known: set[str] = set()
     for v in flatten(nums):
         known |= candidates(v)
-    found = re.findall(r"(?<![\w.])(\d+(?:\.\d+)?%|\d+\.\d+)(?![\w.])", body)
+    found = re.findall(r"(?<![\w.])(\d+(?:\.\d+)?%|\d+\.\d+)(?!\w|\.\d)", body)
     missing = sorted({x for x in found if x not in known and x not in ALLOWED})
     for x in missing:
         print("not traced to results/readme_numbers.json:", x)

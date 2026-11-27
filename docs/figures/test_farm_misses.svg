@@ -1,0 +1,34 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='720' height='400' viewBox='0 0 720 400' font-family='Helvetica, Arial, sans-serif'>
+<rect width='720' height='400' fill='white'/>
+<text x='70.0' y='30.0' font-size='17' fill='#1f2933' text-anchor='start' font-weight='bold'>Which cattle the final detector missed on the test farm</text>
+<text x='70.0' y='50.0' font-size='12' fill='#616e7c' text-anchor='start' font-weight='normal'>Share of cattle found. Crowded = another animal within one body length. Public data, scored once.</text>
+<line x1='70' x2='690' y1='320.0' y2='320.0' stroke='#d9dee3'/>
+<text x='62.0' y='324.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>0%</text>
+<line x1='70' x2='690' y1='270.0' y2='270.0' stroke='#d9dee3'/>
+<text x='62.0' y='274.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>20%</text>
+<line x1='70' x2='690' y1='220.0' y2='220.0' stroke='#d9dee3'/>
+<text x='62.0' y='224.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>40%</text>
+<line x1='70' x2='690' y1='170.0' y2='170.0' stroke='#d9dee3'/>
+<text x='62.0' y='174.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>60%</text>
+<line x1='70' x2='690' y1='120.0' y2='120.0' stroke='#d9dee3'/>
+<text x='62.0' y='124.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>80%</text>
+<line x1='70' x2='690' y1='70.0' y2='70.0' stroke='#d9dee3'/>
+<text x='62.0' y='74.0' font-size='11' fill='#616e7c' text-anchor='end' font-weight='normal'>100%</text>
+<rect x='109.0' y='184.5' width='42.0' height='135.5' fill='#2f6fb0' rx='2'/>
+<text x='130.0' y='178.5' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>54%</text>
+<text x='132.0' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Crowded</text>
+<rect x='233.0' y='115.5' width='42.0' height='204.5' fill='#2f6fb0' rx='2'/>
+<text x='254.0' y='109.5' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>82%</text>
+<text x='256.0' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Standing apart</text>
+<rect x='357.0' y='145.2' width='42.0' height='174.8' fill='#2f6fb0' rx='2'/>
+<text x='378.0' y='139.2' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>70%</text>
+<text x='380.0' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Small</text>
+<rect x='481.0' y='147.1' width='42.0' height='172.9' fill='#2f6fb0' rx='2'/>
+<text x='502.0' y='141.1' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>69%</text>
+<text x='504.0' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Medium</text>
+<rect x='605.0' y='150.2' width='42.0' height='169.8' fill='#2f6fb0' rx='2'/>
+<text x='626.0' y='144.2' font-size='11' fill='#1f2933' text-anchor='middle' font-weight='normal'>68%</text>
+<text x='628.0' y='340.0' font-size='12' fill='#1f2933' text-anchor='middle' font-weight='normal'>Large</text>
+<rect x='70' y='370' width='12' height='12' fill='#2f6fb0' rx='2'/>
+<text x='88.0' y='380.0' font-size='12' fill='#1f2933' text-anchor='start' font-weight='normal'>Share found</text>
+</svg>

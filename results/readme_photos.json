@@ -1,0 +1,38 @@
+{
+ "note": "Real ICAERUS photos (CC BY 4.0) with the stored marks of the single test run drawn on; public data, not field results.",
+ "best": {
+  "image": "Other_farms/DJI_202403221522_070/DJI_20240322152517_0007_V.JPG",
+  "animals_in_photo": 57,
+  "found_in_photo": 48,
+  "marks_in_photo": 55,
+  "close_up": {
+   "animals": 31,
+   "found": 29,
+   "wrong_marks": 2
+  },
+  "file": "docs/figures/photo_detections.jpg"
+ },
+ "worst": {
+  "image": "Other_farms/DJI_202403221522_071/DJI_20240322153507_0066_V.JPG",
+  "animals_in_photo": 90,
+  "found_in_photo": 55,
+  "marks_in_photo": 84,
+  "close_up": {
+   "animals": 72,
+   "found": 42,
+   "wrong_marks": 24
+  },
+  "file": "docs/figures/photo_crowded.jpg"
+ },
+ "overlap": {
+  "flight": "Mauron/DJI_202306051839_025",
+  "images": [
+   "DJI_20230605184613_0033_V.JPG",
+   "DJI_20230605184615_0034_V.JPG"
+  ],
+  "animals_in_both_photos": 106,
+  "same_animal_pairs": 52,
+  "different_animals": 54,
+  "file": "docs/figures/photo_overlap.jpg"
+ }
+}

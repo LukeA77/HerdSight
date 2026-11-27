@@ -6,6 +6,7 @@
  "flight_count_error_perfect_detector": 0.145,
  "flight_count_error_add_up": 2.479,
  "flight_count_error_final_method": 0.251,
+ "flight_count_error_final_method_perfect": 0.125,
  "onboarding_jalogny_0_photos_found": 0.682,
  "onboarding_jalogny_0_photos_correct": 0.706,
  "onboarding_jalogny_50_photos_found": 0.697,
@@ -50,12 +51,60 @@
   198.6,
   906.5
  ],
- "gps_loss_camera_return_landing_m": [
-  0.19,
-  7.02
- ],
  "gps_loss_blind_wind10": "left the simulated ground",
+ "camera_return_flights": 12,
+ "camera_return_passed": 3,
+ "camera_return_last_test_wind0_landed_m": 11.38,
+ "camera_return_last_test_wind0_passed": false,
+ "camera_return_last_test_wind10_landed_m": 0.2,
+ "camera_return_last_test_wind10_passed": false,
+ "camera_return_last_test_wind5_landed_m": 0.29,
+ "camera_return_last_test_wind5_passed": true,
  "camera_return_keyframes_calm": 28,
  "thermal_40m_ratio": 1.045,
- "thermal_40m_mae": 0.5
+ "thermal_40m_mae": 0.5,
+ "thermal_40m_ratio_warm_objects": 1.089,
+ "thermal_40m_overcount_warm_objects": 0.089,
+ "s5_nightly_passed": 16,
+ "s5_nightly_flown": 16,
+ "photos": {
+  "note": "Real ICAERUS photos (CC BY 4.0) with the stored marks of the single test run drawn on; public data, not field results.",
+  "best": {
+   "image": "Other_farms/DJI_202403221522_070/DJI_20240322152517_0007_V.JPG",
+   "animals_in_photo": 57,
+   "found_in_photo": 48,
+   "marks_in_photo": 55,
+   "close_up": {
+    "animals": 31,
+    "found": 29,
+    "wrong_marks": 2
+   },
+   "file": "docs/figures/photo_detections.jpg"
+  },
+  "worst": {
+   "image": "Other_farms/DJI_202403221522_071/DJI_20240322153507_0066_V.JPG",
+   "animals_in_photo": 90,
+   "found_in_photo": 55,
+   "marks_in_photo": 84,
+   "close_up": {
+    "animals": 72,
+    "found": 42,
+    "wrong_marks": 24
+   },
+   "file": "docs/figures/photo_crowded.jpg"
+  },
+  "overlap": {
+   "flight": "Mauron/DJI_202306051839_025",
+   "images": [
+    "DJI_20230605184613_0033_V.JPG",
+    "DJI_20230605184615_0034_V.JPG"
+   ],
+   "animals_in_both_photos": 106,
+   "same_animal_pairs": 52,
+   "different_animals": 54,
+   "file": "docs/figures/photo_overlap.jpg"
+  }
+ },
+ "scorecard_met": 1,
+ "scorecard_total": 7
 }
