@@ -4,14 +4,22 @@ HerdSight counts cattle using a drone and alerts the farmer when animals may be 
 
 A drone flies over each camp (paddock) and takes photos. The software counts the cattle in them, taking care that an animal caught in several photos is only counted once, and checks the total against the farm's herd records. It only raises an alert when the shortfall is big enough to be worth acting on. The idea is to help farmers spot theft and straying early, before a few missing animals turns into a lot.
 
-![A herd of cattle grazing, photographed from a drone at about 100 m](docs/figures/photo_farm.jpg)
-
-*A survey photo from the public dataset: one camp, a herd of black-and-white cows, and the hedges, trees and farm track around them. This farm was kept back for the final test.*
-
 > **Status: work in progress, about 80% of planned tasks complete.**
 > HerdSight has not been flown on a real farm. Every result below comes from public drone data or from simulation, and each one says which. None of them is a field result.
 
 ---
+
+## See it working
+
+These two short clips show what HerdSight does. They loop, so you can watch them again.
+
+**Step 1: the drone surveys a camp.** This one is a simulation, but the drone is flown by the same autopilot software real drones use.
+
+![Step 1: a simulated drone flies back and forth over a camp and takes 44 photos](docs/figures/demo_1_survey.gif)
+
+**Step 2: counting the cows in the photos.** This one uses two real photos from a survey flight over a French farm, from a public dataset.
+
+![Step 2: two overlapping drone photos side by side, with each cow seen in both joined by a yellow line](docs/figures/demo_2_count.gif)
 
 ## Results at a glance
 
@@ -87,6 +95,10 @@ Because the detector struggles on farms it hasn't seen, the plan is to start eac
 Both farms improved as the detector saw more of their photos, but neither reached the level I set before the runs (80% found and 80% of marks correct), so I can't claim it. Giving it all 447 of Mauron's photos didn't help any further (66% found). Past a couple of hundred photos from the same days, it stopped improving. My guess is that photos from more days and seasons would matter more than simply more photos, and that is the next thing I want to test. It's also only two farms and one random draw of photos, so I'd treat this as an early sign rather than a firm result.
 
 ### 3. The final test on a farm held back from the start (public data)
+
+![A herd of cattle grazing, photographed from a drone at about 100 m](docs/figures/photo_farm.jpg)
+
+*A survey photo from the public dataset: one camp, a herd of black-and-white cows, and the hedges, trees and farm track around them. This is the farm that was kept back for the final test.*
 
 ![Results on the held-back test farm against the targets](docs/figures/test_farm.svg)
 
